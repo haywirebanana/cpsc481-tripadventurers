@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+import PhoneFrame from "./components/PhoneFrame";
 
+// Pages
+import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
+import TripList from "./pages/TripList";
+import TripSetup from "./pages/TripSetup";
+import Explore from "./pages/Explore";
+import Intinerary from "./pages/Intinerary";
+import Documents from "./pages/Documents";
+import ManageDocuments from "./pages/documents/ManageDocuments";
+import ManageMembers from "./pages/documents/ManageMembers";
+import Settings from "./pages/documents/Settings";
+import Weather from "./pages/documents/Weather";
+
+// Layouts
+import AuthLayout from "./layouts/AuthLayout";
+import TripListLayout from "./layouts/TripListLayout";
+import TripLayout from "./layouts/TripLayout";
+
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <PhoneFrame>
+        <Routes>
 
-export default App
+          {/* AUTH PAGES */}
+          <Route element={<AuthLayout />}>
+            <Route path="/" element={<Login />} />
+            <Route path="/signin" element={<SignIn />} />
+          </Route>
+
+          {/* TRIP LIST PAGES (TOP NAV ONLY) */}
+          <Route element={<TripListLayout />}>
+            <Route path="/trip-list" element={<TripList />} />
+            <Route path="/trip-setup" element={<TripSetup />} />
+          </Route>
+
+          {/* TRIP PAGES (BOTTOM NAV ONLY) */}
+          <Route path="/trip/:tripId" element={<TripLayout />}>
+            <Route index element={<Explore />} />
+            <Route path="explore" element={<Explore />} />
+            <Route path="intinerary" element={<Intinerary />} />
+
+            <Route path="documents" element={<Documents />}>
+              <Route path="manage" element={<ManageDocuments />} />
+              <Route path="members" element={<ManageMembers />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="weather" element={<Weather />} />
+            </Route>
+          </Route>
+
+        </Routes>
+      </PhoneFrame>
+    </Router>
+  );
+}
