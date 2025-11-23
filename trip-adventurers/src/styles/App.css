@@ -1,0 +1,28 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+
+  /* Phone dimensions */
+  --phone-width: 450px;
+  --phone-height: 956px;
+  --phone-radius: 50px;
+
+  /* Colors */
+  --color-bg: #D9E9CF;
+  --color-gray-1: #F0F0F0;
+  --color-gray-2: #AEAEB2;
+  --color-black: #000000;
+  --color-green-light: #B6CEB4;
+  --color-green-border: #96A78D;
+
+  /* Shadows */
+  --shadow-card: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* Font */
+  --font-main: 'Open Sans', sans-serif;
+
+  /* Spacing */
+  --radius-input: 20px;
+  --radius-button: 5px;
+}
