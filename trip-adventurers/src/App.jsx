@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import PhoneFrame from "./components/PhoneFrame";
+import PhoneFrame from "./layouts/PhoneFrame";
 
 // Pages
 import Login from "./pages/Login";
