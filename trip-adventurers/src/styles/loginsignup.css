@@ -1,0 +1,157 @@
+/* Login.css - Modern, maintainable styles */
+
+.landing-page {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  background: #D9E9CF;
+  margin: 0 auto;
+  padding: 60px 30px;
+  box-sizing: border-box;
+}
+
+/* -----------------------------
+   TYPOGRAPHY
+------------------------------ */
+
+.title {
+  width: 100%;
+  margin-bottom: 100px;
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 1.2;
+  text-align: center;
+  color: #000;
+}
+
+.login-text {
+  width: 100%;
+  margin-bottom: 50px;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.2;
+  text-align: center;
+  color: #000;
+}
+
+.no-account {
+  width: 100%;
+  margin: 40px 0 20px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.35;
+  text-align: center;
+  color: #000;
+}
+
+/* -----------------------------
+   FORM INPUTS
+------------------------------ */
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  height: 90px;
+  margin: 0 auto 20px;
+  background: #FFFFFF;
+  border: 3px solid #96A78D;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding-left: 75px;
+  padding-right: 20px;
+}
+
+.input-wrapper input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  line-height: 25px;
+  color: #000;
+}
+
+.input-wrapper input::placeholder {
+  color: #AEAEB2;
+  font-weight: 400;
+}
+
+/* Input Icons */
+.input-icon {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-icon .vector {
+  width: 100%;
+  height: 100%;
+  background: #AEAEB2;
+  border-radius: 4px;
+}
+
+/* Icon variants */
+.icon-mail .vector {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-lock .vector {
+  width: 100%;
+  height: 100%;
+}
+
+/* -----------------------------
+   BUTTONS
+------------------------------ */
+
+.button {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: 55px;
+  margin: 0 auto;
+  background: #B6CEB4;
+  border: 3px solid #96A78D;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: #A5BDA3;
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button:active {
+  transform: translateY(0);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.btn-signin {
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+.btn-signup {
+  margin-top: 15px;
+}
+
+/* Remove default link styling */
+a {
+  text-decoration: none;
+}
