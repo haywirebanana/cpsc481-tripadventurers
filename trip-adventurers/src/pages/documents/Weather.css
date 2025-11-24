@@ -136,11 +136,20 @@
   font-size: 14px;
 }
 
-.news-list {
+/* heres the vertical scrolling for the news section, helpful for the tickets page*/
+.news-scroll-container {
+  height: calc(100vh - 72px - 120px - 60px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  box-sizing: border-box;
+}
+
+.news-list {
+  height: auto;
 }
 
 .news-card {
@@ -182,7 +191,6 @@
   color: #333;
 }
 
-/* view button */
 .news-actions {
   display: flex;
   align-items: center;
