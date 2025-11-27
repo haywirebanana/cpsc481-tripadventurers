@@ -12,13 +12,24 @@ export default function TripLayout() {
       {/* home button, fixed at top */}
       <div style={{
         flexShrink: 0,
-        padding: '12px',
-        borderBottom: '1px solid var(--color-black)',
-        background: 'var(--color-bg)'
+        padding: '12px 16px',
+        borderBottom: '2px solid var(--color-black)',
+        background: 'var(--color-bg)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
       }}>
         <Link to="/trip-list">
           <button>Home</button>
         </Link>
+        <h1 style={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '20px',
+          fontWeight: 700,
+          margin: 0
+        }}>Trip Name</h1>
       </div>
 
       <div style={{
