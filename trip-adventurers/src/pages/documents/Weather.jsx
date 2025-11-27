@@ -12,7 +12,6 @@ import closed from "../../assets/closedd.jpeg";
 import thunder from "../../assets/thunder.svg";
 import suncloud from "../../assets/weather.svg";
 
-
 const FORECAST = [
   { id: 1, day: "Day 1", temp: "39 °C", icon: suncloud, prep: "5%", humidity: "30%", wind: "8km/h" },
   { id: 2, day: "Day 2", temp: "18 °C", icon: cloud, prep: "5%", humidity: "43%", wind: "20km/h" },
@@ -37,36 +36,32 @@ const NEWS = [
     title: "Heritage Museum Closed",
     thumbnail: closed,
     excerpt:
-      " Heriage Museum temporarily closed its doors after water damage was discovered.",
+      "Heriage Museum temporarily closed its doors after water damage was discovered.",
     full:
-      "October 23, 2025 - Calgary - The Heritage museum temporarily closed its doors after a water pipe leakage caused damage to parts of the building. Restoration is underway; the museum is expected to reopen next week.",
+      "October 23, 2025 - Calgary - The Heritage museum temporarily closed after a water pipe leak damaged parts of the building.",
   },
   {
     id: "n3",
     title: "Hailstorm Emergency",
     thumbnail: hailstorm,
     excerpt:
-      "Severe hailstorm causing damage in several neighbourhoods. Stay indoors and avoid travel if possible.",
+      "Severe hailstorm causing damage in several neighbourhoods. Stay indoors.",
     full:
-      "A strong hailstorm passed through the city causing damage. Report any hazards to emergency services.",
+      "A strong hailstorm passed through the city causing damage. Report hazards to emergency services.",
   },
-    {
+  {
     id: "n4",
     title: "Protest Near City Hall",
     thumbnail: protest,
-    excerpt:
-      "Protest near city hall",
-    full:
-      "....",
+    excerpt: "Protest near city hall",
+    full: "....",
   },
-      {
+  {
     id: "n5",
     title: "Flights Delayed",
     thumbnail: plane,
-    excerpt:
-      "Flights delated due to ...",
-    full:
-      "....",
+    excerpt: "Flights delayed due to …",
+    full: "....",
   },
 ];
 
@@ -91,13 +86,8 @@ export default function Weather() {
           {FORECAST.map((f) => (
             <article key={f.id} className="forecast-card" role="listitem">
               <div className="forecast-day">{f.day}</div>
-
-              <div className="forecast-icon">
-                <img src={f.icon} alt="" />
-              </div>
-
+              <div className="forecast-icon"><img src={f.icon} alt="" /></div>
               <div className="forecast-temp">{f.temp}</div>
-
               <div className="forecast-meta">
                 <div>Prep: {f.prep}</div>
                 <div>Humidity: {f.humidity}</div>
@@ -116,14 +106,16 @@ export default function Weather() {
         </div>
         <div className="warning-text">
           <div className="warning-title">Weather Warning</div>
-          <div className="warning-sub">Extreme Heat: Dangerous temperatures expected to persist throughout the day until 7 PM; residents are urged to stay indoors, avoid outdoor activity, and remain hydrated</div>
+          <div className="warning-sub">
+            Extreme Heat: Stay indoors, avoid outdoor activity, stay hydrated.
+          </div>
         </div>
       </section>
 
       <hr className="divider" />
 
-
-      <section className="news-list">
+      {/* then here's the vertical scrolling part here */}
+      <section className="news-scroll-container">
         {NEWS.map((n) => (
           <article className="news-card" key={n.id}>
             <div className="news-thumb">
@@ -135,11 +127,7 @@ export default function Weather() {
               <p className="news-excerpt">{n.excerpt}</p>
 
               <div className="news-actions">
-                <button
-                  className="view-btn"
-                  onClick={() => openNews(n)}
-                  aria-label={`View ${n.title}`}
-                >
+                <button className="view-btn" onClick={() => openNews(n)}>
                   View
                 </button>
               </div>
@@ -148,19 +136,11 @@ export default function Weather() {
         ))}
       </section>
 
-      <div style={{ height: 60 }} />
-
+      {/* news popup after pressing the view button */}
       {modalOpen && activeNews && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div
-            className="modal-content"
-            role="dialog"
-            aria-modal="true"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button className="modal-close" onClick={closeModal}>
-              ✖
-            </button>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>✖</button>
 
             <div className="modal-thumb">
               <img src={activeNews.thumbnail} alt={activeNews.title} />

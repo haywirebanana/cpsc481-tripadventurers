@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import PhoneFrame from "./layouts/PhoneFrame";
+import "./styles/App.css";
 
 // Pages
 import Login from "./pages/Login";
-import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import TripList from "./pages/TripList";
 import TripSetup from "./pages/TripSetup";
 import Explore from "./pages/Explore";
@@ -26,10 +27,13 @@ export default function App() {
       <PhoneFrame>
         <Routes>
 
+          {/* ROOT REDIRECT */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
           {/* AUTH PAGES */}
           <Route element={<AuthLayout />}>
-            <Route path="/" element={<Login />} />
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
           </Route>
 
           {/* TRIP LIST PAGES (TOP NAV ONLY) */}
