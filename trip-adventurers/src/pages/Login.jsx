@@ -1,7 +1,33 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/loginsignup.css";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  // Define valid credentials
+  const VALID_EMAIL = "user@trip.com";
+  const VALID_PASSWORD = "password123";
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    // Clear previous error
+    setError("");
+
+    // Validate credentials
+    if (email === VALID_EMAIL && password === VALID_PASSWORD) {
+      // Success - navigate to trip list
+      navigate("/trip-list");
+    } else {
+      // Show error message
+      setError("Incorrect email or password. Please try again.");
+    }
+  };
+
   return (
     <div className="landing-page">
       {/* Title */}
@@ -10,46 +36,60 @@ export default function Login() {
       {/* Login Text */}
       <h2 className="login-text">Log in</h2>
       
-      {/* Email Input */}
-      <div className="input-wrapper email">
-        <div className="input-icon icon-mail">
-          <div className="vector" />
+      {/* Error Message */}
+      {error && (
+        <div className="error-message">
+          {error}
         </div>
-        <input 
-          type="email" 
-          className="label" 
-          placeholder="Email"
-        />
-      </div>
+      )}
       
-      {/* Password Input */}
-      <div className="input-wrapper password">
-        <div className="input-icon icon-lock">
-          <div className="vector" />
+      <form onSubmit={handleLogin}>
+        {/* Email Input */}
+        <div className={`input-wrapper email ${error ? 'input-error' : ''}`}>
+          <div className="input-icon icon-mail">
+            <div className="vector" />
+          </div>
+          <input 
+            type="email" 
+            className="label" 
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
-        <input 
-          type="password" 
-          className="label" 
-          placeholder="Password"
-        />
-      </div>
-      
-      {/* Sign In Button */}
-      <Link to="/trip-list">
-        <button className="button btn-signin">
-          <span>Sign in</span>
+        
+        {/* Password Input */}
+        <div className={`input-wrapper password ${error ? 'input-error' : ''}`}>
+          <div className="input-icon icon-lock">
+            <div className="vector" />
+          </div>
+          <input 
+            type="password" 
+            className="label" 
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        
+        {/* Log In Button */}
+        <button type="submit" className="button btn-login">
+          <span className="button-text-login">Log In</span>
         </button>
-      </Link>
+      </form>
       
       {/* No Account Text */}
       <p className="no-account">Don't have an account?</p>
       
       {/* Sign Up Button */}
-      <Link to="/signup">
-        <button className="button btn-signup">
-          <span>Sign up</span>
-        </button>
-      </Link>
+      <button 
+        className="button btn-signup"
+        onClick={() => navigate("/signup")}
+      >
+        <span className="button-text-signup">Sign up</span>
+      </button>
     </div>
   );
 }
