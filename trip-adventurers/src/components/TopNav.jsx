@@ -5,6 +5,7 @@ export default function TopNav() {
     <div>
       <Link to="/trip-list"><button>Trip List</button></Link>
       <Link to="/trip-setup"><button>Trip Setup</button></Link>
+      <Link to="/login"><button>Logout</button></Link>
     </div>
   );
 }
