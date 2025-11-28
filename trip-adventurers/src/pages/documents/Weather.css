@@ -1,7 +1,7 @@
 .weather-page {
   width: 100%;
   height: 100%;
-  background: white;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
   color: var(--color-black);
   font-family: var(--font-main);
   box-sizing: border-box;
@@ -10,39 +10,9 @@
   overflow: hidden;
 }
 
-.weather-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 72px;
-  padding: 8px 12px;
-  background: var(--color-bg);
-  border-bottom: 2px solid var(--color-black);
-  box-sizing: border-box;
-  flex-shrink: 0;
-}
-
-.header-title {
-  font-weight: 700;
-  font-size: 24px;
-  text-align: center;
-  flex: 1;
-}
-
-.icon-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  border: 2px solid var(--color-black);
-  background: var(--color-gray-1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
+/* forecast section*/
 .forecast-section {
-  padding: 10px 12px;
+  padding: 16px 12px;
   box-sizing: border-box;
   flex-shrink: 0;
 }
@@ -57,89 +27,117 @@
 }
 
 .forecast-card {
-  flex: 0 0 120px;                
-  min-height: 170px;              
-  background: rgba(132,128,128,0.05);
-  border: 2px solid rgba(132,128,128,0.5);
-  border-radius: 13px;
-  box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
-  padding: 10px;
+  flex: 0 0 130px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 14px 12px;
   box-sizing: border-box;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   scroll-snap-align: start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+
 
 .forecast-day {
-  font-weight: 700;
-  color: #000;
-  font-size: 16px;
-  margin-bottom: 6px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: center;
 }
 
-.forecast-icon .icon-placeholder {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 6px auto;
-  background: rgba(200,200,200,0.12);
-  border-radius: 12px;
+.forecast-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forecast-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .forecast-temp {
-  font-weight: 700;
-  font-size: 17px;
-  color: #252525;
-  margin-bottom: 8px;
-  text-shadow: 0 4px 4px rgba(0,0,0,0.15);
+  font-weight: 650;
+  font-size: 21px;
+  color: #212529;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+  align-self: center;
 }
 
 .forecast-meta {
-  font-size: 12px;
-  color: #000;
-  line-height: 1.3;
+  font-size: 13px;
+  color: #6c757d;
+  line-height: 1.1;
   text-align: left;
+  width: 100%;
+  align-self: flex-start;
 }
 
+.forecast-meta > div {
+  padding: 2px 0;
+}
+
+/*divider between warning and news*/
 .divider {
   border: none;
-  height: 0.1px;
-  background: rgba(0,0,0,0.12);
-  margin: 4px 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.06);
+  margin: 2px 16px;
   flex-shrink: 0;
 }
 
+/*warning bar*/
 .warning-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 6px;
-  margin: 6px 12px;
-  border: 0.1px solid rgba(213, 211, 211, 0.15);
-  background: #f3f2f2;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  margin: 8px 12px;
+  background: linear-gradient(135deg, #dcb567 0%, #f3e29d 100%); /* add this line, if you wanna add gradient effect to a box */
+  border: 0.5px solid #f2cd83;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.15);
+}
+
+.warning-left {
   flex-shrink: 0;
 }
 
-.warning-left .warning-icon-placeholder {
-  width: 40px;
-  height: 40px;
-  background: #ffe600;
-  border-radius: 4px;
-  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+.warning-icon {
+  width: 36px;
+  height: 36px;
+  display: block;
 }
 
 .warning-text .warning-title {
   font-weight: 700;
-  color: #C61919; 
-  font-size: 18px;
+  color: #d73545;
+  font-size: 19px;
+  margin-bottom: 1px;
 }
 
 .warning-text .warning-sub {
-  color: #C61919;
-  font-weight: 600;
+  color: #4e2603;
+  font-weight: 500;
   font-size: 14px;
+  line-height: 1.2;
 }
 
-/* Vertical scrolling news section - takes remaining space */
+/* news section */
 .news-scroll-container {
   flex: 1;
   overflow-y: auto;
@@ -147,127 +145,225 @@
   padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   box-sizing: border-box;
   min-height: 0;
-}
-
-.news-list {
-  height: auto;
-}
+} 
 
 .news-card {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
-  background: rgba(132,128,128,0.05);
-  border: 2px solid rgba(132,128,128,0.5);
-  border-radius: 13px;
-  padding: 12px;
-  box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.news-thumb {
+  flex-shrink: 0;
 }
 
 .news-thumb img {
-  width: 100px;
-  height: 64px;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid var(--color-black);
+  border-radius: 12px;
+  border: none;
 }
 
 .news-body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  min-width: 0;
 }
 
 .news-title {
   margin: 0;
-  font-size: 18px;
-  color: #2a2a2a;
+  font-size: 16px;
+  color: #212529;
   font-weight: 700;
   text-align: left;
+  line-height: 1.3;
 }
 
 .news-excerpt {
   margin: 0;
-  font-size: 0px;
-  color: #000000;
+  font-size: 13px;
+  color: #6c757d;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .news-actions {
   display: flex;
   align-items: center;
-  margin-top: 4px;
+  justify-content: flex-start;
+  margin-top: 2px;
+  padding-left: 50px;
+
 }
 
+/* views buttons, change these if you wanna customize the view button*/
 .view-btn {
-  background: rgba(150, 167, 141, 0.4);
-  border: 5px solid #96A78D;
+  background: linear-gradient(135deg, #96c577 0%, #7fb061 100%);
+  border: none;
   border-radius: 20px;
-  color: #3a3838;
-  padding: 4px 15px;
-  display: block;
-  margin: 0 auto;
-  font-weight: 700;
+  color: white;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(150, 197, 119, 0.3);
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
 }
 
+.view-btn:focus,
+.view-btn:active {
+  outline: none;
+}
+/* hover settings for the view button, change these if you wanna customize the hover colours and stuff */
+.view-btn:hover {
+  background: linear-gradient(135deg, #7fb061 0%, #6a9850 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(150, 197, 119, 0.4);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+}
+
+/* modal - news popups */
 .modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: flex-start;
   justify-content: center;
-  padding-top: 80px; 
-  backdrop-filter: blur(4px);
-  -webkit-overflow-scrolling: touch;
-  z-index: 1000;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
-  width: calc(var(--phone-width) - 80px);
-  max-width: 360px;
-  background: rgba(182,206,180,0.9); 
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  width: 85%;
+  max-width: 400px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   position: relative;
+  animation: slideUp 0.3s ease;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* Thats the closing 'x' on the news popup */
 .modal-close {
   position: absolute;
   right: 12px;
-  top: 8px;
-  background: transparent;
   border: none;
-  font-size: 20px;
   cursor: pointer;
-  color: rgb(232, 23, 23);
+  top: 12px;
+  background: rgba(201, 200, 200, 0.9);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 15px;
+  color: #6c757d;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+/* hover for the closing 'x' */
+.modal-close:hover {
+  background: rgb(241, 240, 240);
+  color: #dc3545;
+}
+
+.modal-thumb {
+  margin-bottom: 16px;
 }
 
 .modal-thumb img {
   width: 100%;
-  height: 140px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  border-radius: 16px;
 }
 
 .modal-text h3 {
   margin-top: 0;
-  margin-bottom: 8px;
-  font-size: 18px;
-  color: #2b2a2a;
-  font-weight: 800;
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: #212529;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .modal-text p {
   margin: 0;
-  font-size: 14px;
-  color: #2b2a2a;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: 15px;
+  color: #495057;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* horizontal and vertical scrollbars*/
+
+::-webkit-scrollbar {
+  width: 9px;  /* increases the width of vertical scroll bars */
+  height: 8px; /* increases the width of horizontal scroll bars */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* sets colour for the scrollbars */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
 }
