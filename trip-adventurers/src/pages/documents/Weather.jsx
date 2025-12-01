@@ -27,9 +27,9 @@ const NEWS = [
     title: "Accident on Macleod Trail",
     thumbnail: accident,
     excerpt:
-      "Accident reported on Macleod Trail. Emergency services responding. Road closures expected.",
+      "Accident reported on Macleod Trail. Emergency crews are on scene. Road closures imminent so expect delays.",
     full:
-      "October 23, 2025 - A collision occurred on Macleod Trail. Emergency crews are on scene. Expect delays.",
+      "Decemeber 20, 2025 - SE Calgary - A collision occurred on Macleod Trail. Emergency crews are on scene. Expect delays.",
   },
   {
     id: "n2",
@@ -38,7 +38,7 @@ const NEWS = [
     excerpt:
       "Heriage Museum temporarily closed its doors after water damage was discovered.",
     full:
-      "October 23, 2025 - Calgary - The Heritage museum temporarily closed after a water pipe leak damaged parts of the building.",
+      "December 20, 2025 - SE Calgary - The Heritage museum temporarily closed after a water pipe leak damaged parts of the building.",
   },
   {
     id: "n3",
@@ -47,21 +47,21 @@ const NEWS = [
     excerpt:
       "Severe hailstorm causing damage in several neighbourhoods. Stay indoors.",
     full:
-      "A strong hailstorm passed through the city causing damage. Report hazards to emergency services.",
+      "December 21, 2025 - NE Calgary - A strong hailstorm passed through the city causing damage. Report hazards to emergency services.",
   },
   {
     id: "n4",
     title: "Protest Near City Hall",
     thumbnail: protest,
-    excerpt: "Protest near city hall",
-    full: "....",
+    excerpt: "A protest is taking place near City Hall, with a large crowd gathering. Authorities are on scene to manage the situation.",
+    full: "December 21, 2025 - Calgary - A protest is taking place near City Hall, with a large crowd gathering. Authorities are on scene to manage the situation.",
   },
   {
     id: "n5",
     title: "Flights Delayed",
     thumbnail: plane,
-    excerpt: "Flights delayed due to …",
-    full: "....",
+    excerpt: "Flights delayed due to weather conditions.",
+    full: "December 21, 2025 - Calgary - Several flights have been delayed at Calgary International Airport due to inclement weather. Passengers are advised to check flight status for updates.",
   },
 ];
 
