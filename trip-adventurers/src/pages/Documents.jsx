@@ -1,18 +1,42 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import "../styles/Documents.css";
+
+import weather from "../assets/sundoc.svg"; 
+import members from "../assets/memberdoc.svg";
+import document from "../assets/docdoc.svg";
+import settings from "../assets/settingsdoc.svg";
 
 export default function Documents() {
+  const location = useLocation();
+  const isSubPage = location.pathname.includes("/documents/");
+
+  if (isSubPage) {
+    return <Outlet />;
+  }
+
   return (
-    <div>
-      <h2>Documents</h2>
+    <div className="documents-page">
+      <div className="documents-menu">
+        <Link to="weather" className="doc-menu-btn">
+          <img src={weather} alt="Weather" className="doc-icon" />
+          <span>Weather and News</span>
+        </Link>
 
-      <div>
-        <Link to="manage">Manage Documents</Link>
-        <Link to="members">Manage Members</Link>
-        <Link to="settings">Settings</Link>
-        <Link to="weather">Weather</Link>
+        <Link to="members" className="doc-menu-btn">
+          <img src={members} alt="Members" className="doc-icon" />
+          <span>Manage Members</span>
+        </Link>
+
+        <Link to="manage" className="doc-menu-btn">
+          <img src={document} alt="Documents" className="doc-icon" />
+          <span>Documents</span>
+        </Link>
+
+        <Link to="settings" className="doc-menu-btn">
+          <img src={settings} alt="Settings" className="doc-icon" />
+          <span>Settings</span>
+        </Link>
       </div>
-
-      <Outlet /> {/* Renders selected document subpage */}
     </div>
   );
 }
