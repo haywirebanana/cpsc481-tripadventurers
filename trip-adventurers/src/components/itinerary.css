@@ -53,3 +53,15 @@
   font-size: 13px;
   color: #666;
 }
+
+.date-bar{
+width: 100%;
+position: sticky;
+top: -20px;
+overflow-x: scroll;
+
+background: #FFFFFF;
+border-radius: 0px 0px;
+display: absolute;
+align-items: center;
+}

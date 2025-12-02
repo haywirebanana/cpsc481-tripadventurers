@@ -32,6 +32,12 @@ export default function Itinerary() {
 
   return (
     <div className="itinerary-container">
+
+      <div class = "date-bar" id = "date-bar">
+        <h2>Day 1 Itinerary</h2>
+        <button className="add-event-button">+ Add Event</button>
+      </div>
+      
       <div className="timeline">
         
         {/* Time Column */}
