@@ -2,7 +2,7 @@ import "../components/itinerary.css";
 
 export default function Itinerary() {
   // Generate hour slots
-  const times = Array.from({ length: 24 }, (_, hour) => {
+  const times = Array.from({ length: 25 }, (_, hour) => {
     const h = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
     const period = hour < 12 ? "AM" : "PM";
     return `${h}:00 ${period}`;
@@ -32,12 +32,17 @@ export default function Itinerary() {
 
   return (
     <div className="itinerary-container">
-
-      <div class = "date-bar" id = "date-bar">
-        <h2>Day 1 Itinerary</h2>
-        <button className="add-event-button">+ Add Event</button>
+      {/* Date Bar */}
+      <div className="date-bar" id="date-bar">
+        <h2>Day 1</h2>
+        </div>
+        
+      {/* Add Event Button */}
+      <div className = "add-event-button">
+         <button className="add-event-button">+</button>
       </div>
-      
+ 
+
       <div className="timeline">
         
         {/* Time Column */}
@@ -52,16 +57,18 @@ export default function Itinerary() {
         {/* Event Column */}
         <div className="events-column">
           {events.map((event, index) => (
-            <div 
-              key={index} 
-              className="event-card"
-              style={{ backgroundColor: event.color }}
-            >
+            <button
+  key={index}
+  className="event-card event-button"
+  style={{ backgroundColor: event.color }}
+  onClick={() => console.log("Clicked:", event.title)}
+>
+
               <h4 className="event-title">{event.title}</h4>
               <p className="event-time">
                 {event.start} – {event.end}
               </p>
-            </div>
+            </button>
           ))}
         </div>
 
