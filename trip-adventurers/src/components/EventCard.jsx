@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import phoneIcon from '../assets/phone-icon.svg';
 import webLinkIcon from '../assets/web-link-icon.svg';
 import navMapsIcon from '../assets/nav-maps-icon.svg';
+import BookingPopup from './BookingPopup';
 
 export default function EventCard({ event, index, isSelected, onSelect, onClose }) {
+  const [showBooking, setShowBooking] = useState(false);
   return (
     <div 
       className={`event-card ${isSelected ? 'selected' : ''}`}
@@ -43,9 +46,24 @@ export default function EventCard({ event, index, isSelected, onSelect, onClose 
           </div>
           
           <div className="event-actions">
-            <button className="action-btn book-btn">Book Now</button>
+            <button 
+              className="action-btn book-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowBooking(true);
+              }}
+            >
+              Book Now
+            </button>
             <button className="action-btn directions-btn">Directions</button>
           </div>
+          
+          {showBooking && (
+            <BookingPopup 
+              eventName={event.name}
+              onClose={() => setShowBooking(false)}
+            />
+          )}
           
           <button className="itinerary-btn">
             Add To Itinerary ▼

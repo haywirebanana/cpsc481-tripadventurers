@@ -1,0 +1,154 @@
+.booking-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.booking-popup {
+  background-color: var(--color-gray-1);
+  border: 3px solid var(--color-black);
+  border-radius: 30px;
+  padding: 24px;
+  width: 90%;
+  max-width: 350px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.booking-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: #FF6B6B;
+  padding: 0;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.booking-close-btn:hover {
+  color: #FF4444;
+}
+
+.booking-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.booking-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.cost-info {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.booking-inputs {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.number-input {
+  width: 100%;
+  padding: 12px 12px;
+  border: 2px solid var(--color-black);
+  border-radius: 20px;
+  font-size: 14px;
+  background-color: white;
+  text-align: center;
+  cursor: default;
+}
+
+/* Always show spinner buttons */
+.number-input::-webkit-inner-spin-button,
+.number-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.time-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.time-slot {
+  padding: 14px 20px;
+  border: 2px solid var(--color-black);
+  border-radius: 20px;
+  background-color: var(--color-bg);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.time-slot:hover:not(.unavailable) {
+  background-color: var(--color-green-light);
+}
+
+.time-slot.selected {
+  background-color: var(--color-green-light);
+  border-color: var(--color-green-border);
+}
+
+.time-slot.unavailable {
+  color: var(--color-gray-2);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.confirm-btn {
+  width: 100%;
+  padding: 14px 20px;
+  border: 2px solid var(--color-black);
+  border-radius: 20px;
+  background-color: var(--color-bg);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.confirm-btn:hover {
+  background-color: var(--color-green-light);
+}
