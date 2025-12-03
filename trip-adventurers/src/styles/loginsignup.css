@@ -382,37 +382,185 @@ form {
   height: 100px;
 }
 
-/* -----------------------------
-   RESPONSIVE DESIGN
+/*-----------------------------
+   MODAL STYLES - FIXED SIZE
 ------------------------------ */
 
-@media (max-width: 480px) {
-  .landing-page {
-    padding: 40px 20px;
-  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
 
-  .title {
-    font-size: 38px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
+  to {
+    opacity: 1;
+  }
+}
 
-  .login-text {
-    font-size: 34px;
-  }
+.modal-content {
+  background: #FFFFFF;
+  border-radius: 16px;
+  width: 340px;
+  height: 580px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+  /* Prevent any responsive scaling */
+  flex-shrink: 0;
+  flex-grow: 0;
+}
 
-  .input-wrapper {
-    max-width: 100%;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .requirements-box {
-    max-width: 100%;
-  }
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 2px solid #e0e0e0;
+  flex-shrink: 0;
+}
 
-  .agreements-section {
-    max-width: 100%;
-  }
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
 
-  .button {
-    max-width: 180px;
-    font-size: 24px;
-  }
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.modal-body {
+  padding: 16px 18px;
+  overflow-y: auto;
+  flex: 1;
+  /* Smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for modal */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #96A78D;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #7a8f72;
+}
+
+.modal-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  margin: 14px 0 8px 0;
+}
+
+.modal-section-title:first-child {
+  margin-top: 0;
+}
+
+.modal-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+  margin: 0 0 12px 0;
+}
+
+.modal-list {
+  margin: 8px 0 12px 0;
+  padding-left: 20px;
+}
+
+.modal-list li {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.modal-list li strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.modal-footer {
+  padding: 14px 18px;
+  border-top: 2px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.modal-button {
+  background: #96A78D;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-button:hover {
+  background: #7a8f72;
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-button:active {
+  transform: translateY(0);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
 }

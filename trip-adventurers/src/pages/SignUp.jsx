@@ -12,6 +12,8 @@ export default function SignUp() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [agreedToLocation, setAgreedToLocation] = useState(false);
   const [showPasswordReqs, setShowPasswordReqs] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const navigate = useNavigate();
 
   // Password validation requirements
@@ -229,7 +231,7 @@ export default function SignUp() {
               onChange={(e) => setAgreedToTerms(e.target.checked)}
             />
             <label htmlFor="terms-checkbox" className="checkbox-label">
-              I agree to the <button type="button" className="link-button" onClick={() => alert('Terms and Conditions\n\nThis would open the full terms and conditions in a real application.')}>Terms and Conditions</button>
+              I agree to the <button type="button" className="link-button" onClick={() => setShowTermsModal(true)}>Terms and Conditions</button>
             </label>
           </div>
 
@@ -243,7 +245,7 @@ export default function SignUp() {
               onChange={(e) => setAgreedToLocation(e.target.checked)}
             />
             <label htmlFor="location-checkbox" className="checkbox-label">
-              I agree to <button type="button" className="link-button" onClick={() => alert('Location Services\n\nThis app uses your location to:\n• Find nearby trip destinations\n• Provide location-based recommendations\n• Track trip routes and distances\n\nYou can disable location services at any time in your settings.')}>Location Services</button>
+              I agree to <button type="button" className="link-button" onClick={() => setShowLocationModal(true)}>Location Services</button>
             </label>
           </div>
         </div>
@@ -268,6 +270,104 @@ export default function SignUp() {
       >
         <span className="button-text-signin">Sign In</span>
       </button>
+            {/* Terms and Conditions Modal */}
+      {showTermsModal && (
+        <div className="modal-overlay" onClick={() => setShowTermsModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">Terms and Conditions</h2>
+              <button className="modal-close" onClick={() => setShowTermsModal(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <p className="modal-section-title">1. Account Information</p>
+              <p className="modal-text">
+                By creating an account with Trip Adventurers, you agree to provide accurate and complete information. 
+                Your email and password will be used to authenticate your account and provide you with access to our services.
+              </p>
+
+              <p className="modal-section-title">2. Data Usage</p>
+              <p className="modal-text">
+                We collect and store your email address, encrypted password, and phone number (if provided) to:
+              </p>
+              <ul className="modal-list">
+                <li>Manage your account and authentication</li>
+                <li>Send important trip notifications and updates</li>
+                <li>Provide customer support</li>
+                <li>Improve our services</li>
+              </ul>
+
+              <p className="modal-section-title">3. Privacy & Security</p>
+              <p className="modal-text">
+                Your password is securely encrypted and never stored in plain text. We will never share your 
+                personal information with third parties without your explicit consent, except as required by law.
+              </p>
+
+              <p className="modal-section-title">4. User Responsibilities</p>
+              <p className="modal-text">
+                You are responsible for maintaining the confidentiality of your account credentials and for all 
+                activities that occur under your account. Please notify us immediately of any unauthorized use.
+              </p>
+
+              <p className="modal-section-title">5. Service Terms</p>
+              <p className="modal-text">
+                Trip Adventurers reserves the right to modify or terminate services at any time. We may update 
+                these terms periodically, and continued use of the service constitutes acceptance of updated terms.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-button" onClick={() => setShowTermsModal(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Location Services Modal */}
+      {showLocationModal && (
+        <div className="modal-overlay" onClick={() => setShowLocationModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">Location Services</h2>
+              <button className="modal-close" onClick={() => setShowLocationModal(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <p className="modal-section-title">Why We Use Your Location</p>
+              <p className="modal-text">
+                Trip Adventurers uses your location information to enhance your travel planning experience. 
+                Your location data helps us provide personalized and relevant features.
+              </p>
+
+              <p className="modal-section-title">How We Use Location Data</p>
+              <ul className="modal-list">
+                <li><strong>Find Nearby Destinations:</strong> Discover attractions, restaurants, and activities near you</li>
+                <li><strong>Route Planning:</strong> Calculate distances and travel times between trip locations</li>
+                <li><strong>Local Recommendations:</strong> Suggest trips and activities based on your current location</li>
+                <li><strong>Weather Information:</strong> Provide real-time weather updates for your destinations</li>
+                <li><strong>Trip Tracking:</strong> Help you navigate and track your journey</li>
+              </ul>
+
+              <p className="modal-section-title">Your Privacy Matters</p>
+              <p className="modal-text">
+                Your location data is only collected when you're actively using the app. We do not track or 
+                store your location history without your permission. You can disable location services at any 
+                time in your device settings or app preferences.
+              </p>
+
+              <p className="modal-section-title">Data Security</p>
+              <p className="modal-text">
+                Location information is transmitted securely and stored with encryption. We never sell your 
+                location data to third parties.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-button" onClick={() => setShowLocationModal(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
