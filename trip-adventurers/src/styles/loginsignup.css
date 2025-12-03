@@ -17,7 +17,7 @@
 
 .title {
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   font-weight: 700;
   font-size: 45px;
   line-height: 1.2;
@@ -208,6 +208,101 @@
 }
 
 /* -----------------------------
+   PASSWORD REQUIREMENTS BOX
+------------------------------ */
+
+.requirements-box {
+  width: 100%;
+  max-width: 350px;
+  margin: -10px auto 20px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.requirements-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.req-item {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 4px 0;
+  padding-left: 4px;
+}
+
+.req-valid {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.req-invalid {
+  color: #c62828;
+  font-weight: 500;
+}
+
+/* -----------------------------
+   AGREEMENTS SECTION
+------------------------------ */
+
+.agreements-section {
+  width: 100%;
+  max-width: 350px;
+  margin: 30px auto 30px;
+  padding: 0;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.agreement-checkbox {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: #96A78D;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #5a8a52;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  display: inline;
+  transition: color 0.2s ease;
+}
+
+.link-button:hover {
+  color: #3d6039;
+}
+
+.link-button:active {
+  color: #2a4228;
+}
+
+/* -----------------------------
    BUTTONS
 ------------------------------ */
 
@@ -230,15 +325,23 @@
   transition: all 0.2s ease;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   background: #A5BDA3;
   transform: translateY(-2px);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.button:active {
+.button:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.button:disabled {
+  background: #d0d0d0;
+  border-color: #b0b0b0;
+  color: #808080;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .btn-login {
@@ -277,4 +380,39 @@ form {
   margin: 0 auto 30px;
   width: 100px;
   height: 100px;
+}
+
+/* -----------------------------
+   RESPONSIVE DESIGN
+------------------------------ */
+
+@media (max-width: 480px) {
+  .landing-page {
+    padding: 40px 20px;
+  }
+
+  .title {
+    font-size: 38px;
+  }
+
+  .login-text {
+    font-size: 34px;
+  }
+
+  .input-wrapper {
+    max-width: 100%;
+  }
+
+  .requirements-box {
+    max-width: 100%;
+  }
+
+  .agreements-section {
+    max-width: 100%;
+  }
+
+  .button {
+    max-width: 180px;
+    font-size: 24px;
+  }
 }

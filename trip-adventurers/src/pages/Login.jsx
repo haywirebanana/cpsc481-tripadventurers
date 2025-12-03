@@ -10,7 +10,7 @@ export default function Login() {
 
   // Define valid credentials
   const VALID_EMAIL = "user@trip.com";
-  const VALID_PASSWORD = "password123";
+  const VALID_PASSWORD = "Password123!";
 
   const handleLogin = (e) => {
     e.preventDefault();
