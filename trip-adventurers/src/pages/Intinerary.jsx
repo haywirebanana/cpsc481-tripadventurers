@@ -48,8 +48,8 @@ export default function Itinerary() {
 
       {/* Date Bar */}
       <div className="date-bar" id="date-bar">
-        <h2>Day 1</h2>
-        </div>
+        <h2 className="sub-nav-bar">Day 1</h2>
+        </div>  
         
       {/* Add Event Button */}
       <div className = "add-event-button">

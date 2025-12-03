@@ -68,15 +68,15 @@
 width: 100%;
 position: sticky;
 top: 0px;
+height: 52px;
 z-index: 10000;
-overflow-x: auto;
-padding: 10px 10px;
+padding: 5px 5px;
 text-align: center;
 background: #FFFFFF;
 display: absolute;
 align-items: center;
 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-border: #666666 2px solid;
+border-bottom: #000000 2px solid;
 }
 
 /* Add Event Button */
@@ -92,5 +92,22 @@ border: #666666 2px solid;
   top: 70px;
   right: 5px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
-  border: #666666 1px solid;
+  border: #000000 1px solid;
+}
+
+/* Sub-navigation Bar */
+.sub-nav-bar {
+position: absolute;
+width: 200px;
+height: 50px;
+left: 100px;
+top: 0px;
+border-left: #000000 2px solid;
+border-right: #000000 2px solid;
+cursor: pointer;
+font-size: 30px;
+
+background: #B6CEB4;
+
+
 }
