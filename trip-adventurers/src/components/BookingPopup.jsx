@@ -14,17 +14,17 @@ export default function BookingPopup({ eventName, onClose }) {
   ];
 
   return (
-    <div className="booking-overlay" onClick={onClose}>
-      <div className="booking-popup" onClick={(e) => e.stopPropagation()}>
-        <button className="booking-close-btn" onClick={onClose}>×</button>
+    <div className="explore-booking-overlay" onClick={onClose}>
+      <div className="explore-booking-popup" onClick={(e) => e.stopPropagation()}>
+        <button className="explore-booking-close-btn" onClick={onClose}>×</button>
         
-        <h2 className="booking-title">{eventName}</h2>
+        <h2 className="explore-booking-title">{eventName}</h2>
         
-        <div className="booking-section">
+        <div className="explore-booking-section">
           <h3 className="section-title">Booking:</h3>
           <p className="cost-info">Costs Per Person: $20</p>
           
-          <div className="booking-inputs">
+          <div className="explore-booking-inputs">
             <div className="input-group">
               <label>Group:</label>
               <input 
@@ -51,7 +51,7 @@ export default function BookingPopup({ eventName, onClose }) {
           </div>
         </div>
         
-        <div className="booking-section">
+        <div className="explore-booking-section">
           <h3 className="section-title">Availability:</h3>
           
           <div className="time-slots">

@@ -1,5 +1,5 @@
 /* Event Card */
-.event-card {
+.explore-event-card {
   padding: 12px 16px;
   background-color: var(--color-bg);
   border: 2px solid var(--color-green-border);
@@ -10,11 +10,11 @@
   position: relative;
 }
 
-.event-card:hover {
+.explore-event-card:hover {
   background-color: var(--color-green-light);
 }
 
-.event-card.selected {
+.explore-event-card.selected {
   background-color: var(--color-gray-1);
   padding: 16px;
   cursor: default;

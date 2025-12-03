@@ -8,7 +8,7 @@ export default function EventCard({ event, index, isSelected, onSelect, onClose 
   const [showBooking, setShowBooking] = useState(false);
   return (
     <div 
-      className={`event-card ${isSelected ? 'selected' : ''}`}
+      className={`explore-event-card ${isSelected ? 'selected' : ''}`}
       onClick={() => onSelect(index)}
     >
       {isSelected ? (

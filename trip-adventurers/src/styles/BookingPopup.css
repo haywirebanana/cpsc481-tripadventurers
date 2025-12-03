@@ -1,4 +1,4 @@
-.booking-overlay {
+.explore-booking-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,10 +11,10 @@
   z-index: 1000;
 }
 
-.booking-popup {
+.explore-booking-popup {
   background-color: var(--color-gray-1);
-  border: 3px solid var(--color-black);
-  border-radius: 30px;
+  border: 2px solid var(--color-black);
+  border-radius: 20px;
   padding: 24px;
   width: 90%;
   max-width: 350px;
@@ -22,7 +22,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-.booking-close-btn {
+.explore-booking-close-btn {
   position: absolute;
   top: 12px;
   right: 16px;
@@ -40,18 +40,18 @@
   line-height: 1;
 }
 
-.booking-close-btn:hover {
+.explore-booking-close-btn:hover {
   color: #FF4444;
 }
 
-.booking-title {
+.explore-booking-title {
   font-size: 24px;
   font-weight: 700;
   margin: 0 0 20px 0;
   text-align: center;
 }
 
-.booking-section {
+.explore-booking-section {
   margin-bottom: 20px;
 }
 
@@ -67,7 +67,7 @@
   margin: 0 0 12px 0;
 }
 
-.booking-inputs {
+.explore-booking-inputs {
   display: flex;
   gap: 20px;
   align-items: flex-end;
