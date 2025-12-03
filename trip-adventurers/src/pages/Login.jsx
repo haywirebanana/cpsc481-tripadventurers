@@ -32,7 +32,10 @@ export default function Login() {
     <div className="landing-page">
       {/* Title */}
       <h1 className="title">Trip Adventuers</h1>
-      
+
+      {/* Logo Image */}
+      <img className="logo-img" src="../src/assets/logo.png" alt="Trip Adventurers Logo"/>
+
       {/* Login Text */}
       <h2 className="login-text">Log in</h2>
       

@@ -17,7 +17,7 @@
 
 .title {
   width: 100%;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
   font-weight: 700;
   font-size: 45px;
   line-height: 1.2;
@@ -267,4 +267,14 @@ a {
 /* Form styling */
 form {
   width: 100%;
+}
+
+/* -----------------------------
+   IMAGES
+------------------------------ */
+.logo-img {
+  display: block;
+  margin: 0 auto 30px;
+  width: 100px;
+  height: 100px;
 }
