@@ -23,9 +23,11 @@ import TripLayout from "./layouts/TripLayout";
 
 export default function App() {
   return (
-    <Router>
+    <Router basename="/cpsc481-tripadventurers">
       <PhoneFrame>
         <Routes>
+          {/* Add a redirect from root to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
           {/* ROOT REDIRECT */}
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -36,13 +38,12 @@ export default function App() {
             <Route path="/signup" element={<SignUp />} />
           </Route>
 
-          {/* TRIP LIST PAGES (TOP NAV ONLY) */}
+          {/* Rest of your routes... */}
           <Route element={<TripListLayout />}>
             <Route path="/trip-list" element={<TripList />} />
             <Route path="/trip-setup" element={<TripSetup />} />
           </Route>
 
-          {/* TRIP PAGES (BOTTOM NAV ONLY) */}
           <Route path="/trip/:tripId" element={<TripLayout />}>
             <Route index element={<Explore />} />
             <Route path="explore" element={<Explore />} />
