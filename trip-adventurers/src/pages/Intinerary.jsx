@@ -2,7 +2,7 @@ import "../components/itinerary.css";
 
 export default function Itinerary() {
   // Generate hour slots
-  const times = Array.from({ length: 24 }, (_, hour) => {
+  const times = Array.from({ length: 25 }, (_, hour) => {
     const h = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
     const period = hour < 12 ? "AM" : "PM";
     return `${h}:00 ${period}`;
@@ -25,23 +25,27 @@ export default function Itinerary() {
       start: "8:00 AM",
       end: "9:00 AM",
       color: "#f2e8ff",
+      description: "Visiting the art museum",
     },
     {
       title: "Restaurant",
       start: "10:00 AM",
       end: "11:00 AM",
       color: "#e8f7ff",
+      description: "Brunch at local cafe",
     },
     {
       title: "Beach Visit",
       start: "12:00 PM",
       end: "1:00 PM",
       color: "#fff4e6",
+      description: "Relaxing at the beach",
     },
   ];
 
   return (
     <div className="itinerary-container">
+
       {/* Date Bar */}
       <div className="date-bar" id="date-bar">
         <h2>Day 1</h2>
@@ -73,8 +77,8 @@ export default function Itinerary() {
               const endMinutes = timeToMinutes(event.end);
               const duration = endMinutes - startMinutes;
 
-              const top = (startMinutes / 60) * 90;   // 80px per hour
-              const height = (duration / 60) * 80;    // match CSS height
+              const top = (startMinutes / 60) * 100;   // 100px per hour
+              const height = (duration / 60) * 90;    // match CSS height
                return (
               <div 
                 key={index} 

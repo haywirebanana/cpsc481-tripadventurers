@@ -19,12 +19,13 @@
 
 /* Hour slots */
 .time-slot {
-  height: 90px;
+  height: 100px;
   border-bottom: 1px solid #505050;
   padding-top: 4px;
   padding-left: 10px;
   color: #535353;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /* Event card column */
@@ -44,7 +45,7 @@
   position: absolute;
   z-index: 1;
   width: 110%;
-  padding: 12px 16px;
+  padding: 8px 20px;
   border-radius: 12px;
   margin-bottom: 16px;
   box-shadow: 0px 10px 16px rgba(0, 0, 0, 0.08);
@@ -53,13 +54,13 @@
 
 .event-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
 }
 
 .event-time {
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 16px;
   color: #666;
 }
 /* Date Header Bar */
