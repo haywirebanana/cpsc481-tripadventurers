@@ -5,30 +5,30 @@
   width: 100%;
   padding: 12px 16px;
   gap: 12px;
+  position: relative;
 }
 
 .back-button {
   font-family: 'Open Sans', sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 20px;
   line-height: 24px;
   color: #000000;
-  text-decoration: none;
-  padding: 10px 15px;
-  background: #010c0c00;
-  border: 2px solid #000000;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   justify-self: start;
   width: fit-content;
-  margin-left: -10px;
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 2px solid #96A78D;
+  background: #D9E9CF;
 }
 
 .back-button:hover {
-  background: #f3aaaa;
-  color: #000000;
+  background: red;
+  border: 2px solid black;
+  color: white;
 }
 
 .back-button:active {
@@ -37,12 +37,11 @@
 
 .top-nav-title {
   font-family: 'Open Sans', sans-serif;
-  font-style: normal;
   font-weight: 700;
   font-size: 25px;
-  line-height: 45px;
-  color: #000000;
+  line-height: 24px;
   margin: 0;
+  color: #000000;
   text-align: center;
   grid-column: 2;
 }
@@ -51,22 +50,23 @@
   font-family: 'Open Sans', sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 15px;
   line-height: 24px;
   color: #000000;
-  background: #010c0c00;
-  border: 2px solid #000000;
+  background: #D9E9CF;
+  border: 2px solid #96A78D;
   border-radius: 5px;
-  padding: 8px 10px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   justify-self: end;
-  margin-right: -10px;
+  width: fit-content;
 }
 
 .btn-logout:hover {
-  background: #f3aaaa;
-  border: 2px solid #000000;
+  background: red;
+  border: 2px solid black;
+  color: white;
 }
 
 .btn-logout:active {
