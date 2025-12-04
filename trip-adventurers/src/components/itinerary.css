@@ -63,26 +63,11 @@
   font-size: 16px;
   color: #666;
 }
-/* Date Header Bar */
-.date-bar{
-width: 100%;
-position: sticky;
-top: 0px;
-height: 52px;
-z-index: 10000;
-padding: 5px 5px;
-text-align: center;
-background: #FFFFFF;
-display: absolute;
-align-items: center;
-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-border-bottom: #000000 2px solid;
-}
 
 /* Add Event Button */
 .add-event-button {
   background-color: #999999;
-  z-index: 1000;
+  z-index: 1001;
   color: white;
   cursor: pointer;
   font-size: 14px;
@@ -94,20 +79,65 @@ border-bottom: #000000 2px solid;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
   border: #000000 1px solid;
 }
-
-/* Sub-navigation Bar */
-.sub-nav-bar {
-position: absolute;
-width: 200px;
-height: 50px;
-left: 100px;
+/* Date Header Bar */
+.date-bar{
+display: flex;
+overflow-x: auto;
+white-space: nowrap;
+scroll-behavior: smooth;
+width: 100%;
+position: sticky;
 top: 0px;
-border-left: #000000 2px solid;
-border-right: #000000 2px solid;
-cursor: pointer;
-font-size: 30px;
+height: 52px;
+z-index: 999;
+padding: 5px 5px;
+text-align: center;
+background: #FFFFFF;
+display: flex;
+align-items: center;
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+border-bottom: #000000 2px solid;
+}
 
-background: #B6CEB4;
+/* Date Tabs */
+.date-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+/* Date tab */
+.day-tab {
+  flex: 1;
+  border: 2px solid black;
+  font-size: 20px;
+  background: white;
+  cursor: pointer;
+}
 
+/* Active date tab */
+.day-tab.active {
+  background: #B6CEB4;
+  font-weight: bold;
+}
 
+.date-scroll::-webkit-scrollbar {
+  display: none;              /* Chrome */
+}
+.date-scroll {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;      /* Firefox */
+}
+.date-item {
+  padding: 10px 20px;
+  white-space: nowrap;
+  font-size: 18px;
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+.date-item.active {
+  background: #e0e0e0;
+  font-weight: bold;
 }
