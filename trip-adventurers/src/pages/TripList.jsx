@@ -5,6 +5,10 @@ import "../styles/TripList.css";
 export default function TripList() {
   const navigate = useNavigate();
 
+  // Delete confirmation modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [tripToDelete, setTripToDelete] = useState(null);
+
   // Sample trip data - in a real app, this would come from an API/state management
   const [currentTrip, setCurrentTrip] = useState({
     id: 1,
@@ -54,7 +58,23 @@ export default function TripList() {
   };
 
   const handleDeleteTrip = (tripId) => {
-    setPastTrips(pastTrips.filter(trip => trip.id !== tripId));
+    // Show confirmation modal instead of directly deleting
+    const trip = pastTrips.find(t => t.id === tripId);
+    setTripToDelete(trip);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (tripToDelete) {
+      setPastTrips(pastTrips.filter(trip => trip.id !== tripToDelete.id));
+      setShowDeleteModal(false);
+      setTripToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setTripToDelete(null);
   };
 
   const handleAddTrip = () => {
@@ -207,6 +227,7 @@ export default function TripList() {
           </section>
         )}
       </div>
+
       {/* Add Trip Button - Fixed to bottom */}
       <button 
         className="btn-add-trip"
@@ -214,5 +235,33 @@ export default function TripList() {
       >
         ADD TRIP
       </button>
-    </div>);
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={cancelDelete}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">Delete Trip?</h3>
+            <p className="modal-message">
+              Are you sure you want to delete <strong>"{tripToDelete?.name}"</strong>?
+            </p>
+            <p className="modal-warning">This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button 
+                className="modal-btn modal-btn-cancel"
+                onClick={cancelDelete}
+              >
+                Cancel
+              </button>
+              <button 
+                className="modal-btn modal-btn-confirm"
+                onClick={confirmDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
