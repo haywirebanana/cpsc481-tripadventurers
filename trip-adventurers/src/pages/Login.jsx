@@ -10,7 +10,7 @@ export default function Login() {
 
   // Define valid credentials
   const VALID_EMAIL = "user@trip.com";
-  const VALID_PASSWORD = "password123";
+  const VALID_PASSWORD = "Password123!";
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -32,7 +32,10 @@ export default function Login() {
     <div className="landing-page">
       {/* Title */}
       <h1 className="title">Trip Adventuers</h1>
-      
+
+      {/* Logo Image */}
+      <img className="logo-img" src="../src/assets/logo.png" alt="Trip Adventurers Logo"/>
+
       {/* Login Text */}
       <h2 className="login-text">Log in</h2>
       
