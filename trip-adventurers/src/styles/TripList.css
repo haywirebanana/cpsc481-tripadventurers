@@ -81,8 +81,8 @@
 
 .trip-image-placeholder {
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+  width: 110px;
+  height: 110px;
   background: #F5F5F5;
   border: 2px solid #96A78D;
   border-radius: 8px;
@@ -103,6 +103,8 @@
   align-items: center;
   justify-content: center;
 }
+
+
 
 /* -----------------------------
    TRIP INFO
@@ -125,6 +127,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 100%; /* Allow full width for text */
+  text-align: center; /* Center the text */
 }
 
 .trip-dates {
@@ -133,15 +137,9 @@
   line-height: 1.3;
   color: #5a5a5a;
   margin: 0;
+  text-align: center; /* Center the dates */
 }
 
-.trip-day-count {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.3;
-  color: #000;
-  margin: 0;
-}
 
 /* -----------------------------
    TRIP ACTIONS

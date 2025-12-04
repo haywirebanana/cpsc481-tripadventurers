@@ -9,46 +9,38 @@ export default function TripList() {
   const [currentTrip, setCurrentTrip] = useState({
     id: 1,
     name: "Holidays in YYC!",
-    startDate: "December 22, 2025",
-    endDate: "December 27, 2025",
-    image: null,
+    startDate: "Dec. 22, 2025",
+    endDate: "Dec. 27, 2025",
+    image: '../src/assets/triplist_photos/calgary.jpg',
     canEdit: true
   });
 
   const [upcomingTrips, setUpcomingTrips] = useState([
     {
       id: 2,
-      name: "Trip Name",
-      startDate: "08/01/2025",
-      endDate: "08/15/2025",
-      image: null,
+      name: "Raptors in Toronto?",
+      startDate: "Jan. 1, 2026",
+      endDate: "Jan. 5, 2026",
+      image: '../src/assets/triplist_photos/Raptors.jpg',
       canEdit: false
-    },
-    {
-      id: 3,
-      name: "Trip Name",
-      startDate: "10/07/2025",
-      endDate: "10/26/2025",
-      image: null,
-      canEdit: true
     }
   ]);
 
   const [pastTrips, setPastTrips] = useState([
     {
       id: 5,
-      name: "Trip Name",
-      startDate: "08/01/2025",
-      endDate: "08/15/2025",
-      image: null,
+      name: "Summer in Vancouver!",
+      startDate: "Aug. 1, 2025",
+      endDate: "Aug. 15, 2025",
+      image: '../src/assets/triplist_photos/vancouver.jpg',
       canEdit: false
     },
     {
       id: 6,
-      name: "Trip Name",
-      startDate: "07/10/2025",
-      endDate: "07/20/2025",
-      image: null,
+      name: "Deadmonton... Again?",
+      startDate: "July 10, 2025",
+      endDate: "July 20, 2025",
+      image: '../src/assets/triplist_photos/edmonton.jpg',
       canEdit: true
     }
   ]);
