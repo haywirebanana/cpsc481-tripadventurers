@@ -247,7 +247,7 @@
 }
 
 /* modal - news popups */
-.modal-overlay {
+.modal-overlay-weather {
   position: fixed;
   top: 0;
   left: 0;
@@ -271,7 +271,7 @@
   }
 }
 
-.modal-content {
+.modal-content-weather {
   background: white;
   border-radius: 24px;
   padding: 24px;
@@ -295,7 +295,7 @@
   }
 }
 /* Thats the closing 'x' on the news popup */
-.modal-close {
+.modal-close-weather {
   position: absolute;
   right: 12px;
   border: none;
@@ -315,23 +315,23 @@
   backdrop-filter: blur(4px);
 }
 /* hover for the closing 'x' */
-.modal-close:hover {
+.modal-close-weather:hover {
   background: rgb(241, 240, 240);
   color: #dc3545;
 }
 
-.modal-thumb {
+.modal-thumb-weather {
   margin-bottom: 16px;
 }
 
-.modal-thumb img {
+.modal-thumb-weather img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-radius: 16px;
 }
 
-.modal-text h3 {
+.modal-text-weather h3 {
   margin-top: 0;
   margin-bottom: 12px;
   font-size: 20px;
@@ -340,7 +340,7 @@
   line-height: 1.3;
 }
 
-.modal-text p {
+.modal-text-weather p {
   margin: 0;
   font-size: 15px;
   color: #495057;
