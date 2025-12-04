@@ -1,53 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTrips } from "../context/TripContext";
 import "../styles/TripList.css";
 
 export default function TripList() {
   const navigate = useNavigate();
+  const { getCategorizedTrips, deleteTrip } = useTrips();
 
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [tripToDelete, setTripToDelete] = useState(null);
 
-  // Sample trip data - in a real app, this would come from an API/state management
-  const [currentTrip, setCurrentTrip] = useState({
-    id: 1,
-    name: "Holidays in YYC!",
-    startDate: "Dec. 22, 2025",
-    endDate: "Dec. 27, 2025",
-    image: '../src/assets/triplist_photos/calgary.jpg',
-    canEdit: true
-  });
-
-  const [upcomingTrips, setUpcomingTrips] = useState([
-    {
-      id: 2,
-      name: "Raptors in Toronto?",
-      startDate: "Jan. 1, 2026",
-      endDate: "Jan. 5, 2026",
-      image: '../src/assets/triplist_photos/Raptors.jpg',
-      canEdit: false
-    }
-  ]);
-
-  const [pastTrips, setPastTrips] = useState([
-    {
-      id: 5,
-      name: "Summer in Vancouver!",
-      startDate: "Aug. 1, 2025",
-      endDate: "Aug. 15, 2025",
-      image: '../src/assets/triplist_photos/vancouver.jpg',
-      canEdit: false
-    },
-    {
-      id: 6,
-      name: "Deadmonton... Again?",
-      startDate: "July 10, 2025",
-      endDate: "July 20, 2025",
-      image: '../src/assets/triplist_photos/edmonton.jpg',
-      canEdit: true
-    }
-  ]);
+  // Get trips from context
+  const { currentTrip, upcomingTrips, pastTrips } = getCategorizedTrips();
 
   const handleViewTrip = (tripId) => {
     navigate(`/trip/${tripId}/explore`);
@@ -66,7 +31,7 @@ export default function TripList() {
 
   const confirmDelete = () => {
     if (tripToDelete) {
-      setPastTrips(pastTrips.filter(trip => trip.id !== tripToDelete.id));
+      deleteTrip(tripToDelete.id);
       setShowDeleteModal(false);
       setTripToDelete(null);
     }
