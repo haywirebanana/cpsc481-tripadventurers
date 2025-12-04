@@ -7,6 +7,15 @@ export default function BookingPopup({ eventName, onClose }) {
   const [day, setDay] = useState(1);
   const [selectedTime, setSelectedTime] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
+  
+  // Payment form state
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardHolder, setCardHolder] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvv, setCvv] = useState('');
+  
+  // Validation state
+  const [errors, setErrors] = useState({});
 
   const timeSlots = [
     { time: '12:00pm - 01:00pm', available: false },
@@ -22,6 +31,107 @@ export default function BookingPopup({ eventName, onClose }) {
 
   const handleBack = () => {
     setShowPayment(false);
+    setErrors({});
+  };
+  
+  const validateCardNumber = (value) => {
+    const cleaned = value.replace(/\s/g, '');
+    return cleaned.length === 16 && /^\d+$/.test(cleaned);
+  };
+  
+  const validateExpiry = (value) => {
+    const match = value.match(/^(\d{2})\/(\d{2})$/);
+    if (!match) return false;
+    
+    const month = parseInt(match[1], 10);
+    
+    if (month < 1 || month > 12) return false;
+    
+    return true;
+  };
+  
+  const validateCVV = (value) => {
+    return value.length === 3 && /^\d+$/.test(value);
+  };
+  
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+    setCardNumber(formatted);
+    if (errors.cardNumber) {
+      setErrors({...errors, cardNumber: ''});
+    }
+  };
+  
+  const handleExpiryChange = (e) => {
+    const rawValue = e.target.value;
+    let value = rawValue.replace(/\D/g, '');
+    
+    if (rawValue.length < expiry.length && rawValue.endsWith('/')) {
+      // User is backspacing, remove the slash and the digit before it
+      value = value.slice(0, -1);
+    }
+    
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    setExpiry(value);
+    if (errors.expiry) {
+      setErrors({...errors, expiry: ''});
+    }
+  };
+  
+  const handleCvvChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 3);
+    setCvv(value);
+    if (errors.cvv) {
+      setErrors({...errors, cvv: ''});
+    }
+  };
+  
+  const handleCardHolderChange = (e) => {
+    const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+    setCardHolder(value);
+    if (errors.cardHolder) {
+      setErrors({...errors, cardHolder: ''});
+    }
+  };
+  
+  const handlePaymentConfirm = () => {
+    const newErrors = {};
+    
+    if (!cardNumber) {
+      newErrors.cardNumber = 'Card number is required';
+    } else if (!validateCardNumber(cardNumber)) {
+      newErrors.cardNumber = 'Invalid card number (16 digits required)';
+    }
+    
+    if (!cardHolder.trim()) {
+      newErrors.cardHolder = 'Card holder name is required';
+    } else if (cardHolder.trim().length < 3) {
+      newErrors.cardHolder = 'Name is too short';
+    }
+    
+    if (!expiry) {
+      newErrors.expiry = 'Expiry date is required';
+    } else if (!validateExpiry(expiry)) {
+      newErrors.expiry = 'Invalid or expired date (MM/YY)';
+    }
+    
+    if (!cvv) {
+      newErrors.cvv = 'CVV is required';
+    } else if (!validateCVV(cvv)) {
+      newErrors.cvv = 'Invalid CVV (3 digits required)';
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    // If validation passes, proceed with booking
+    alert('Booking confirmed!');
+    onClose();
   };
 
   return (
@@ -107,53 +217,69 @@ export default function BookingPopup({ eventName, onClose }) {
             
             <div className="booking-panel-section">
               <h3 className="booking-section-title">Payment Information:</h3>
+              
+              {Object.keys(errors).length > 0 && (
+                <div className="error-message">
+                  Please check your payment information and try again.
+                </div>
+              )}
 
               <div className="payment-buttons">
                 <button className="payment-method-btn">PayPaL</button>
                 <button className="payment-method-btn">ApplePay</button>
                 <button className="payment-method-btn">GooglePay</button>
               </div>
-              
-              <div className="payment-input-group">
+              <div className={`payment-input-group ${errors.cardNumber ? 'input-error' : ''}`}>
                 <label>Credit Card #:</label>
                 <input 
                   type="text" 
                   className="payment-input"
-                  placeholder=""
+                  placeholder="1234 5678 9012 3456"
+                  value={cardNumber}
+                  onChange={handleCardNumberChange}
+                  maxLength="19"
                 />
               </div>
               
-              <div className="payment-input-group">
+              <div className={`payment-input-group ${errors.cardHolder ? 'input-error' : ''}`}>
                 <label>Card Holder Name:</label>
                 <input 
                   type="text" 
                   className="payment-input"
-                  placeholder=""
+                  placeholder="John Doe"
+                  value={cardHolder}
+                  onChange={handleCardHolderChange}
                 />
               </div>
               
               <div className="payment-row">
-                <div className="payment-input-group">
+                <div className={`payment-input-group ${errors.expiry ? 'input-error' : ''}`}>
                   <label>Expiry:</label>
                   <input 
                     type="text" 
                     className="payment-input-small"
                     placeholder="MM/YY"
+                    value={expiry}
+                    onChange={handleExpiryChange}
+                    maxLength="5"
                   />
                 </div>
                 
-                <div className="payment-input-group">
+                <div className={`payment-input-group ${errors.cvv ? 'input-error' : ''}`}>
                   <label>CVV:</label>
                   <input 
                     type="text" 
                     className="payment-input-small"
                     placeholder="123"
+                    value={cvv}
+                    onChange={handleCvvChange}
+                    maxLength="3"
                   />
                 </div>
               </div>
             </div>
             
-            <button className="booking-confirm-btn">Confirm</button>
+            <button className="booking-confirm-btn" onClick={handlePaymentConfirm}>Confirm</button>
           </>
         )}
       </div>

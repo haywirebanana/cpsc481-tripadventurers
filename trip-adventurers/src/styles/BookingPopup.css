@@ -191,6 +191,11 @@
   color: #333;
 }
 
+.payment-input-group.input-error .payment-input,
+.payment-input-group.input-error .payment-input-small {
+  border-color: #FF6B6B;
+}
+
 .payment-input {
   width: 100%;
   padding: 12px;
@@ -198,6 +203,16 @@
   border-radius: 20px;
   font-size: 14px;
   background-color: white;
+}
+
+.error-message {
+  color: #FF6B6B;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+  padding: 8px;
+  background-color: #FFE5E5;
+  border-radius: 10px;
 }
 
 .payment-row {
