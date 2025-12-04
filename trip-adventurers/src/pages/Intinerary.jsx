@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "../components/itinerary.css";
 
 export default function Itinerary() {
@@ -18,46 +19,52 @@ export default function Itinerary() {
   return h * 60 + m;
 }
 
+  // ---- State for selected day ----
+  const [currentDay, setCurrentDay] = useState(1);
+
+  const days = ["Day 1", "Day 2", "Day 3"]; // you can expand later
+
+
   // Example events
-  const events = [
-    {
-      title: "Meuseum Visit",
-      start: "8:00 AM",
-      end: "9:00 AM",
-      color: "#f2e8ff",
-      description: "Visiting the art museum",
-    },
-    {
-      title: "Restaurant",
-      start: "10:00 AM",
-      end: "11:00 AM",
-      color: "#e8f7ff",
-      description: "Brunch at local cafe",
-    },
-    {
-      title: "Beach Visit",
-      start: "12:00 PM",
-      end: "1:00 PM",
-      color: "#fff4e6",
-      description: "Relaxing at the beach",
-    },
-  ];
+  const eventsByDay = {
+    1: [
+      { title: "Museum Visit", start: "8:00 AM", end: "9:00 AM", color: "#f2e8ff" },
+      { title: "Restaurant", start: "10:00 AM", end: "12:00 PM", color: "#e8f7ff" },
+    ],
+    2: [
+      { title: "Beach", start: "9:00 AM", end: "11:00 AM", color: "#fff4e6" },
+    ],
+  };
+  const events = eventsByDay[currentDay] || [];
 
   return (
     <div className="itinerary-container">
 
       {/* Date Bar */}
-      <div className="date-bar" id="date-bar">
-        <h2 className="sub-nav-bar">Day 1</h2>
-        </div>  
+      <div className="date-bar">
+        <div className="date-scroll">
+          {days.map((day, index) => (
+            <button
+              key={index}
+              className={`day-tab ${currentDay === index + 1 ? "active" : ""}`}
+              onClick={() => setCurrentDay(index + 1)}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+      </div>  
         
       {/* Add Event Button */}
       <div className = "add-event-button">
          <button className="add-event-button" 
-         onClick={() => alert("Add Event Clicked")}>+</button>
+         onClick={() => alert("Add Event Clicked")}>
+          +
+          </button>
       </div>
- 
 
+
+      {/* Timeline Section */}
       <div className="timeline">
         
         {/* Time Column */}
@@ -79,7 +86,8 @@ export default function Itinerary() {
 
               const top = (startMinutes / 60) * 100;   // 100px per hour
               const height = (duration / 60) * 90;    // match CSS height
-               return (
+              
+              return (
               <div 
                 key={index} 
                 className="event-card"
