@@ -203,22 +203,22 @@ export default function TripList() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="modal-overlay" onClick={cancelDelete}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title">Delete Trip?</h3>
-            <p className="modal-message">
+        <div className="modal-overlay-triplist" onClick={cancelDelete}>
+          <div className="modal-content-triplist" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title-triplist">Delete Trip?</h3>
+            <p className="modal-message-triplist">
               Are you sure you want to delete <strong>"{tripToDelete?.name}"</strong>?
             </p>
-            <p className="modal-warning">This action cannot be undone.</p>
-            <div className="modal-actions">
+            <p className="modal-warning-triplist">This action cannot be undone.</p>
+            <div className="modal-actions-triplist">
               <button 
-                className="modal-btn modal-btn-cancel"
+                className="modal-btn-triplist modal-btn-cancel-triplist"
                 onClick={cancelDelete}
               >
                 Cancel
               </button>
               <button 
-                className="modal-btn modal-btn-confirm"
+                className="modal-btn-triplist modal-btn-confirm-triplist"
                 onClick={confirmDelete}
               >
                 Delete

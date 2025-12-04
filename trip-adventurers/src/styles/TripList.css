@@ -235,7 +235,7 @@
    DELETE CONFIRMATION MODAL
 ------------------------------ */
 
-.modal-overlay {
+.modal-overlay-triplist {
   position: fixed;
   top: 0;
   left: 0;
@@ -258,7 +258,7 @@
   }
 }
 
-.modal-content {
+.modal-content-triplist {
   background: #FFFFFF;
   border-radius: 16px;
   width: 340px;
@@ -283,7 +283,7 @@
   }
 }
 
-.modal-title {
+.modal-title-triplist {
   font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -293,7 +293,7 @@
   text-align: center;
 }
 
-.modal-message {
+.modal-message-triplist {
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
   font-size: 16px;
@@ -303,12 +303,12 @@
   text-align: center;
 }
 
-.modal-message strong {
+.modal-message-triplist strong {
   color: #2c3e2a;
   font-weight: 600;
 }
 
-.modal-warning {
+.modal-warning-triplist {
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -319,13 +319,13 @@
   font-style: italic;
 }
 
-.modal-actions {
+.modal-actions-triplist {
   display: flex;
   gap: 12px;
   width: 100%;
 }
 
-.modal-btn {
+.modal-btn-triplist {
   flex: 1;
   height: 45px;
   border-radius: 8px;
@@ -337,31 +337,31 @@
   border: 2px solid;
 }
 
-.modal-btn-cancel {
+.modal-btn-cancel-triplist {
   background: #FFFFFF;
   border-color: #96A78D;
   color: #2c3e2a;
 }
 
-.modal-btn-cancel:hover {
+.modal-btn-cancel-triplist:hover {
   background: #F5F5F5;
   transform: translateY(-1px);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.modal-btn-confirm {
+.modal-btn-confirm-triplist {
   background: #e8b4b4;
   border-color: #c97676;
   color: #000;
 }
 
-.modal-btn-confirm:hover {
+.modal-btn-confirm-triplist:hover {
   background: #dc9d9d;
   transform: translateY(-1px);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.modal-btn:active {
+.modal-btn-triplist:active {
   transform: translateY(0);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 }

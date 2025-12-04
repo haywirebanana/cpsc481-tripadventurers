@@ -421,22 +421,22 @@ export default function TripSetup() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="modal-overlay" onClick={cancelDeleteTrip}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title">Delete Trip?</h3>
-            <p className="modal-message">
+        <div className="modal-overlay-setup" onClick={cancelDeleteTrip}>
+          <div className="modal-content-setup" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title-setup">Delete Trip?</h3>
+            <p className="modal-message-setup">
               Are you sure you want to delete <strong>"{tripTitle || 'this trip'}"</strong>?
             </p>
-            <p className="modal-warning">This action cannot be undone.</p>
-            <div className="modal-actions">
+            <p className="modal-warning-setup">This action cannot be undone.</p>
+            <div className="modal-actions-setup">
               <button 
-                className="modal-btn modal-btn-cancel"
+                className="modal-btn-setup modal-btn-cancel-setup"
                 onClick={cancelDeleteTrip}
               >
                 Cancel
               </button>
               <button 
-                className="modal-btn modal-btn-confirm"
+                className="modal-btn-setup modal-btn-confirm-setup"
                 onClick={confirmDeleteTrip}
               >
                 Delete
@@ -448,16 +448,16 @@ export default function TripSetup() {
 
       {/* Member Management Modal - Placeholder */}
       {showMemberModal && (
-        <div className="modal-overlay" onClick={closeMemberModal}>
-          <div className="modal-content member-modal" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title">
+        <div className="modal-overlay-setup" onClick={closeMemberModal}>
+          <div className="modal-content member-modal-setup" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title-setup">
               {memberModalType === 'add' ? 'Add Members' : 'Edit Members'}
             </h3>
-            <p className="modal-message">
+            <p className="modal-message-setup">
               Member management functionality coming soon!
             </p>
             <button 
-              className="modal-btn modal-btn-cancel"
+              className="modal-btn-setup modal-btn-cancel-setup"
               onClick={closeMemberModal}
             >
               Close
