@@ -14,17 +14,18 @@ export default function TripListLayout() {
         flexShrink: 0,
         borderBottom: '2px solid var(--color-black)',
         background: 'var(--color-bg)',
-        padding: '12px'
+        padding: '12px',
+        zIndex: 10
       }}>
         <TopNav />
       </div>
 
-      {/* scrollable for main content */}
       <div style={{
         flex: 1,
         overflowY: 'auto',
         overflowX: 'hidden',
-        minHeight: 0
+        minHeight: 0,
+        position: 'relative'
       }}>
         <Outlet />
       </div>

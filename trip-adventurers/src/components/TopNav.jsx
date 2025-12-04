@@ -1,11 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import '../styles/TopNav.css';
 
 export default function TopNav() {
+  const location = useLocation();
+  const isSetupPage = location.pathname.includes('/trip-setup');
+
   return (
-    <div>
-      <Link to="/trip-list"><button>Trip List</button></Link>
-      <Link to="/trip-setup"><button>Trip Setup</button></Link>
-      <Link to="/login"><button>Logout</button></Link>
+    <div className="top-nav">
+      {isSetupPage && (
+        <Link to="/trip-list" className="back-button">
+          ←
+        </Link>
+      )}
+      <h1 className="top-nav-title">Trip Adventurers</h1>
+      <Link to="/login">
+        <button className="btn-logout">Logout</button>
+      </Link>
     </div>
   );
 }
