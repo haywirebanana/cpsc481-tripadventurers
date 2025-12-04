@@ -6,12 +6,26 @@ import transitIcon from '../assets/transit.svg';
 import searchIcon from '../assets/search.svg';
 import arrowIcon from '../assets/arrow.svg';
 import filterIcon from '../assets/filter.svg';
+import EventCard from '../components/EventCard';
+import BookingPopup from '../components/BookingPopup';
 import '../styles/Explore.css';
+import '../styles/EventCard.css';
 
 export default function Explore() {
   const [view, setView] = useState('map'); // 'map' or 'list'
   const [activeFilters, setActiveFilters] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [bookingEvent, setBookingEvent] = useState(null);
+
+  const mockEvents = [
+    { name: searchTerm || 'Event Name', rating: 4.3, reviews: 310, price: '$$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
+    { name: searchTerm || 'Event Name', rating: 4.1, reviews: 310, price: '$$$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
+    { name: searchTerm || 'Event Name', rating: 4.1, reviews: 310, price: '$$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
+    { name: searchTerm || 'Event Name', rating: 4.1, reviews: 310, price: '$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
+    { name: searchTerm || 'Event Name', rating: 4.1, reviews: 310, price: '$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
+    { name: searchTerm || 'Event Name', rating: 4.1, reviews: 310, price: '$', hours: 'Opens 5:00 - Closes 9:00 PM' },
+  ];
 
   const toggleFilter = (filter) => {
     if (activeFilters.includes(filter)) {
@@ -21,27 +35,52 @@ export default function Explore() {
     }
   };
 
-  const mockEvents = [
-    { name: 'Event Name', rating: 4.3, reviews: 310, price: '$$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
-    { name: 'Event Name', rating: 4.1, reviews: 310, price: '$$$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
-    { name: 'Event Name', rating: 4.1, reviews: 310, price: '$$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
-    { name: 'Event Name', rating: 4.1, reviews: 310, price: '$$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
-    { name: 'Event Name', rating: 4.1, reviews: 310, price: '$$', hours: 'Opens 5:00 - Closes 9:00 PM' },
-    { name: 'Event Name', rating: 4.1, reviews: 310, price: '$', hours: 'Opens 5:00 - Closes 9:00 PM' },
-  ];
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    setView('list');
+  };
+
+  const handleToggleView = () => {
+    if (view === 'map') {
+      setView('list');
+    } else {
+      setView('map');
+      setSearchTerm('');
+    }
+  };
+
+  const handleBookNow = (eventName) => {
+    setBookingEvent(eventName);
+    setView('map');
+  };
+
+  const handleCloseBooking = () => {
+    setBookingEvent(null);
+    setView('list');
+  };
 
   return (
     <div className="explore-container">
       {/* Map View */}
       <div className="map-view" style={{ backgroundImage: `url(${mapBackground})` }}>
         {/* Search Bar */}
-        <div className="search-bar-container">
+        <div className={`search-bar-container ${searchTerm ? 'expanded' : ''}`}>
           <img src={searchIcon} alt="Search" className="search-icon" />
-          <input type="text" className="search-input" placeholder="Search" />
+          <input 
+            type="text" 
+            className="search-input" 
+            placeholder="Search" 
+            defaultValue={searchTerm}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch(e.target.value);
+              }
+            }}
+          />
         </div>
 
         {/* Filter Buttons */}
-        <div className="filter-buttons">
+        <div className={`filter-buttons ${searchTerm || bookingEvent ? 'hidden' : ''}`}>
           <button 
             className={`filter-btn ${activeFilters.includes('restaurant') ? 'active' : ''}`}
             onClick={() => toggleFilter('restaurant')}
@@ -66,53 +105,49 @@ export default function Explore() {
         </div>
 
         {/* Event List Overlay */}
-        <div className={`list-view-overlay ${view === 'list' ? 'expanded' : ''}`}>
-          {/* Toggle Map/List Button */}
-          <button className="toggle-view-btn" onClick={() => setView(view === 'map' ? 'list' : 'map')}>
-            <img 
-              src={arrowIcon} 
-              alt="Toggle" 
-              style={{ 
-                transform: view === 'list' ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.3s ease'
-              }} 
-            />
-          </button>
-
-          {/* Sort/Filter Dropdown */}
-          <div className="sort-filter-container">
-            <button className="dropdown-toggle">
-              <img src={filterIcon} alt="Filter" />
-              <span>Sort/Filter</span>
+        <div className={`list-view-overlay ${view === 'list' ? 'expanded' : ''} ${searchTerm ? 'search-expanded' : ''} ${bookingEvent ? 'hidden' : ''}`}>
+            {/* Toggle Map/List Button */}
+            <button className="toggle-view-btn" onClick={handleToggleView}>
+              <img 
+                src={arrowIcon} 
+                alt="Toggle" 
+                style={{ 
+                  transform: view === 'list' ? 'rotate(180deg)' : 'rotate(0deg)',
+                }} 
+              />
             </button>
-          </div>
 
-          {/* Event List */}
-          <div className="event-list">
-            {mockEvents.map((event, index) => (
-              <div 
-                key={index} 
-                className={`event-card ${selectedEvent === index ? 'selected' : ''}`}
-                onClick={() => setSelectedEvent(selectedEvent === index ? null : index)}
-              >
-                <h3 className="event-name">{event.name}</h3>
-                <div className="event-details">
-                  <div className="rating">
-                    <span className="stars">{'★'.repeat(Math.floor(event.rating))}{'☆'.repeat(5 - Math.floor(event.rating))}</span>
-                    <span className="rating-number">{event.rating}</span>
-                    <span className="reviews">({event.reviews})</span>
-                  </div>
-                  <span className="price" style={{
-                    color: event.price.length <= 2 ? '#4CAF50' : event.price.length === 3 ? '#FFA500' : '#FF5722'
-                  }}>
-                    {event.price}
-                  </span>
-                </div>
-                <p className="event-hours">{event.hours}</p>
-              </div>
-            ))}
+            {/* Sort/Filter */}
+            <div className="sort-filter-container">
+              <button className="sort-button">
+                <img src={filterIcon} alt="Filter" />
+                <span>Sort/Filter</span>
+              </button>
+            </div>
+
+            {/* Event List */}
+            <div className="event-list">
+              {mockEvents.map((event, index) => (
+                <EventCard
+                  key={index}
+                  event={event}
+                  index={index}
+                  isSelected={selectedEvent === index}
+                  onSelect={(idx) => setSelectedEvent(selectedEvent === idx ? null : idx)}
+                  onClose={() => setSelectedEvent(null)}
+                  onBookNow={handleBookNow}
+                />
+              ))}
           </div>
         </div>
+
+        {/* Booking Popup */}
+        {bookingEvent && (
+          <BookingPopup 
+            eventName={bookingEvent}
+            onClose={handleCloseBooking}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,151 @@
+/* Event Card */
+.explore-event-card {
+  padding: 12px 16px;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-green-border);
+  border-radius: 20px;
+  margin: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.explore-event-card:hover {
+  background-color: var(--color-green-light);
+}
+
+.explore-event-card.selected {
+  background-color: var(--color-gray-1);
+  padding: 16px;
+  cursor: default;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #FF6B6B;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: #FF4444;
+}
+
+.event-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.event-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.separator {
+  color: #666;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stars {
+  color: #FFA500;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.rating-number {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.reviews {
+  font-size: 14px;
+  color: var(--color-gray-2);
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.event-hours {
+  font-size: 14px;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+.event-location,
+.event-website,
+.event-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.event-location .icon,
+.event-website .icon,
+.event-phone .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.event-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-green-border);
+}
+
+.action-btn:hover {
+  background-color: var(--color-green-light);
+}
+
+.itinerary-btn {
+  width: 100%;
+  padding: 10px 16px;
+  margin-top: 12px;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-green-border);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.itinerary-btn:hover {
+  background-color: var(--color-green-light);
+}
