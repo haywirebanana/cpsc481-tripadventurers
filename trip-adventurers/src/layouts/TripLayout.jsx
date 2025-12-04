@@ -26,7 +26,7 @@ export default function TripLayout() {
           position: 'absolute',
           left: '50%',
           transform: 'translateX(-50%)',
-          fontSize: '20px',
+          fontSize: '25px',
           fontWeight: 700,
           margin: 0
         }}>Trip Name</h1>

@@ -151,6 +151,11 @@
   overflow: hidden;
 }
 
+.list-view-overlay.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .list-view-overlay.expanded {
   top: 120px;
 }

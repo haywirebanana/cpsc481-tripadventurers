@@ -89,7 +89,7 @@
 
 .event-hours {
   font-size: 14px;
-  color: #666;
+  color: #333;
   margin: 4px 0 0 0;
 }
 
@@ -120,29 +120,16 @@
 .action-btn {
   flex: 1;
   padding: 10px 16px;
-  border: none;
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.book-btn {
   background-color: var(--color-bg);
   border: 2px solid var(--color-green-border);
 }
 
-.book-btn:hover {
-  background-color: var(--color-green-light);
-}
-
-.directions-btn {
-  background-color: var(--color-bg);
-  border: 2px solid var(--color-green-border);
-}
-
-.directions-btn:hover {
+.action-btn:hover {
   background-color: var(--color-green-light);
 }
 
