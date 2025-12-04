@@ -7,6 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [shakeKey, setShakeKey] = useState(0); 
 
   // Define valid credentials
   const VALID_EMAIL = "user@trip.com";
@@ -16,7 +17,8 @@ export default function Login() {
     e.preventDefault();
     
     // Clear previous error
-    setError("");
+    // setError("");
+
 
     // Validate credentials
     if (email === VALID_EMAIL && password === VALID_PASSWORD) {
@@ -25,6 +27,7 @@ export default function Login() {
     } else {
       // Show error message
       setError("Incorrect email or password. Please try again.");
+      setShakeKey(prev => prev + 1); 
     }
   };
 
@@ -41,14 +44,14 @@ export default function Login() {
       
       {/* Error Message */}
       {error && (
-        <div className="error-message">
+        <div className="error-message" key={`error-${shakeKey}`}>
           {error}
         </div>
       )}
       
       <form onSubmit={handleLogin}>
         {/* Email Input */}
-        <div className={`input-wrapper email ${error ? 'input-error' : ''}`}>
+        <div className={`input-wrapper email ${error ? 'input-error' : ''}`} key={`email-${shakeKey}`}>
           <div className="input-icon icon-mail">
             <div className="vector" />
           </div>
@@ -63,7 +66,7 @@ export default function Login() {
         </div>
         
         {/* Password Input */}
-        <div className={`input-wrapper password ${error ? 'input-error' : ''}`}>
+        <div className={`input-wrapper password ${error ? 'input-error' : ''}`} key={`password-${shakeKey}`}>
           <div className="input-icon icon-lock">
             <div className="vector" />
           </div>
