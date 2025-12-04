@@ -67,60 +67,6 @@
   color: #999;
 }
 
-/* Filter Buttons */
-.filter-buttons {
-  display: flex;
-  gap: 10px;
-  padding: 0px 20px 16px 20px;
-  background-color: transparent;
-  overflow-x: auto;
-  flex-shrink: 0;
-  z-index: 2;
-  justify-content: center;
-  position: relative;
-  transition: opacity 0.3s ease;
-}
-
-.filter-buttons.hidden {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.filter-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background-color: var(--color-gray-1);
-  border: 2px solid var(--color-black);
-  border-radius: 20px;
-  cursor: pointer;
-  white-space: nowrap;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.filter-btn:hover {
-  border-color: var(--color-green-border);
-}
-
-.filter-btn.active {
-  background-color: var(--color-green-light);
-  border-color: var(--color-green-border);
-}
-
-.filter-btn img {
-  width: 20px;
-  height: 20px;
-}
-
-.filter-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
 /* Map View */
 .map-view {
   flex: 1;
@@ -157,7 +103,7 @@
 }
 
 .list-view-overlay.expanded {
-  top: 120px;
+  top: 60px;
 }
 
 .list-view-overlay.search-expanded {
