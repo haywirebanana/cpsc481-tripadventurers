@@ -1,0 +1,74 @@
+.top-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  gap: 12px;
+  position: relative;
+}
+
+.back-button {
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.2s;
+  justify-self: start;
+  width: fit-content;
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 2px solid #96A78D;
+  background: #D9E9CF;
+}
+
+.back-button:hover {
+  background: red;
+  border: 2px solid black;
+  color: white;
+}
+
+.back-button:active {
+  background: #8fb08d;
+}
+
+.top-nav-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 24px;
+  margin: 0;
+  color: #000000;
+  text-align: center;
+  grid-column: 2;
+}
+
+.btn-logout {
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 24px;
+  color: #000000;
+  background: #D9E9CF;
+  border: 2px solid #96A78D;
+  border-radius: 5px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  justify-self: end;
+  width: fit-content;
+}
+
+.btn-logout:hover {
+  background: red;
+  border: 2px solid black;
+  color: white;
+}
+
+.btn-logout:active {
+  background: #b6caac;
+}

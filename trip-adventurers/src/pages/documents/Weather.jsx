@@ -138,15 +138,15 @@ export default function Weather() {
 
       {/* news popup after pressing the view button */}
       {modalOpen && activeNews && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>✖</button>
+        <div className="modal-overlay-weather" onClick={closeModal}>
+          <div className="modal-content-weather" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-weather" onClick={closeModal}>✖</button>
 
-            <div className="modal-thumb">
+            <div className="modal-thumb-weather">
               <img src={activeNews.thumbnail} alt={activeNews.title} />
             </div>
 
-            <div className="modal-text">
+            <div className="modal-text-weather">
               <h3>{activeNews.title}</h3>
               <p>{activeNews.full}</p>
             </div>
