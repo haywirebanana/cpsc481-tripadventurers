@@ -7,7 +7,6 @@ import "../../styles/ManageMembers.css";
 export default function TripSetup() {
   const navigate = useNavigate();
   const { tripId } = useParams();
-  const { addTrip, updateTrip, getTripById, deleteTrip } = useTrips();
   
   const isEditMode = !!tripId;
 
@@ -16,7 +15,6 @@ export default function TripSetup() {
   const [viewers, setViewers] = useState(["Person 4", "Person 5"]);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [memberModalType, setMemberModalType] = useState(null);
-  const [editingMember, setEditingMember] = useState(null);
 
   // Add-member form fields
   const [newMemberName, setNewMemberName] = useState("");
