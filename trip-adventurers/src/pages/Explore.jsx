@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import mapBackground from '../assets/map.jpg';
+import mapBackground from '../assets/map.png';
+import mapDirections from '../assets/map-directions.png';
 import searchIcon from '../assets/search.svg';
 import arrowIcon from '../assets/arrow.svg';
 import filterIcon from '../assets/filter.svg';
@@ -22,6 +23,11 @@ export default function Explore() {
   const [searchTerm, setSearchTerm] = useState('');
   const [bookingEvent, setBookingEvent] = useState(null);
   const [showSortFilter, setShowSortFilter] = useState(false);
+  const [directionMode, setDirectionMode] = useState(false);
+  const [showDirections, setShowDirections] = useState(false);
+  const [startingAddress, setStartingAddress] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [destinationEvent, setDestinationEvent] = useState('');
 
   // Comprehensive mock data with all categories
   const allEvents = [
@@ -132,17 +138,13 @@ export default function Explore() {
     return events;
   }, [searchTerm, activeFilters]);
 
-  const handleSearch = (value) => {
-    setSearchTerm(value);
-    setView('list');
-  };
-
   const handleToggleView = () => {
     if (view === 'map') {
       setView('list');
     } else {
       setView('map');
       setSearchTerm('');
+      setInputValue(''); // Also clear the input field
     }
   };
 
@@ -160,28 +162,93 @@ export default function Explore() {
     setActiveFilters(filters);
   };
 
+  const handleDirectionClick = (eventName) => {
+    // Triggered from EventCard's Directions button
+    setDirectionMode(true);
+    setView('map');
+    setShowDirections(false);
+    setStartingAddress('');
+    setInputValue('');
+    setSearchTerm('');
+    setDestinationEvent(eventName); // Store the event name
+    setSelectedEvent(null); // Close the selected event card
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+    // Don't set searchTerm immediately - wait for Enter key
+  };
+
+  const handleInputKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      if (directionMode && inputValue.trim()) {
+        // In direction mode, show directions
+        setStartingAddress(inputValue);
+        setShowDirections(true);
+      } else if (!directionMode && inputValue.trim()) {
+        // In search mode, perform search
+        setSearchTerm(inputValue);
+        setView('list');
+      }
+    }
+  };
+
+  const closeDirections = () => {
+    setDirectionMode(false);
+    setShowDirections(false);
+    setStartingAddress('');
+    setInputValue('');
+    setDestinationEvent('');
+    setSearchTerm(''); // Clear search term when closing directions
+  };
+
   return (
     <div className="explore-container">
       {/* Map View */}
-      <div className="map-view" style={{ backgroundImage: `url(${mapBackground})` }}>
-        {/* Search Bar */}
-        <div className={`search-bar-container ${searchTerm ? 'expanded' : ''}`}>
-          <img src={searchIcon} alt="Search" className="search-icon" />
-          <input 
-            type="text" 
-            className="search-input" 
-            placeholder="Search" 
-            defaultValue={searchTerm}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch(e.target.value);
-              }
-            }}
-          />
-        </div>
+      <div className="map-view" style={{ backgroundImage: `url(${showDirections ? mapDirections : mapBackground})` }}>
+        {/* Search Bar - Only show when not showing directions */}
+        {!showDirections && (
+          <div className={`search-bar-container ${searchTerm || directionMode ? 'expanded' : ''}`}>
+            <img src={searchIcon} alt="Search" className="search-icon" />
+            <input
+              type="text"
+              className="search-input"
+              placeholder={directionMode ? "Enter starting address and press Enter" : "Search"}
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+            />
+            {directionMode && (
+              <button
+                className="close-direction-mode"
+                onClick={() => {
+                  setDirectionMode(false);
+                  setInputValue('');
+                  setDestinationEvent('');
+                }}
+                title="Cancel directions"
+              >
+                ×
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Direction Info Panel */}
+        {showDirections && (
+          <div className="direction-info-panel">
+            <button className="close-directions" onClick={closeDirections} title="Close directions">×</button>
+            <div className="direction-details">
+              <p className="from-label">From: <span>{startingAddress}</span></p>
+              <p className="to-label">To: <span>{destinationEvent}</span></p>
+              <p className="distance-label">Distance: <span>2.5 km</span></p>
+              <p className="time-label">Est. Time: <span>8 mins</span></p>
+            </div>
+          </div>
+        )}
 
         {/* Event List Overlay */}
-        <div className={`list-view-overlay ${view === 'list' ? 'expanded' : ''} ${searchTerm ? 'search-expanded' : ''} ${bookingEvent ? 'hidden' : ''}`}>
+        <div className={`list-view-overlay ${view === 'list' ? 'expanded' : ''} ${searchTerm ? 'search-expanded' : ''} ${(bookingEvent || showDirections || directionMode) ? 'hidden' : ''}`}>
             {/* Toggle Map/List Button */}
             <button className="toggle-view-btn" onClick={handleToggleView}>
               <img 
@@ -216,6 +283,7 @@ export default function Explore() {
                     onSelect={(idx) => setSelectedEvent(selectedEvent === idx ? null : idx)}
                     onClose={() => setSelectedEvent(null)}
                     onBookNow={handleBookNow}
+                    onDirections={handleDirectionClick}
                   />
                 ))
               ) : (
