@@ -4,7 +4,10 @@
   overflow-y: scroll;
   background: #ffffff;
   box-sizing: border-box;
-  scrollbar-width: none;
+}
+
+.itinerary-container::-webkit-scrollbar {
+  display: none; 
 }
 
 .timeline {
@@ -100,8 +103,11 @@ border-bottom: #000000 2px solid;
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  scrollbar-width: none;
   padding: 120px;
+}
+
+.date-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 
