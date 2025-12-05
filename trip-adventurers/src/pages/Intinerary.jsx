@@ -81,6 +81,12 @@ const [newEvent, setNewEvent] = useState({
   color: "#fff4e6"
 });
 
+const [activeEvent, setActiveEvent] = useState(null);
+const [detailsOpen, setDetailsOpen] = useState(false);
+
+const [editModalOpen, setEditModalOpen] = useState(false);
+
+
   // Example events
   const eventsByDay = {
     1: [
@@ -168,7 +174,11 @@ const [newEvent, setNewEvent] = useState({
                   className="event-card"
                   role ="button"
                   tabIndex={0}
-                  onClick={() => opnModal(event)}
+                  onClick={() => {
+                    setActiveEvent(event);
+                    setDetailsOpen(true);
+                  }}
+
                   style={{ 
                     backgroundColor: event.color,
                     top: `${top}px`, 
@@ -178,6 +188,7 @@ const [newEvent, setNewEvent] = useState({
                   <h4 className="event-title">{event.title}</h4>
                   <p className="event-time">{event.start} – {event.end} </p>
             </div>
+            
           )})}
         </div>
       </div>
@@ -254,6 +265,82 @@ const [newEvent, setNewEvent] = useState({
             </div>
           </div>
       )}
+          {detailsOpen && activeEvent && (
+      <div className="modal-overlay" onClick={() => setDetailsOpen(false)}>
+        <div
+          className="event-details-modal"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 className="modal-title">{activeEvent.title}</h2>
+
+          <p><strong>Time:</strong> {activeEvent.start} – {activeEvent.end}</p>
+
+          <p><strong>Description:</strong></p>
+          <div className="event-description-box">
+            {activeEvent.description}
+          </div>
+
+          <div className="modal-buttons">
+            <button className="cancel-btn" onClick={() => setDetailsOpen(false)}>
+              Close
+            </button>
+
+            <button
+              className="save-btn"
+              onClick={() => {
+                setDetailsOpen(false);
+                setEditModalOpen(true); // if you want edit modal
+              }}
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {editModalOpen && activeEvent && (
+      <div className="modal-overlay" onClick={() => setEditModalOpen(false)}>
+        <div
+          className="edit-event-modal"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 className="modal-title">Edit Event</h2>
+
+          <label>Title:</label>
+          <input
+            value={activeEvent.title}
+            onChange={(e) =>
+              setActiveEvent({ ...activeEvent, title: e.target.value })
+            }
+          />
+
+          <label>Description:</label>
+          <textarea
+            value={activeEvent.description}
+            onChange={(e) =>
+              setActiveEvent({ ...activeEvent, description: e.target.value })
+            }
+          />
+
+          <div className="modal-buttons">
+            <button className="cancel-btn" onClick={() => setEditModalOpen(false)}>
+              Cancel
+            </button>
+
+            <button
+              className="save-btn"
+              onClick={() => {
+                setEditModalOpen(false);
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
     </div>
   );
 }
