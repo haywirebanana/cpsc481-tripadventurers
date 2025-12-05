@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import arrowIcon from '../assets/arrow.svg';
 import '../styles/BookingPopup.css';
 
-export default function BookingPopup({ eventName, onClose }) {
+export default function BookingPopup({ eventName, eventId, onClose }) {
+  const navigate = useNavigate();
   const [group, setGroup] = useState(1);
   const [selectedDate, setSelectedDate] = useState('2025-12-22');
   const [selectedTime, setSelectedTime] = useState(null);
@@ -18,12 +20,27 @@ export default function BookingPopup({ eventName, onClose }) {
   const [errors, setErrors] = useState({});
 
   const timeSlots = [
-    { time: '12:00pm - 01:00pm', available: false },
-    { time: '01:00pm - 02:00pm', available: true },
-    { time: '02:00pm - 03:00pm', available: false },
-    { time: '03:00pm - 04:00pm', available: true },
-    { time: '04:00pm - 05:00pm', available: false },
+    { time: '12:00 PM - 1:00 PM', start: '12:00 PM', end: '1:00 PM', available: false },
+    { time: '1:00 PM - 2:00 PM', start: '1:00 PM', end: '2:00 PM', available: true },
+    { time: '2:00 PM - 3:00 PM', start: '2:00 PM', end: '3:00 PM', available: false },
+    { time: '3:00 PM - 4:00 PM', start: '3:00 PM', end: '4:00 PM', available: true },
+    { time: '4:00 PM - 5:00 PM', start: '4:00 PM', end: '5:00 PM', available: false },
   ];
+
+  // Calculate day number from date
+  const calculateDayNumber = (dateString) => {
+    const baseDate = new Date('2025-12-22');
+    const selectedDateObj = new Date(dateString);
+    const diffTime = selectedDateObj - baseDate;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays + 1; // Day 1 is Dec 22
+  };
+
+  // Generate random color for event
+  const getRandomColor = () => {
+    const colors = ['#f2e8ff', '#e8f7ff', '#fff4e6', '#ffe8f0', '#e8fff4'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
   const handleConfirm = () => {
     setShowPayment(true);
@@ -68,7 +85,6 @@ export default function BookingPopup({ eventName, onClose }) {
     let value = rawValue.replace(/\D/g, '');
     
     if (rawValue.length < expiry.length && rawValue.endsWith('/')) {
-      // User is backspacing, remove the slash and the digit before it
       value = value.slice(0, -1);
     }
     
@@ -129,9 +145,42 @@ export default function BookingPopup({ eventName, onClose }) {
       return;
     }
     
-    // If validation passes, proceed with booking
-    alert('Booking confirmed!');
-    onClose();
+    // Add event to itinerary
+    const dayNumber = calculateDayNumber(selectedDate);
+    const itineraryEvents = JSON.parse(localStorage.getItem('itineraryEvents') || '{}');
+    
+    if (!itineraryEvents[dayNumber]) {
+      itineraryEvents[dayNumber] = [];
+    }
+    
+    const selectedSlot = timeSlots[selectedTime];
+    
+    // Check if event already exists on this day at this time
+    const alreadyExists = itineraryEvents[dayNumber].some(
+      event => event.eventId === eventId && 
+               event.start === selectedSlot.start && 
+               event.end === selectedSlot.end
+    );
+    
+    if (!alreadyExists) {
+      itineraryEvents[dayNumber].push({
+        eventId: eventId,
+        start: selectedSlot.start,
+        end: selectedSlot.end,
+        color: getRandomColor()
+      });
+      
+      localStorage.setItem('itineraryEvents', JSON.stringify(itineraryEvents));
+      
+      // Dispatch event to notify itinerary to refresh
+      window.dispatchEvent(new Event('itineraryUpdated'));
+      
+      // Redirect to itinerary page with the specific day
+      navigate('/trip/1/intinerary', { state: { day: dayNumber } });
+    } else {
+      alert('This event is already in your itinerary for this time slot!');
+      onClose();
+    }
   };
 
   return (
@@ -231,7 +280,7 @@ export default function BookingPopup({ eventName, onClose }) {
               )}
 
               <div className="payment-buttons">
-                <button className="payment-method-btn">PayPaL</button>
+                <button className="payment-method-btn">PayPal</button>
                 <button className="payment-method-btn">ApplePay</button>
                 <button className="payment-method-btn">GooglePay</button>
               </div>
