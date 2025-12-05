@@ -1,13 +1,19 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Documents.css";
 
 import weather from "../assets/sundoc.svg"; 
 import members from "../assets/memberdoc.svg";
-import settings from "../assets/settingsdoc.svg";
+import logout from "../assets/logout.png";
 
 export default function Documents() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isSubPage = location.pathname.includes("/documents/");
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate("/login");
+  };
 
   if (isSubPage) {
     return <Outlet />;
@@ -26,10 +32,10 @@ export default function Documents() {
           <span>Manage Members</span>
         </Link>
 
-        <Link to="settings" className="doc-menu-btn">
-          <img src={settings} alt="Settings" className="doc-icon" />
-          <span>Settings</span>
-        </Link>
+        <button onClick={handleLogout} className="doc-menu-btn logout-btn">
+          <img src={logout} alt="Logout" className="doc-icon" />
+          <span>Logout</span>
+        </button>
       </div>
     </div>
   );

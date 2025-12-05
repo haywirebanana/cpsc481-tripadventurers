@@ -12,9 +12,7 @@ import TripSetup from "./pages/TripSetup";
 import Explore from "./pages/Explore";
 import Intinerary from "./pages/Intinerary";
 import Documents from "./pages/Documents";
-import ManageDocuments from "./pages/documents/ManageDocuments";
 import ManageMembers from "./pages/documents/ManageMembers";
-import Settings from "./pages/documents/Settings";
 import Weather from "./pages/documents/Weather";
 
 // Layouts
@@ -52,9 +50,7 @@ export default function App() {
               <Route path="intinerary" element={<Intinerary />} />
 
               <Route path="documents" element={<Documents />}>
-                <Route path="manage" element={<ManageDocuments />} />
                 <Route path="members" element={<ManageMembers />} />
-                <Route path="settings" element={<Settings />} />
                 <Route path="weather" element={<Weather />} />
               </Route>
             </Route>
