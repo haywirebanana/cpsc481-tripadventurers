@@ -208,30 +208,44 @@ export default function Explore() {
       <div className="map-view" style={{ backgroundImage: `url(${showDirections ? mapDirections : mapBackground})` }}>
         {/* Search Bar - Only show when not showing directions */}
         {!showDirections && (
-          <div className={`search-bar-container ${searchTerm || directionMode ? 'expanded' : ''}`}>
-            <img src={searchIcon} alt="Search" className="search-icon" />
-            <input
-              type="text"
-              className="search-input"
-              placeholder={directionMode ? "Enter starting address and press Enter" : "Search"}
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleInputKeyDown}
-            />
+          <>
+            <div className={`search-bar-container ${searchTerm || directionMode ? 'expanded' : ''} ${directionMode ? 'direction-mode' : ''}`}>
+              <img src={searchIcon} alt="Search" className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder={directionMode ? "Enter starting address and press Enter" : "Search"}
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={handleInputKeyDown}
+              />
+              {directionMode && (
+                <button
+                  className="close-direction-mode"
+                  onClick={() => {
+                    setDirectionMode(false);
+                    setInputValue('');
+                    setDestinationEvent('');
+                  }}
+                  title="Cancel directions"
+                >
+                  ×
+                </button>
+              )}
+            </div>
             {directionMode && (
               <button
-                className="close-direction-mode"
+                className="use-current-location"
                 onClick={() => {
-                  setDirectionMode(false);
+                  setStartingAddress('Current Location');
+                  setShowDirections(true);
                   setInputValue('');
-                  setDestinationEvent('');
                 }}
-                title="Cancel directions"
               >
-                ×
+                📍 Use Current Location
               </button>
             )}
-          </div>
+          </>
         )}
 
         {/* Direction Info Panel */}
