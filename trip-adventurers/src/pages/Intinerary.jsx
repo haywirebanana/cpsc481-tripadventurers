@@ -20,7 +20,7 @@ export default function Itinerary() {
 
   // Day state
   const [currentDay, setCurrentDay] = useState(1);
-  const days = ["Dec, 22, 22025", "Dec 23, 2025", "Dec 24, 2025","Dec 25, 2025", "Dec 26, 2025", "Dec 27, 2025"]; // you can expand later
+  const days = ["Dec, 22, 2025", "Dec 23, 2025", "Dec 24, 2025","Dec 25, 2025", "Dec 26, 2025", "Dec 27, 2025"]; // you can expand later
  
   // refs: container + per-day buttons
   const dateScrollRef = useRef(null);
@@ -199,24 +199,33 @@ const [newEvent, setNewEvent] = useState({
                 />
 
                 <label>Start Time:</label>
-                <input
-                  type="text"
-                  placeholder="8:00 AM"
+                <select
                   value={newEvent.start}
                   onChange={(e) =>
                     setNewEvent({ ...newEvent, start: e.target.value })
                   }
-                />
+                  className="time-select"
+                >
+                  <option value="Select a time">Select a time</option>
+                  {times.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
 
                 <label>End Time:</label>
-                <input
-                  type="text"
-                  placeholder="9:00 AM"
+                <select
                   value={newEvent.end}
                   onChange={(e) =>
                     setNewEvent({ ...newEvent, end: e.target.value })
                   }
-                />
+                  className="time-select"
+                >
+                  <option value="">Select a time</option>
+                  {times.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+
 
                 <label>Description:</label>
                 <textarea
