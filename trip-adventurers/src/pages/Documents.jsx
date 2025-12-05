@@ -3,7 +3,6 @@ import "../styles/Documents.css";
 
 import weather from "../assets/sundoc.svg"; 
 import members from "../assets/memberdoc.svg";
-import document from "../assets/docdoc.svg";
 import settings from "../assets/settingsdoc.svg";
 
 export default function Documents() {
@@ -25,11 +24,6 @@ export default function Documents() {
         <Link to="members" className="doc-menu-btn">
           <img src={members} alt="Members" className="doc-icon" />
           <span>Manage Members</span>
-        </Link>
-
-        <Link to="manage" className="doc-menu-btn">
-          <img src={document} alt="Documents" className="doc-icon" />
-          <span>Documents</span>
         </Link>
 
         <Link to="settings" className="doc-menu-btn">
