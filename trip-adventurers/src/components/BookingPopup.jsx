@@ -4,7 +4,7 @@ import '../styles/BookingPopup.css';
 
 export default function BookingPopup({ eventName, onClose }) {
   const [group, setGroup] = useState(1);
-  const [day, setDay] = useState(1);
+  const [selectedDate, setSelectedDate] = useState('2025-12-22');
   const [selectedTime, setSelectedTime] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
   
@@ -157,7 +157,7 @@ export default function BookingPopup({ eventName, onClose }) {
               
               <div className="booking-panel-inputs">
                 <div className="booking-input-group">
-                  <label>Group:</label>
+                  <label>Party Size:</label>
                   <input 
                     type="number" 
                     value={group} 
@@ -166,14 +166,14 @@ export default function BookingPopup({ eventName, onClose }) {
                     className="booking-number-input"
                   />
                 </div>
-                
                 <div className="booking-input-group">
                   <label>Day:</label>
                   <input 
-                    type="number" 
-                    value={day} 
-                    onChange={(e) => setDay(Math.max(1, parseInt(e.target.value) || 1))}
-                    min="1"
+                    type="date" 
+                    value={selectedDate} 
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    min="2025-12-22"
+                    max="2025-12-27"
                     className="booking-number-input"
                   />
                 </div>
@@ -210,7 +210,13 @@ export default function BookingPopup({ eventName, onClose }) {
             <div className="booking-panel-section">
               <h3 className="booking-section-title">Booking Information:</h3>
               <p className="booking-info-text">Number Of Guests: {group}</p>
-              <p className="booking-info-text">Trip Day: {day}</p>
+              <p className="booking-info-text">
+                Trip Day: {new Date(selectedDate).toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  day: 'numeric', 
+                  year: 'numeric' 
+                })}
+              </p>
               <p className="booking-info-text">Time: {selectedTime !== null ? timeSlots[selectedTime].time : 'Not selected'}</p>
               <p className="booking-info-text">Total Costs: ${group * 20}</p>
             </div>
