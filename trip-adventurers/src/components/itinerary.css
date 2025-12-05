@@ -50,6 +50,7 @@
   border-radius: 12px;
   margin-bottom: 16px;
   box-shadow: 0px 10px 16px rgba(0, 0, 0, 0.08);
+  border: #000000 2px solid;
   cursor: pointer;
 }
 
@@ -100,7 +101,8 @@ border-bottom: #000000 2px solid;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 120px;}
+  padding: 120px;
+}
 
 
 /* Date tab */
@@ -117,5 +119,83 @@ border-bottom: #000000 2px solid;
 .day-tab.active {
   background: #B6CEB4;
   border: 2px solid black;
+}
+/* Background dimmer */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+/* ADD EVENT MODAL  */
+.add-event-modal {
+  box-sizing: border-box;
+
+  width: 369px;
+  height: 706px;
+
+  background: #F0F0F0;
+  border: 2px solid #000000;
+  box-shadow: 0px 16px 32px -8px rgba(12, 12, 13, 0.4);
+  border-radius: 40px;
+
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Modal title */
+.modal-title {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Inputs */
+.add-event-modal input,
+.add-event-modal textarea {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #888;
+  font-size: 16px;
+  background: white;
+}
+
+.add-event-modal textarea {
+  height: 120px;
+  resize: none;
+}
+
+/* Buttons at bottom */
+.modal-buttons {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cancel-btn,
+.save-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid #000;
+}
+
+.cancel-btn {
+  background: #ccc;
+}
+
+.save-btn {
+  background: #B6CEB4;
 }
