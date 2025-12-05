@@ -44,6 +44,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
 
   const handleConfirm = () => {
     setShowPayment(true);
+    
   };
 
   const handleBack = () => {
@@ -176,7 +177,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
       window.dispatchEvent(new Event('itineraryUpdated'));
       
       // Redirect to itinerary page with the specific day
-      navigate('/itinerary', { state: { day: dayNumber } });
+      navigate('/trip/1/intinerary', { state: { day: dayNumber } });
     } else {
       alert('This event is already in your itinerary for this time slot!');
       onClose();
