@@ -176,7 +176,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
       window.dispatchEvent(new Event('itineraryUpdated'));
       
       // Redirect to itinerary page with the specific day
-      navigate('/trip/1/intinerary', { state: { day: dayNumber } });
+      navigate('/itinerary', { state: { day: dayNumber } });
     } else {
       alert('This event is already in your itinerary for this time slot!');
       onClose();
@@ -260,7 +260,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
               <h3 className="booking-section-title">Booking Information:</h3>
               <p className="booking-info-text">Number Of Guests: {group}</p>
               <p className="booking-info-text">
-                Trip Day: {new Date(selectedDate).toLocaleDateString('en-US', { 
+                Trip Day: {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
                   month: 'long', 
                   day: 'numeric', 
                   year: 'numeric' 
