@@ -61,15 +61,48 @@ export default function Itinerary() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+    function openEventDetails(eventIndex) {
+    setActiveEvent(events[eventIndex]);
+    setModalOpen(true);
+
+    function closeModal() {
+    setModalOpen(false);
+    setActiveEvent(null);
+  }
+  }
+const [addModalOpen, setAddModalOpen] = useState(false);
+
+// form fields
+const [newEvent, setNewEvent] = useState({
+  title: "",
+  start: "",
+  end: "",
+  description: "",
+  color: "#fff4e6"
+});
 
   // Example events
   const eventsByDay = {
     1: [
-      { title: "Museum Visit", start: "8:00 AM", end: "9:00 AM", color: "#f2e8ff" },
-      { title: "Restaurant", start: "10:00 AM", end: "12:00 PM", color: "#e8f7ff" },
+      { title: "Museum Visit", 
+        start: "8:00 AM", 
+        end: "9:00 AM", 
+        color: "#f2e8ff", 
+        description: "Visiting the local history museum."},
+
+      { title: "Restaurant", 
+        start: "10:00 AM", 
+        end: "12:00 PM", 
+        color: "#e8f7ff", 
+        description: "Lunch at a local restaurant."
+      },
     ],
     2: [
-      { title: "Beach", start: "9:00 AM", end: "11:00 AM", color: "#fff4e6" },
+      { title: "Beach", 
+        start: "9:00 AM", 
+        end: "11:00 AM", 
+        color: "#fff4e6",
+        description: "Relaxing at the beach."},
     ],
   };
   const events = eventsByDay[currentDay] || [];
@@ -96,19 +129,20 @@ export default function Itinerary() {
           ))}
         </div>
       </div>  
-        
+
       {/* Add Event Button */}
       <div className = "add-event-button">
-         <button className="add-event-button" 
-         onClick={() => alert("Add Event Clicked")}>
+        <button
+          className="add-event-button"
+          onClick={() => setAddModalOpen(true)}
+          >
           +
-          </button>
-      </div>
+        </button>
 
+      </div>
 
       {/* Timeline Section */}
       <div className="timeline">
-        
         {/* Time Column */}
         <div className="time-column">
           {times.map((time, index) => (
@@ -125,30 +159,92 @@ export default function Itinerary() {
               const endMinutes = timeToMinutes(event.end);
               const duration = endMinutes - startMinutes;
               const top = (startMinutes / 60) * 100;   // 100px per hour
-              const height = (duration / 60) * 90;    // match CSS height
+              const height = (duration / 60) * 98;    // match CSS height
               
               return (
+                
                 <div 
                   key={index} 
                   className="event-card"
                   role ="button"
                   tabIndex={0}
-                  onClick={() => alert(`Clicked on ${event.title}`)}
+                  onClick={() => opnModal(event)}
                   style={{ 
                     backgroundColor: event.color,
                     top: `${top}px`, 
                     height: `${height}px`, 
                   }}
                 >
-
-              <h4 className="event-title">{event.title}</h4>
-              <p className="event-time">
-                {event.start} – {event.end} 
-              </p>
+                  <h4 className="event-title">{event.title}</h4>
+                  <p className="event-time">{event.start} – {event.end} </p>
             </div>
           )})}
         </div>
       </div>
+        {addModalOpen && (
+          <div className="modal-overlay" onClick={() => setAddModalOpen(false)}>
+            <div
+              className="add-event-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="modal-title">Add Event</h2>
+
+              <label>Title:</label>
+                <input
+                  type="text"
+                  value={newEvent.title}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, title: e.target.value })
+                  }
+                />
+
+                <label>Start Time:</label>
+                <input
+                  type="text"
+                  placeholder="8:00 AM"
+                  value={newEvent.start}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, start: e.target.value })
+                  }
+                />
+
+                <label>End Time:</label>
+                <input
+                  type="text"
+                  placeholder="9:00 AM"
+                  value={newEvent.end}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, end: e.target.value })
+                  }
+                />
+
+                <label>Description:</label>
+                <textarea
+                  value={newEvent.description}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, description: e.target.value })
+                  }
+                />
+
+                <div className="modal-buttons">
+                  <button className="cancel-btn" onClick={() => setAddModalOpen(false)}>
+                    Cancel
+                  </button>
+
+                <button
+                  className="save-btn"
+                  onClick={() => {
+                    // TODO: Save into eventsByDay later
+                    console.log("New event:", newEvent);
+                    setAddModalOpen(false);
+                  }}
+                  >
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+      )}
     </div>
   );
 }
