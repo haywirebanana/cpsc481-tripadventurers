@@ -20,7 +20,7 @@ export default function Itinerary() {
 
   // Day state
   const [currentDay, setCurrentDay] = useState(1);
-  const days = ["Day 1", "Day 2", "Day 3","Day 4"]; // you can expand later
+  const days = ["Dec, 22, 22025", "Dec 23, 2025", "Dec 24, 2025","Dec 25, 2025", "Dec 26, 2025", "Dec 27, 2025"]; // you can expand later
  
   // refs: container + per-day buttons
   const dateScrollRef = useRef(null);
@@ -84,7 +84,7 @@ const [newEvent, setNewEvent] = useState({
   // Example events
   const eventsByDay = {
     1: [
-      { title: "Museum Visit", 
+      { title: "Breakfast at Cafe", 
         start: "8:00 AM", 
         end: "9:00 AM", 
         color: "#f2e8ff", 
@@ -98,7 +98,7 @@ const [newEvent, setNewEvent] = useState({
       },
     ],
     2: [
-      { title: "Beach", 
+      { title: "Telus Spark Centre", 
         start: "9:00 AM", 
         end: "11:00 AM", 
         color: "#fff4e6",
