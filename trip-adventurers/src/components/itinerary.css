@@ -72,7 +72,7 @@
 /* Add Event Button */
 .add-event-button {
   background-color: #999999;
-  z-index: 1001;
+  z-index: 1000;
   color: white;
   cursor: pointer;
   font-size: 14px;
