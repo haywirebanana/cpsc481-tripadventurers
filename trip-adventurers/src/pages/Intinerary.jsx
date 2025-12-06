@@ -33,23 +33,6 @@ export default function Itinerary() {
     }
     
     return h * 60 + (m || 0);
-    if (!t) return 0;
-    const parts = t.trim().split(" ");
-    if (parts.length !== 2) return 0;
-    
-    const [time, period] = parts;
-    const timeParts = time.split(":");
-    if (timeParts.length !== 2) return 0;
-    
-    let [h, m] = timeParts.map(Number);
-    
-    if (period.toUpperCase() === "PM" && h !== 12) {
-      h += 12;
-    } else if (period.toUpperCase() === "AM" && h === 12) {
-      h = 0;
-    }
-    
-    return h * 60 + (m || 0);
   }
 
   // Day state
@@ -264,8 +247,8 @@ export default function Itinerary() {
         // Store as a custom event with title directly
         updated[currentDay].push({
           customTitle: newEvent.title,
-          start: newEvent.start.trim(),
-          end: newEvent.end.trim(),
+          start: newEvent.start,
+          end: newEvent.end,
           color: newEvent.color || getRandomColor()
         });
       } else {
@@ -471,7 +454,6 @@ export default function Itinerary() {
                 setNewEvent({ ...newEvent, title: e.target.value })
               }
               placeholder="Event name"
-              disabled={!!newEvent.eventId}
               disabled={!!newEvent.eventId}
             />
 
