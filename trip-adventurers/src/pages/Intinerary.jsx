@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import ItineraryEventCard from '../components/ItineraryEventCard';
 import { getEventById } from '../components/EventsData.jsx';
-import "../components/itinerary.css";
+import "../styles/itinerary.css";
 
 export default function Itinerary() {
   const navigate = useNavigate();
@@ -53,6 +53,7 @@ export default function Itinerary() {
     title: "",
     start: "",
     end: "",
+    description: "",
     color: "#fff4e6"
   });
 
@@ -129,6 +130,7 @@ export default function Itinerary() {
         title: title,
         start: "",
         end: "",
+        description: "",
         color: "#fff4e6"
       });
       setAddModalOpen(true);
@@ -201,6 +203,18 @@ export default function Itinerary() {
     setSelectedEvent(null);
   };
 
+  // Function to handle editing event
+  const handleEditEvent = (index, newDescription) => {
+    setEventsByDay(prev => {
+      const updated = { ...prev };
+      updated[currentDay][index] = {
+        ...updated[currentDay][index],
+        description: newDescription
+      };
+      return updated;
+    });
+  };
+
   // Generate random color for custom events
   const getRandomColor = () => {
     const colors = ['#f2e8ff', '#e8f7ff', '#fff4e6', '#ffe8f0', '#e8fff4'];
@@ -244,19 +258,21 @@ export default function Itinerary() {
       
       // If it's a custom event (no eventId from EventsData), store it differently
       if (!newEvent.eventId) {
-        // Store as a custom event with title directly
+        // Store as a custom event with title and description
         updated[currentDay].push({
           customTitle: newEvent.title,
           start: newEvent.start,
           end: newEvent.end,
+          description: newEvent.description || "",
           color: newEvent.color || getRandomColor()
         });
       } else {
-        // Store as a reference to an event in EventsData
+        // Store as a reference to an event in EventsData with description
         updated[currentDay].push({
           eventId: newEvent.eventId,
           start: newEvent.start,
           end: newEvent.end,
+          description: newEvent.description || "",
           color: newEvent.color || getRandomColor()
         });
       }
@@ -270,6 +286,7 @@ export default function Itinerary() {
       title: "",
       start: "",
       end: "",
+      description: "",
       color: "#fff4e6"
     });
     setAddModalOpen(false);
@@ -310,27 +327,6 @@ export default function Itinerary() {
           +
         </button>
       </div>
-
-      {/* Clear All Button - only show if there are events */}
-      {events.length > 0 && (
-        <div className="clear-all-button">
-          <button
-            className="clear-all-btn"
-            onClick={() => {
-              if (window.confirm(`Clear all events for ${days[currentDay - 1]}?`)) {
-                setEventsByDay(prev => {
-                  const updated = { ...prev };
-                  updated[currentDay] = [];
-                  return updated;
-                });
-              }
-            }}
-          >
-            Clear All
-          </button>
-        </div>
-      )}
-
       {/* Timeline Section */}
       <div className="timeline">
         {/* Time Column */}
@@ -392,43 +388,44 @@ export default function Itinerary() {
 
       {/* Event Card Popup - itinerary version */}
       {selectedEvent !== null && (
-        <div className="event-card-overlay">
-          <ItineraryEventCard
-            event={
-              events[selectedEvent].customTitle 
-                ? {
-                    name: events[selectedEvent].customTitle,
-                    rating: 0,
-                    reviews: 0,
-                    price: '',
-                    hours: '',
-                    isOpen: true,
-                    category: 'custom',
-                    id: selectedEvent
-                  }
-                : getEventById(events[selectedEvent].eventId)
+        <ItineraryEventCard
+          event={
+            events[selectedEvent].customTitle 
+              ? {
+                  name: events[selectedEvent].customTitle,
+                  rating: 0,
+                  reviews: 0,
+                  price: '',
+                  hours: '',
+                  isOpen: true,
+                  category: 'custom',
+                  id: selectedEvent
+                }
+              : getEventById(events[selectedEvent].eventId)
+          }
+          index={selectedEvent}
+          isSelected={true}
+          isCustomEvent={!!events[selectedEvent].customTitle}
+          eventDescription={events[selectedEvent].description}
+          eventTime={`${events[selectedEvent].start} – ${events[selectedEvent].end}`}
+          onSelect={() => setSelectedEvent(null)}
+          onClose={() => setSelectedEvent(null)}
+          onViewAlternatives={handleViewAlternatives}
+          onEdit={handleEditEvent}
+          onRemove={(id) => {
+            // If custom event, pass index; otherwise pass eventId
+            if (events[selectedEvent].customTitle) {
+              handleRemoveEvent(selectedEvent);
+            } else {
+              handleRemoveEvent(id);
             }
-            index={selectedEvent}
-            isSelected={true}
-            isCustomEvent={!!events[selectedEvent].customTitle}
-            onSelect={() => setSelectedEvent(null)}
-            onClose={() => setSelectedEvent(null)}
-            onViewAlternatives={handleViewAlternatives}
-            onRemove={(id) => {
-              // If custom event, pass index; otherwise pass eventId
-              if (events[selectedEvent].customTitle) {
-                handleRemoveEvent(selectedEvent);
-              } else {
-                handleRemoveEvent(id);
-              }
-            }}
-          />
-        </div>
+          }}
+        />
       )}
 
       {/* Add Event Modal */}
       {addModalOpen && (
-        <div className="modal-overlay" onClick={(e) => {
+        <div className="modal-overlay-itinerary-events" onClick={(e) => {
           if (e.target === e.currentTarget) {
             setAddModalOpen(false);
             setNewEvent({
@@ -436,58 +433,85 @@ export default function Itinerary() {
               title: "",
               start: "",
               end: "",
+              description: "",
               color: "#fff4e6"
             });
           }
         }}>
-          <div
-            className="add-event-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="modal-title">Add Event</h2>
+          <div className="modal-content-itinerary-events" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-itinerary-events">
+              <h2 className="modal-title-itinerary-events">Add Event</h2>
+              <button className="modal-close-itinerary-events" onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setAddModalOpen(false);
+                setNewEvent({
+                  eventId: "",
+                  title: "",
+                  start: "",
+                  end: "",
+                  description: "",
+                  color: "#fff4e6"
+                });
+              }}>×</button>
+            </div>
+            
+            <div className="modal-body-itinerary-events">
+              <p className="modal-section-title-itinerary-events">Event Name</p>
+              <input
+                type="text"
+                className="modal-input"
+                value={newEvent.title}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, title: e.target.value })
+                }
+                placeholder="Enter event name"
+                disabled={!!newEvent.eventId}
+              />
 
-            <label>Title:</label>
-            <input
-              type="text"
-              value={newEvent.title}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, title: e.target.value })
-              }
-              placeholder="Event name"
-              disabled={!!newEvent.eventId}
-            />
+              <p className="modal-section-title-itinerary-events">Start Time</p>
+              <select
+                value={newEvent.start}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, start: e.target.value })
+                }
+                className="modal-select"
+              >
+                <option value="">Select a time</option>
+                {times.map((t) => (
+                  <option key={`start-${t}`} value={t}>{t}</option>
+                ))}
+              </select>
 
-            <label>Start Time:</label>
-            <select
-              value={newEvent.start}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, start: e.target.value })
-              }
-              className="time-select"
-            >
-              <option value="">Select a time</option>
-              {times.map((t) => (
-                <option key={`start-${t}`} value={t}>{t}</option>
-              ))}
-            </select>
+              <p className="modal-section-title-itinerary-events">End Time</p>
+              <select
+                value={newEvent.end}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, end: e.target.value })
+                }
+                className="modal-select"
+              >
+                <option value="">Select a time</option>
+                {times.map((t) => (
+                  <option key={`end-${t}`} value={t}>{t}</option>
+                ))}
+              </select>
 
-            <label>End Time:</label>
-            <select
-              value={newEvent.end}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, end: e.target.value })
-              }
-              className="time-select"
-            >
-              <option value="">Select a time</option>
-              {times.map((t) => (
-                <option key={`end-${t}`} value={t}>{t}</option>
-              ))}
-            </select>
-
-            <div className="modal-buttons">
+              <p className="modal-section-title-itinerary-events">Description (Optional)</p>
+              <textarea
+                className="modal-textarea"
+                value={newEvent.description}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, description: e.target.value })
+                }
+                placeholder="Add any additional details..."
+                rows="4"
+              />
+            </div>
+            
+            <div className="modal-footer-itinerary-events">
               <button 
-                className="cancel-btn" 
+                className="modal-button-cancel" 
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -497,22 +521,22 @@ export default function Itinerary() {
                     title: "",
                     start: "",
                     end: "",
+                    description: "",
                     color: "#fff4e6"
                   });
                 }}
               >
                 Cancel
               </button>
-
               <button
-                className="save-btn"
+                className="modal-button-itinerary-events"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   handleAddEvent();
                 }}
               >
-                Add
+                Add Event
               </button>
             </div>
           </div>

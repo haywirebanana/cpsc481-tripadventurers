@@ -44,7 +44,6 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
 
   const handleConfirm = () => {
     setShowPayment(true);
-    
   };
 
   const handleBack = () => {
@@ -164,10 +163,18 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
     );
     
     if (!alreadyExists) {
+      // Create booking description with number of guests, date, and time
+      const bookingDescription = `Guests: ${group}\nDate: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
+        month: 'long', 
+        day: 'numeric', 
+        year: 'numeric' 
+      })}\nTime: ${selectedSlot.time}`;
+
       itineraryEvents[dayNumber].push({
         eventId: eventId,
         start: selectedSlot.start,
         end: selectedSlot.end,
+        description: bookingDescription,
         color: getRandomColor()
       });
       

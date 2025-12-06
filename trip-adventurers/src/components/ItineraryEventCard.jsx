@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import '../styles/EventCard.css';
-import '../styles/ItineraryEventCard.css';
+import '../styles/itinerary.css';
 
 export default function ItineraryEventCard({ 
   event, 
@@ -10,9 +9,13 @@ export default function ItineraryEventCard({
   onSelect, 
   onClose, 
   onViewAlternatives,
-  onRemove 
+  onRemove,
+  onEdit,
+  eventDescription,
+  eventTime
 }) {
   const [isRemoving, setIsRemoving] = useState(false);
+  const [description, setDescription] = useState(eventDescription || "");
 
   const handleRemove = () => {
     setIsRemoving(true);
@@ -21,82 +24,65 @@ export default function ItineraryEventCard({
     }, 300);
   };
 
+  const handleDescriptionSave = () => {
+    if (onEdit) {
+      // Save the description
+      onEdit(index, description);
+    }
+  };
+
   return (
-    <div 
-      className={`event-card-container ${isSelected ? 'selected' : ''} ${isRemoving ? 'removing' : ''}`}
-      onClick={() => !isSelected && onSelect(index)}
-    >
-      {/* Collapsed View */}
-      <div className="event-card-collapsed">
-        <div className="event-card-info">
-          <h3 className="event-card-name">{event.name}</h3>
-          <div className="event-card-details">
-            {!isCustomEvent && (
-              <>
-                <div className="event-card-rating">
-                  <span className="rating-text">{event.rating}</span>
-                  <span className="reviews-text">({event.reviews})</span>
-                </div>
-                <span className="event-card-price">{event.price}</span>
-              </>
-            )}
-          </div>
+    <div className="modal-overlay-itinerary-events" onClick={onClose}>
+      <div className="modal-content-itinerary-events-itinerary" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header-itinerary-events">
+          <h2 className="modal-title-itinerary-events">{event.name}</h2>
+          <button className="modal-close-itinerary-events" onClick={onClose}>×</button>
         </div>
-      </div>
-
-      {/* Expanded View */}
-      {isSelected && (
-        <div className="event-card-expanded" onClick={(e) => e.stopPropagation()}>
-          <button className="event-card-close" onClick={onClose}>×</button>
-          
-          <h3 className="event-card-name-expanded">{event.name}</h3>
-          
-          {!isCustomEvent && (
-            <>
-              <div className="event-card-details-expanded">
-                <div className="event-card-rating-expanded">
-                  <span className="rating-text-large">{event.rating}</span>
-                  <span className="reviews-text-large">({event.reviews} reviews)</span>
-                </div>
-                <span className="event-card-price-expanded">{event.price}</span>
-              </div>
-              
-              <div className="event-card-hours">
-                <span className={event.isOpen ? 'hours-open' : 'hours-closed'}>
-                  {event.hours}
-                </span>
-              </div>
-
-              <div className="event-card-status">
-                <span className="status-badge booked">Already Booked</span>
-              </div>
-            </>
-          )}
-          
+        
+        <div className="modal-body-itinerary-events">
           {isCustomEvent && (
-            <div className="event-card-status">
-              <span className="status-badge custom">Custom Event</span>
+            <div className="event-badge-custom">
+              <span className="badge-text">Custom Event</span>
             </div>
           )}
           
-          <div className="event-card-actions">
-            {!isCustomEvent && (
-              <button 
-                className="event-action-btn alternatives-btn"
-                onClick={() => onViewAlternatives(event.category)}
-              >
-                View Alternatives
-              </button>
-            )}
-            <button 
-              className="event-action-btn remove-btn"
-              onClick={handleRemove}
-            >
-              Remove from Itinerary
-            </button>
-          </div>
+          {!isCustomEvent && (
+            <div className="event-badge-booked">
+              <span className="badge-text">Already Booked</span>
+            </div>
+          )}
+
+          <p className="modal-section-title-itinerary-events">Time</p>
+          <p className="modal-text-itinerary-events">{eventTime}</p>
+
+          <p className="modal-section-title-itinerary-events">Description</p>
+          <textarea
+            className="modal-textarea-inline"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            onBlur={handleDescriptionSave}
+            placeholder="Add event description..."
+            rows="4"
+          />
         </div>
-      )}
+        
+        <div className="modal-footer-itinerary-events">
+          {!isCustomEvent && (
+            <button 
+              className="modal-button-alternatives" 
+              onClick={() => onViewAlternatives(event.category)}
+            >
+              View Alternatives
+            </button>
+          )}
+          <button 
+            className="modal-button-remove"
+            onClick={handleRemove}
+          >
+            Remove from Itinerary
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
