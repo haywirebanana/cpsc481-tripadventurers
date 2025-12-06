@@ -8,6 +8,9 @@ export default function Itinerary() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Mock current user - you'd get this from your auth context
+  const currentUser = "User1"; // Replace with actual user from context
+
   // Generate hour slots
   const times = Array.from({ length: 25 }, (_, hour) => {
     const h = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
@@ -67,20 +70,22 @@ export default function Itinerary() {
         console.error("Failed to parse stored events", e);
       }
     }
-    // Default events if nothing in localStorage
+    // Default events with voting
     const defaultEvents = {
       1: [
         { 
           eventId: "tims", 
           start: "8:00 AM", 
           end: "9:00 AM", 
-          color: "#f2e8ff"
+          color: "#f2e8ff",
+          votes: { attending: ["User2"], notAttending: [] }
         },
         { 
           eventId: "bubblemania",
           start: "10:00 AM", 
           end: "12:00 PM", 
-          color: "#e8f7ff"
+          color: "#e8f7ff",
+          votes: { attending: [], notAttending: [] }
         },
       ],
       2: [
@@ -88,7 +93,8 @@ export default function Itinerary() {
           eventId: "chinook", 
           start: "9:00 AM", 
           end: "11:00 AM", 
-          color: "#fff4e6"
+          color: "#fff4e6",
+          votes: { attending: ["User1", "User2"], notAttending: ["User3"] }
         },
       ],
     };
@@ -188,11 +194,9 @@ export default function Itinerary() {
     setEventsByDay(prev => {
       const updated = { ...prev };
       
-      // If it's a number, it's the index of a custom event
       if (typeof eventIdOrIndex === 'number') {
         updated[currentDay].splice(eventIdOrIndex, 1);
       } else {
-        // Otherwise it's an eventId from EventsData
         updated[currentDay] = updated[currentDay].filter(
           event => event.eventId !== eventIdOrIndex
         );
@@ -215,6 +219,83 @@ export default function Itinerary() {
     });
   };
 
+  // Editable Description Component
+  const EditableDescription = ({ description, onSave }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedDescription, setEditedDescription] = useState(description);
+
+    const handleSave = () => {
+      onSave(editedDescription);
+      setIsEditing(false);
+    };
+
+    const handleCancel = () => {
+      setEditedDescription(description);
+      setIsEditing(false);
+    };
+
+    if (isEditing) {
+      return (
+        <div className="edit-description-container">
+          <textarea
+            className="modal-textarea-inline"
+            value={editedDescription}
+            onChange={(e) => setEditedDescription(e.target.value)}
+            placeholder="Add notes or details..."
+            rows="3"
+            autoFocus
+          />
+          <div className="edit-buttons">
+            <button className="save-edit-btn" onClick={handleSave}>
+              Save
+            </button>
+            <button className="cancel-edit-btn" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="description-display">
+        <p className="description-text">
+          {description || 'No additional details'}
+        </p>
+        <button className="edit-description-btn" onClick={() => setIsEditing(true)}>
+          Edit
+        </button>
+      </div>
+    );
+  };
+
+  // VOTING FUNCTIONS
+  const handleVote = (index, voteType) => {
+    setEventsByDay(prev => {
+      const updated = { ...prev };
+      const event = updated[currentDay][index];
+      
+      // Initialize votes if not present
+      if (!event.votes) {
+        event.votes = { attending: [], notAttending: [] };
+      }
+
+      // Remove user from both arrays first
+      event.votes.attending = event.votes.attending.filter(user => user !== currentUser);
+      event.votes.notAttending = event.votes.notAttending.filter(user => user !== currentUser);
+
+      // Add to appropriate array based on vote type
+      if (voteType === 'attending') {
+        event.votes.attending.push(currentUser);
+      } else if (voteType === 'notAttending') {
+        event.votes.notAttending.push(currentUser);
+      }
+      // If voteType is null, user is removing their vote (already removed above)
+
+      return updated;
+    });
+  };
+
   // Generate random color for custom events
   const getRandomColor = () => {
     const colors = ['#f2e8ff', '#e8f7ff', '#fff4e6', '#ffe8f0', '#e8fff4'];
@@ -225,7 +306,6 @@ export default function Itinerary() {
   const [isAdding, setIsAdding] = useState(false);
   
   const handleAddEvent = () => {
-    // Prevent duplicate submissions
     if (isAdding) return;
     
     if (!newEvent.title || !newEvent.start || !newEvent.end) {
@@ -233,13 +313,11 @@ export default function Itinerary() {
       return;
     }
 
-    // Validate that times are selected (not default empty value)
     if (newEvent.start === "" || newEvent.end === "") {
       alert('Please select start and end times');
       return;
     }
 
-    // Check if end time is after start time
     const startMinutes = timeToMinutes(newEvent.start);
     const endMinutes = timeToMinutes(newEvent.end);
     
@@ -256,31 +334,25 @@ export default function Itinerary() {
         updated[currentDay] = [];
       }
       
-      // If it's a custom event (no eventId from EventsData), store it differently
+      const newEventData = {
+        start: newEvent.start,
+        end: newEvent.end,
+        description: newEvent.description || "",
+        color: newEvent.color || getRandomColor(),
+        votes: { attending: [], notAttending: [] }
+      };
+
       if (!newEvent.eventId) {
-        // Store as a custom event with title and description
-        updated[currentDay].push({
-          customTitle: newEvent.title,
-          start: newEvent.start,
-          end: newEvent.end,
-          description: newEvent.description || "",
-          color: newEvent.color || getRandomColor()
-        });
+        newEventData.customTitle = newEvent.title;
       } else {
-        // Store as a reference to an event in EventsData with description
-        updated[currentDay].push({
-          eventId: newEvent.eventId,
-          start: newEvent.start,
-          end: newEvent.end,
-          description: newEvent.description || "",
-          color: newEvent.color || getRandomColor()
-        });
+        newEventData.eventId = newEvent.eventId;
       }
+
+      updated[currentDay].push(newEventData);
       
       return updated;
     });
 
-    // Reset form and close modal
     setNewEvent({
       eventId: "",
       title: "",
@@ -291,7 +363,6 @@ export default function Itinerary() {
     });
     setAddModalOpen(false);
     
-    // Reset the flag after a short delay
     setTimeout(() => setIsAdding(false), 500);
   };
   
@@ -327,6 +398,7 @@ export default function Itinerary() {
           +
         </button>
       </div>
+
       {/* Timeline Section */}
       <div className="timeline">
         {/* Time Column */}
@@ -341,7 +413,6 @@ export default function Itinerary() {
         {/* Event Column */}
         <div className="events-column">
           {events.map((itineraryEvent, index) => {
-            // Handle both regular events and custom events
             let displayName;
             const isCustomEvent = !!itineraryEvent.customTitle;
 
@@ -358,6 +429,11 @@ export default function Itinerary() {
             const duration = endMinutes - startMinutes;
             const top = (startMinutes / 60) * 100;
             const height = (duration / 60) * 98;
+
+            // Get votes
+            const votes = itineraryEvent.votes || { attending: [], notAttending: [] };
+            const attendingCount = votes.attending.length;
+            const notAttendingCount = votes.notAttending.length;
             
             return (
               <div 
@@ -380,6 +456,22 @@ export default function Itinerary() {
               >
                 <h4 className="event-title">{displayName}</h4>
                 <p className="event-time">{itineraryEvent.start} – {itineraryEvent.end}</p>
+                
+                {/* Vote indicators on card */}
+                {(attendingCount > 0 || notAttendingCount > 0) && (
+                  <div className="event-vote-indicators">
+                    {attendingCount > 0 && (
+                      <span className="vote-indicator attending">
+                        ✓ {attendingCount}
+                      </span>
+                    )}
+                    {notAttendingCount > 0 && (
+                      <span className="vote-indicator not-attending">
+                        ✗ {notAttendingCount}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -388,39 +480,148 @@ export default function Itinerary() {
 
       {/* Event Card Popup - itinerary version */}
       {selectedEvent !== null && (
-        <ItineraryEventCard
-          event={
-            events[selectedEvent].customTitle 
-              ? {
-                  name: events[selectedEvent].customTitle,
-                  rating: 0,
-                  reviews: 0,
-                  price: '',
-                  hours: '',
-                  isOpen: true,
-                  category: 'custom',
-                  id: selectedEvent
-                }
-              : getEventById(events[selectedEvent].eventId)
-          }
-          index={selectedEvent}
-          isSelected={true}
-          isCustomEvent={!!events[selectedEvent].customTitle}
-          eventDescription={events[selectedEvent].description}
-          eventTime={`${events[selectedEvent].start} – ${events[selectedEvent].end}`}
-          onSelect={() => setSelectedEvent(null)}
-          onClose={() => setSelectedEvent(null)}
-          onViewAlternatives={handleViewAlternatives}
-          onEdit={handleEditEvent}
-          onRemove={(id) => {
-            // If custom event, pass index; otherwise pass eventId
-            if (events[selectedEvent].customTitle) {
-              handleRemoveEvent(selectedEvent);
-            } else {
-              handleRemoveEvent(id);
-            }
-          }}
-        />
+        <div className="event-card-overlay" onClick={() => setSelectedEvent(null)}>
+          <div className="event-card-container" onClick={(e) => e.stopPropagation()}>
+            <div className="event-card-modal">
+              {/* Header */}
+              <div className="event-card-header">
+                <h2 className="event-card-name">
+                  {events[selectedEvent].customTitle 
+                    ? events[selectedEvent].customTitle
+                    : getEventById(events[selectedEvent].eventId)?.name}
+                </h2>
+                <button className="event-card-close" onClick={() => setSelectedEvent(null)}>×</button>
+              </div>
+
+              {/* Time Badge */}
+              <div className="event-time-badge">
+                <span className="time-badge-text"> {events[selectedEvent].start} – {events[selectedEvent].end}</span>
+              </div>
+
+              {/* Voting Section */}
+              <div className="voting-section">
+                <p className="voting-title">Attending?</p>
+                <div className="voting-buttons">
+                  <button 
+                    className={`vote-btn not-attending ${
+                      events[selectedEvent].votes?.notAttending.includes(currentUser) ? 'selected' : ''
+                    }`}
+                    onClick={() => {
+                      const currentVote = events[selectedEvent].votes?.notAttending.includes(currentUser) 
+                        ? null 
+                        : 'notAttending';
+                      handleVote(selectedEvent, currentVote);
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                      <path d="M8 8L24 24M24 8L8 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                    </svg>
+                  </button>
+                  <button 
+                    className={`vote-btn attending ${
+                      events[selectedEvent].votes?.attending.includes(currentUser) ? 'selected' : ''
+                    }`}
+                    onClick={() => {
+                      const currentVote = events[selectedEvent].votes?.attending.includes(currentUser) 
+                        ? null 
+                        : 'attending';
+                      handleVote(selectedEvent, currentVote);
+                    }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                      <path d="M6 16L12 22L26 8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Vote Display Boxes */}
+              <div className="vote-display-section">
+                <div className="vote-display-box not-attending-box">
+                  <div className="vote-display-icons">
+                    {(events[selectedEvent].votes?.notAttending || []).map((user, idx) => (
+                      <div key={idx} className="user-icon not-attending-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="8" r="4" fill="#ef4444"/>
+                          <path d="M6 20C6 16.6863 8.68629 14 12 14C15.3137 14 18 16.6863 18 20" fill="#ef4444"/>
+                        </svg>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="vote-display-box attending-box">
+                  <div className="vote-display-icons">
+                    {(events[selectedEvent].votes?.attending || []).map((user, idx) => (
+                      <div key={idx} className="user-icon attending-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="8" r="4" fill="#22c55e"/>
+                          <path d="M6 20C6 16.6863 8.68629 14 12 14C15.3137 14 18 16.6863 18 20" fill="#22c55e"/>
+                        </svg>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Event Info (for non-custom events) */}
+              {!events[selectedEvent].customTitle && getEventById(events[selectedEvent].eventId) && (
+                <>
+                  {getEventById(events[selectedEvent].eventId).rating > 0 && (
+                    <div className="event-card-rating">
+                      <span className="rating-stars">★ {getEventById(events[selectedEvent].eventId).rating}</span>
+                      <span className="rating-reviews">({getEventById(events[selectedEvent].eventId).reviews} reviews)</span>
+                    </div>
+                  )}
+
+                  {getEventById(events[selectedEvent].eventId).price && (
+                    <div className="event-card-info">
+                      <strong>Price:</strong> {getEventById(events[selectedEvent].eventId).price}
+                    </div>
+                  )}
+
+                  {getEventById(events[selectedEvent].eventId).hours && (
+                    <div className="event-card-info">
+                      <strong>Hours:</strong> {getEventById(events[selectedEvent].eventId).hours}
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Notification/Description Section */}
+              <div className="event-notification-section">
+                <p className="notification-label">Notification</p>
+                <EditableDescription
+                  description={events[selectedEvent].description || ''}
+                  onSave={(newDescription) => handleEditEvent(selectedEvent, newDescription)}
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="event-card-actions">
+                {!events[selectedEvent].customTitle && getEventById(events[selectedEvent].eventId) && (
+                  <button 
+                    className="event-action-btn alternatives-btn"
+                    onClick={() => handleViewAlternatives(getEventById(events[selectedEvent].eventId).category)}
+                  >
+                    View Alternatives
+                  </button>
+                )}
+                <button 
+                  className="event-action-btn remove-btn"
+                  onClick={() => {
+                    if (events[selectedEvent].customTitle) {
+                      handleRemoveEvent(selectedEvent);
+                    } else {
+                      handleRemoveEvent(events[selectedEvent].eventId);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Add Event Modal */}

@@ -672,7 +672,7 @@ export default function TripSetup() {
                 Cancel
               </button>
               <button 
-                className="modal-btn-setup modal-btn-confirm-setup"
+                className="modal-btn-setup modal-btn-remove-setup"
                 onClick={confirmRemoveMember}
               >
                 Remove

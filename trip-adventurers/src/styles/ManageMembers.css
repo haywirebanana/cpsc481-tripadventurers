@@ -503,7 +503,7 @@
   padding: 12px 20px;
   border-radius: 12px;
   border: 1px solid #000;
-  background: #000;
+  background: #7a8f72;;
   color: white;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -617,12 +617,23 @@
 }
 
 .modal-btn-confirm-setup {
+  background: #96A78D;
+  border-color: #2c3e2a;
+  color: #000;
+}
+
+.modal-btn-confirm-setup:hover {
+  background: #7a8f72;
+  transform: translateY(-1px);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+}
+.modal-btn-remove-setup {
   background: #e8b4b4;
   border-color: #c97676;
   color: #000;
 }
 
-.modal-btn-confirm-setup:hover {
+.modal-btn-remove-setup:hover {
   background: #dc9d9d;
   transform: translateY(-1px);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);

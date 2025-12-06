@@ -264,11 +264,11 @@ border-bottom: #000000 2px solid;
 }
 
 .alternatives-btn {
-  background-color: #E8F7FF;
+  background-color: #B6CEB4;
 }
 
 .alternatives-btn:hover {
-  background-color: #D0EDFF;
+  background-color: #d0ffd6;
   transform: translateY(-2px);
 }
 
@@ -683,5 +683,403 @@ border-bottom: #000000 2px solid;
   .modal-content-itinerary-events-itinerary {
     width: 90%;
     max-width: 340px;
+  }
+}
+/* ============================================
+   VOTING FEATURE CSS - ADD TO itinerary.css
+   ============================================ */
+
+/* Vote indicators on event cards (timeline view) */
+.event-vote-indicators {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  align-items: center;
+}
+
+.vote-indicator {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.vote-indicator.attending {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #22c55e;
+}
+
+.vote-indicator.not-attending {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+/* Voting Section in Modal */
+.voting-section {
+  margin: 16px 0;
+  padding: 16px;
+  background: #f9fbf9;
+  border-radius: 12px;
+  border: 2px solid #e6ebe5;
+}
+
+.voting-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+.voting-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.vote-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  border: 3px solid #d3dbd1;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9caf9f;
+}
+
+.vote-btn:hover {
+  transform: scale(1.05);
+  border-color: #a5af9c;
+}
+
+.vote-btn.not-attending {
+  border-color: #fca5a5;
+}
+
+.vote-btn.not-attending.selected {
+  background: #ef4444;
+  border-color: #dc2626;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.vote-btn.not-attending:hover {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.vote-btn.not-attending.selected:hover {
+  background: #dc2626;
+}
+
+.vote-btn.attending {
+  border-color: #86efac;
+}
+
+.vote-btn.attending.selected {
+  background: #22c55e;
+  border-color: #16a34a;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.vote-btn.attending:hover {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.vote-btn.attending.selected:hover {
+  background: #16a34a;
+}
+
+/* Vote Display Section */
+.vote-display-section {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.vote-display-box {
+  flex: 1;
+  min-height: 80px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vote-display-box.not-attending-box {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.vote-display-box.attending-box {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.vote-display-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid;
+}
+
+.user-icon.not-attending-icon {
+  border-color: #ef4444;
+}
+
+.user-icon.attending-icon {
+  border-color: #22c55e;
+}
+
+/* Time Badge */
+.event-time-badge {
+  display: inline-block;
+  margin: 8px 0 12px 0;
+}
+
+.time-badge-text {
+  background: #daf0cc;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #2c3e2a;
+}
+
+/* Notification Section */
+.event-notification-section {
+  margin: 16px 0;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+}
+
+.notification-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.description-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.description-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+  white-space: pre-wrap;
+  min-height: 20px;
+}
+
+.edit-description-btn {
+  align-self: flex-start;
+  background: #96A78D;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-description-btn:hover {
+  background: #7a8f72;
+  transform: translateY(-1px);
+}
+
+.edit-description-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.save-edit-btn,
+.cancel-edit-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.save-edit-btn {
+  background: #96A78D;
+  color: white;
+}
+
+.save-edit-btn:hover {
+  background: #7a8f72;
+  transform: translateY(-1px);
+}
+
+.cancel-edit-btn {
+  background: #e5e7eb;
+  color: #3d5137;
+}
+
+.cancel-edit-btn:hover {
+  background: #d1d5db;
+}
+
+/* Event Card Overlay */
+.event-card-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.event-card-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Event Card Modal Adjustments */
+.event-card-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  max-height: 85vh;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.event-card-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  flex: 1;
+  padding-right: 12px;
+}
+
+.event-card-close {
+  background: none;
+  border: none;
+  font-size: 32px;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.event-card-close:hover {
+  background: #f3f4f6;
+  color: #111;
+}
+
+.event-card-info {
+  font-size: 14px;
+  color: #555;
+  margin: 8px 0;
+}
+
+.event-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.rating-stars {
+  color: #f59e0b;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rating-reviews {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .vote-display-section {
+    flex-direction: column;
+  }
+  
+  .voting-buttons {
+    flex-direction: row;
+  }
+  
+  .vote-btn {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .event-card-modal {
+    max-width: 90%;
   }
 }
