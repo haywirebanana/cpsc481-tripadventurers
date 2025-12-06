@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import mapBackground from '../assets/map.jpg';
 import searchIcon from '../assets/search.svg';
 import arrowIcon from '../assets/arrow.svg';
@@ -6,11 +7,15 @@ import filterIcon from '../assets/filter.svg';
 import EventCard from '../components/EventCard';
 import BookingPopup from '../components/BookingPopup';
 import SortFilterPopup from '../components/SortFilterPopup';
+import { allEvents } from '../components/EventsData';
 import '../styles/Explore.css';
 import '../styles/EventCard.css';
 
 export default function Explore() {
-  const [view, setView] = useState('map'); // 'map' or 'list'
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const [view, setView] = useState('map');
   const [activeFilters, setActiveFilters] = useState({
     categories: [],
     sortBy: 'price-asc',
@@ -23,52 +28,19 @@ export default function Explore() {
   const [bookingEvent, setBookingEvent] = useState(null);
   const [showSortFilter, setShowSortFilter] = useState(false);
 
-  // Comprehensive mock data with all categories
-  const allEvents = [
-    // Museums (7)
-    { name: 'Glenbow Museum', category: 'museum', rating: 4.5, reviews: 892, price: '$$', hours: 'Open • Closes 5:00 PM', isOpen: true },
-    { name: 'Heritage Park Historical Village', category: 'museum', rating: 4.7, reviews: 1543, price: '$$$', hours: 'Closed • Opens 10:00 AM Tomorrow', isOpen: false },
-    { name: 'TELUS Spark Science Centre', category: 'museum', rating: 4.6, reviews: 2108, price: '$$$', hours: 'Open • Closes 4:00 PM', isOpen: true },
-    { name: 'Military Museums', category: 'museum', rating: 4.4, reviews: 567, price: '$', hours: 'Open • Closes 5:00 PM', isOpen: true },
-    { name: 'Esker Foundation Contemporary Art Gallery', category: 'museum', rating: 4.3, reviews: 234, price: '$', hours: 'Closed • Opens 12:00 PM Tomorrow', isOpen: false },
-    { name: 'Studio Bell', category: 'museum', rating: 4.8, reviews: 1876, price: '$$$$', hours: 'Open • Closes 9:00 PM', isOpen: true },
-    { name: 'Calgary Selfie Museum', category: 'museum', rating: 4.2, reviews: 445, price: '$$', hours: 'Closed • Opens 9:00 AM Tomorrow', isOpen: false },
-    
-    // Restaurants (7)
-    { name: 'Porch', category: 'restaurant', rating: 4.6, reviews: 1234, price: '$$$$', hours: 'Open • Closes 10:00 PM', isOpen: true },
-    { name: 'Orchard', category: 'restaurant', rating: 4.5, reviews: 987, price: '$$$', hours: 'Open • Closes 11:00 PM', isOpen: true },
-    { name: 'The Canadian Brewhouse', category: 'restaurant', rating: 4.7, reviews: 1567, price: '$$$$$', hours: 'Closed • Opens 5:00 PM', isOpen: false },
-    { name: 'Bubblemania', category: 'restaurant', rating: 4.4, reviews: 756, price: '$$$', hours: 'Open • Closes 10:00 PM', isOpen: true },
-    { name: 'State & Main', category: 'restaurant', rating: 4.8, reviews: 2134, price: '$$$$', hours: 'Closed • Opens 5:30 PM', isOpen: false },
-    { name: 'Una Pizza + Wine', category: 'restaurant', rating: 4.3, reviews: 891, price: '$$', hours: 'Open • Closes 11:00 PM', isOpen: true },
-    { name: 'Kinjo', category: 'restaurant', rating: 4.5, reviews: 1023, price: '$$$', hours: 'Open • Closes 12:00 AM', isOpen: true },
-    
-    // Gas Stations (6)
-    { name: 'Petro-Canada', category: 'gas', rating: 3.8, reviews: 145, price: '$', hours: 'Open 24 Hours', isOpen: true },
-    { name: 'Shell', category: 'gas', rating: 4.0, reviews: 234, price: '$', hours: 'Open 24 Hours', isOpen: true },
-    { name: 'Esso', category: 'gas', rating: 3.9, reviews: 198, price: '$', hours: 'Open • Closes 11:00 PM', isOpen: true },
-    { name: 'Co-op Gas', category: 'gas', rating: 4.2, reviews: 312, price: '$', hours: 'Open • Closes 10:00 PM', isOpen: true },
-    { name: '7-Eleven Gas', category: 'gas', rating: 3.7, reviews: 167, price: '$', hours: 'Open 24 Hours', isOpen: true },
-    { name: 'Mobil', category: 'gas', rating: 3.6, reviews: 89, price: '$', hours: 'Open • Closes 12:00 AM', isOpen: true },
-    
-    // Shopping/Malls (5)
-    { name: 'CF Chinook Centre', category: 'shopping', rating: 4.4, reviews: 3421, price: '$$$$', hours: 'Open • Closes 9:00 PM', isOpen: true },
-    { name: 'CORE Shopping Centre', category: 'shopping', rating: 4.3, reviews: 2876, price: '$$$', hours: 'Open • Closes 7:00 PM', isOpen: true },
-    { name: 'CrossIron Mills', category: 'shopping', rating: 4.2, reviews: 4123, price: '$$$', hours: 'Open • Closes 9:00 PM', isOpen: true },
-    { name: 'Market Mall', category: 'shopping', rating: 4.1, reviews: 1987, price: '$$', hours: 'Open • Closes 8:00 PM', isOpen: true },
-    { name: 'Southcentre Mall', category: 'shopping', rating: 4.0, reviews: 2345, price: '$$', hours: 'Open • Closes 9:00 PM', isOpen: true },
-    
-    // Cafés (7)
-    { name: 'Phil & Sebastian Coffee Roasters', category: 'cafe', rating: 4.7, reviews: 1876, price: '$$', hours: 'Open • Closes 6:00 PM', isOpen: true },
-    { name: 'Monogram Coffee', category: 'cafe', rating: 4.6, reviews: 1432, price: '$$', hours: 'Open • Closes 5:00 PM', isOpen: true },
-    { name: 'Rosso Coffee Roasters', category: 'cafe', rating: 4.5, reviews: 2103, price: '$', hours: 'Open • Closes 7:00 PM', isOpen: true },
-    { name: 'Analog Coffee', category: 'cafe', rating: 4.4, reviews: 987, price: '$', hours: 'Closed • Opens 7:00 AM Tomorrow', isOpen: false },
-    { name: 'Fratello Coffee Roasters', category: 'cafe', rating: 4.3, reviews: 1234, price: '$', hours: 'Open • Closes 6:00 PM', isOpen: true },
-    { name: 'Higher Ground Café', category: 'cafe', rating: 4.2, reviews: 678, price: '$$', hours: 'Open • Closes 5:00 PM', isOpen: true },
-    { name: 'Vendome Café', category: 'cafe', rating: 4.8, reviews: 1567, price: '$$', hours: 'Closed • Opens 8:00 AM Tomorrow', isOpen: false },
-  ];
+  // Handle navigation from itinerary with category filter
+  useEffect(() => {
+    if (location.state?.filterCategory) {
+      setActiveFilters(prev => ({
+        ...prev,
+        categories: [location.state.filterCategory]
+      }));
+      setView('list');
+      setShowSortFilter(true);
+    }
+  }, [location.state]);
 
-  // Filter and sort events based on current filters and search term
+  // Filter and sort events
   const filteredEvents = useMemo(() => {
     let events = [...allEvents];
 
@@ -122,7 +94,6 @@ export default function Explore() {
         events.sort((a, b) => b.rating - a.rating);
         break;
       case 'closest':
-        // For now, just sort by name (you could add distance data later)
         events.sort((a, b) => a.name.localeCompare(b.name));
         break;
       default:
@@ -147,13 +118,28 @@ export default function Explore() {
   };
 
   const handleBookNow = (eventName) => {
-    setBookingEvent(eventName);
-    setView('map');
+    const event = allEvents.find(e => e.name === eventName);
+    if (event) {
+      setBookingEvent({ name: eventName, id: event.id });
+      setView('map');
+    }
   };
 
   const handleCloseBooking = () => {
     setBookingEvent(null);
     setView('list');
+  };
+
+  const handleAddToItinerary = (event) => {
+    // Navigate to itinerary with prefilled event data
+    navigate('/trip/1/intinerary', { 
+      state: { 
+        prefilledEvent: {
+          eventId: event.id,
+          title: event.name
+        }
+      } 
+    });
   };
 
   const handleApplyFilters = (filters) => {
@@ -216,6 +202,7 @@ export default function Explore() {
                     onSelect={(idx) => setSelectedEvent(selectedEvent === idx ? null : idx)}
                     onClose={() => setSelectedEvent(null)}
                     onBookNow={handleBookNow}
+                    onAddToItinerary={handleAddToItinerary}
                   />
                 ))
               ) : (
@@ -229,7 +216,8 @@ export default function Explore() {
         {/* Booking Popup */}
         {bookingEvent && (
           <BookingPopup 
-            eventName={bookingEvent}
+            eventName={bookingEvent.name}
+            eventId={bookingEvent.id}
             onClose={handleCloseBooking}
           />
         )}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTrips } from "../context/TripContext";
 import "../styles/TripSetup.css";
+import "../styles/ManageMembers.css";
 
 export default function TripSetup() {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ export default function TripSetup() {
   const [tripTitle, setTripTitle] = useState("");
   const [tripImage, setTripImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-
   // State for destinations
   const [destinations, setDestinations] = useState([
     {
@@ -32,6 +32,13 @@ export default function TripSetup() {
   const [memberModalType, setMemberModalType] = useState(null); // 'add' or 'edit'
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Add-member form fields
+  const [newMemberName, setNewMemberName] = useState("");
+  const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [newMemberRole, setNewMemberRole] = useState("planner");
+
+  
 
   // Load existing trip data if in edit mode
   useEffect(() => {
@@ -143,9 +150,12 @@ export default function TripSetup() {
     setImagePreview(null);
   };
 
-  // Handle member management
+ // Handle member management
   const handleAddMembers = () => {
     setMemberModalType('add');
+    setNewMemberName("");
+    setNewMemberEmail("");
+    setNewMemberRole("planner");
     setShowMemberModal(true);
   };
 
@@ -157,8 +167,29 @@ export default function TripSetup() {
   const closeMemberModal = () => {
     setShowMemberModal(false);
     setMemberModalType(null);
+    setEditingMember(null);
+    setNewMemberName("");
+    setNewMemberEmail("");
+    setNewMemberRole("planner");
   };
 
+  const handleRemoveMember = (member, role) => {
+    if (role === 'planner') {
+      setPlanners(planners.filter(p => p !== member));
+    } else {
+      setViewers(viewers.filter(v => v !== member));
+    }
+  };
+
+  const handleChangeRole = (member, currentRole) => {
+    if (currentRole === 'planner') {
+      setPlanners(planners.filter(p => p !== member));
+      setViewers([...viewers, member]);
+    } else {
+      setViewers(viewers.filter(v => v !== member));
+      setPlanners([...planners, member]);
+    }
+  };
   // Handle delete trip
   const handleDeleteTrip = () => {
     setShowDeleteModal(true);
@@ -447,21 +478,141 @@ export default function TripSetup() {
       )}
 
       {/* Member Management Modal - Placeholder */}
-      {showMemberModal && (
-        <div className="modal-overlay-setup" onClick={closeMemberModal}>
-          <div className="modal-content member-modal-setup" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title-setup">
-              {memberModalType === 'add' ? 'Add Members' : 'Edit Members'}
-            </h3>
-            <p className="modal-message-setup">
-              Member management functionality coming soon!
-            </p>
-            <button 
-              className="modal-btn-setup modal-btn-cancel-setup"
-              onClick={closeMemberModal}
+      {showMemberModal && memberModalType === "add" && (
+        <div className="add-members-overlay" onClick={closeMemberModal}>
+          <div
+            className="add-members-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="add-members-title">Add a Member</h3>
+
+            <label className="add-members-label">Name</label>
+            <input
+              className="add-members-input"
+              type="text"
+              placeholder="Enter name"
+              value={newMemberName}
+              onChange={(e) => setNewMemberName(e.target.value)}
+            />
+
+            <label className="add-members-label">Email</label>
+            <input
+              className="add-members-input"
+              type="email"
+              placeholder="Enter email"
+              value={newMemberEmail}
+              onChange={(e) => setNewMemberEmail(e.target.value)}
+            />
+
+            <label className="add-members-label">Role</label>
+            <select
+              className="add-members-input"
+              value={newMemberRole}
+              onChange={(e) => setNewMemberRole(e.target.value)}
             >
-              Close
-            </button>
+              <option value="planner">Planner</option>
+              <option value="viewer">Viewer</option>
+            </select>
+
+            <div className="add-members-buttons">
+              <button 
+                className="add-members-cancel"
+                onClick={closeMemberModal}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="add-members-save"
+                onClick={() => {
+                  if (!newMemberName || !newMemberEmail) return;
+
+                  if (newMemberRole === "planner") {
+                    setPlanners([...planners, `${newMemberName} (${newMemberEmail})`]);
+                  } else {
+                    setViewers([...viewers, `${newMemberName} (${newMemberEmail})`]);
+                  }
+
+                  closeMemberModal();
+                }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+           {/* Edit Members Modal */}
+      {showMemberModal && memberModalType === "edit" && (
+        <div className="add-members-overlay" onClick={closeMemberModal}>
+          <div
+            className="add-members-modal edit-members-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="add-members-title">Manage Members</h3>
+
+            <div className="edit-members-section">
+              <h4 className="edit-members-section-title">Planners</h4>
+              <div className="edit-members-list">
+                {planners.map((planner, index) => (
+                  <div key={index} className="edit-member-item">
+                    <span className="edit-member-name">{planner}</span>
+                    <div className="edit-member-actions">
+                      <button
+                        className="edit-member-btn"
+                        onClick={() => handleChangeRole(planner, 'planner')}
+                        title="Change to viewer"
+                      >
+                        ⇅
+                      </button>
+                      <button
+                        className="edit-member-btn delete-btn"
+                        onClick={() => handleRemoveMember(planner, 'planner')}
+                        title="Remove member"
+                      >
+                        🗑
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="edit-members-section">
+              <h4 className="edit-members-section-title">Viewers</h4>
+              <div className="edit-members-list">
+                {viewers.map((viewer, index) => (
+                  <div key={index} className="edit-member-item">
+                    <span className="edit-member-name">{viewer}</span>
+                    <div className="edit-member-actions">
+                      <button
+                        className="edit-member-btn"
+                        onClick={() => handleChangeRole(viewer, 'viewer')}
+                        title="Change to planner"
+                      >
+                        ⇅
+                      </button>
+                      <button
+                        className="edit-member-btn delete-btn"
+                        onClick={() => handleRemoveMember(viewer, 'viewer')}
+                        title="Remove member"
+                      >
+                        🗑
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="add-members-buttons">
+              <button 
+                className="add-members-save full-width"
+                onClick={closeMemberModal}
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
