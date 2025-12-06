@@ -70,3 +70,74 @@
   height: 28px;
   filter: brightness(0) saturate(100%) invert(20%) sepia(89%) saturate(2476%) hue-rotate(343deg) brightness(92%) contrast(92%);
 }
+
+.modal-overlay-logout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content-logout {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  width: 85%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title-logout {
+  margin: 0 0 12px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #212529;
+}
+
+.modal-message-logout {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+  color: #495057;
+  line-height: 1.5;
+}
+
+.modal-actions-logout {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.modal-btn-logout {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.modal-btn-cancel-logout {
+  background: #d9dcdf;
+  color: #495057;
+}
+
+.modal-btn-cancel-logout:hover {
+  background: #bec2c7;
+}
+
+.modal-btn-confirm-logout {
+  background: rgb(203, 93, 93);
+  color: white;
+}
+
+.modal-btn-confirm-logout:hover {
+  background: #b71c1c;
+}
