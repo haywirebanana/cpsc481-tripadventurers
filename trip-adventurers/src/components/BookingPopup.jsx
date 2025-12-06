@@ -113,6 +113,54 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
     }
   };
   
+  const processBooking = () => {
+    const dayNumber = calculateDayNumber(selectedDate);
+    const itineraryEvents = JSON.parse(localStorage.getItem('itineraryEvents') || '{}');
+    
+    if (!itineraryEvents[dayNumber]) {
+      itineraryEvents[dayNumber] = [];
+    }
+    
+    const selectedSlot = timeSlots[selectedTime];
+    
+    // Check if event already exists on this day at this time
+    const alreadyExists = itineraryEvents[dayNumber].some(
+      event => event.eventId === eventId && 
+               event.start === selectedSlot.start && 
+               event.end === selectedSlot.end
+    );
+    
+    if (!alreadyExists) {
+      const bookingDescription = `Guests: ${group}\nDate: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
+        month: 'long', 
+        day: 'numeric', 
+        year: 'numeric' 
+      })}\nTime: ${selectedSlot.time}`;
+
+      itineraryEvents[dayNumber].push({
+        eventId: eventId,
+        start: selectedSlot.start,
+        end: selectedSlot.end,
+        description: bookingDescription,
+        color: getRandomColor()
+      });
+      
+      localStorage.setItem('itineraryEvents', JSON.stringify(itineraryEvents));
+      window.dispatchEvent(new Event('itineraryUpdated'));
+      navigate('/trip/1/intinerary', { state: { day: dayNumber } });
+    } else {
+      alert('This event is already in your itinerary for this time slot!');
+      onClose();
+    }
+  };
+  
+  const handlePaymentMethodClick = (method) => {
+    const confirmed = window.confirm(`Do you want to open a new window for ${method}?`);
+    if (confirmed) {
+      processBooking();
+    }
+  };
+  
   const handlePaymentConfirm = () => {
     const newErrors = {};
     
@@ -145,50 +193,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
       return;
     }
     
-    // Add event to itinerary
-    const dayNumber = calculateDayNumber(selectedDate);
-    const itineraryEvents = JSON.parse(localStorage.getItem('itineraryEvents') || '{}');
-    
-    if (!itineraryEvents[dayNumber]) {
-      itineraryEvents[dayNumber] = [];
-    }
-    
-    const selectedSlot = timeSlots[selectedTime];
-    
-    // Check if event already exists on this day at this time
-    const alreadyExists = itineraryEvents[dayNumber].some(
-      event => event.eventId === eventId && 
-               event.start === selectedSlot.start && 
-               event.end === selectedSlot.end
-    );
-    
-    if (!alreadyExists) {
-      // Create booking description with number of guests, date, and time
-      const bookingDescription = `Guests: ${group}\nDate: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
-        month: 'long', 
-        day: 'numeric', 
-        year: 'numeric' 
-      })}\nTime: ${selectedSlot.time}`;
-
-      itineraryEvents[dayNumber].push({
-        eventId: eventId,
-        start: selectedSlot.start,
-        end: selectedSlot.end,
-        description: bookingDescription,
-        color: getRandomColor()
-      });
-      
-      localStorage.setItem('itineraryEvents', JSON.stringify(itineraryEvents));
-      
-      // Dispatch event to notify itinerary to refresh
-      window.dispatchEvent(new Event('itineraryUpdated'));
-      
-      // Redirect to itinerary page with the specific day
-      navigate('/trip/1/intinerary', { state: { day: dayNumber } });
-    } else {
-      alert('This event is already in your itinerary for this time slot!');
-      onClose();
-    }
+    processBooking();
   };
 
   return (
@@ -288,9 +293,9 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
               )}
 
               <div className="payment-buttons">
-                <button className="payment-method-btn">PayPal</button>
-                <button className="payment-method-btn">ApplePay</button>
-                <button className="payment-method-btn">GooglePay</button>
+                <button className="payment-method-btn" onClick={() => handlePaymentMethodClick('PayPal')}>PayPal</button>
+                <button className="payment-method-btn" onClick={() => handlePaymentMethodClick('ApplePay')}>ApplePay</button>
+                <button className="payment-method-btn" onClick={() => handlePaymentMethodClick('GooglePay')}>GooglePay</button>
               </div>
               <div className={`payment-input-group ${errors.cardNumber ? 'input-error' : ''}`}>
                 <label>Credit Card #:</label>
