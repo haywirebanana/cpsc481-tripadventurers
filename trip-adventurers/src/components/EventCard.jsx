@@ -2,7 +2,7 @@ import phoneIcon from '../assets/phone-icon.svg';
 import webLinkIcon from '../assets/web-link-icon.svg';
 import navMapsIcon from '../assets/nav-maps-icon.svg';
 
-export default function EventCard({ event, index, isSelected, onSelect, onClose, onBookNow }) {
+export default function EventCard({ event, index, isSelected, onSelect, onClose, onBookNow, onDirections, onAddToItinerary }) {  
   return (
     <div 
       className={`explore-event-card ${isSelected ? 'selected' : ''}`}
@@ -52,10 +52,24 @@ export default function EventCard({ event, index, isSelected, onSelect, onClose,
             >
               Book Now
             </button>
-            <button className="action-btn">Directions</button>
+            <button
+              className="action-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDirections(event.name);
+              }}
+            >
+              Directions
+            </button>
           </div>
           
-          <button className="itinerary-btn">
+          <button 
+            className="itinerary-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToItinerary(event);
+            }}
+          >
             Add To Itinerary ▼
           </button>
         </>
