@@ -182,7 +182,7 @@ export default function Itinerary() {
 
   // Function to view alternatives - navigate to Explore with filter
   const handleViewAlternatives = (category) => {
-    navigate('/explore', { 
+    navigate('../explore', { 
       state: { 
         filterCategory: category 
       } 
