@@ -70,7 +70,7 @@ export default function EventCard({ event, index, isSelected, onSelect, onClose,
               onAddToItinerary(event);
             }}
           >
-            Add To Itinerary ▼
+            Add To Itinerary
           </button>
         </>
       ) : (
