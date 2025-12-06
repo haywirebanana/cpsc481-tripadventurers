@@ -69,7 +69,7 @@ export default function TripLayout() {
           fontSize: '25px',
           fontWeight: 700,
           margin: 0
-        }}>Trip Name</h1>
+        }}>Holidays in YYC!</h1>
       </div>
 
       <div style={{
