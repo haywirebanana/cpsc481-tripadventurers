@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import arrowIcon from '../assets/arrow.svg';
 import paymentsuc from '../assets/paymentsuc.png';
@@ -28,6 +28,28 @@ export default function BookingPopup({ eventName, eventId, onClose, replacingEve
     { time: '3:00 PM - 4:00 PM', start: '3:00 PM', end: '4:00 PM', available: true },
     { time: '4:00 PM - 5:00 PM', start: '4:00 PM', end: '5:00 PM', available: false },
   ];
+
+  // Pre-select time slot if replacing an event and go straight to payment
+  // Also transfer booking information from original event
+  useEffect(() => {
+    if (replacingEvent && selectedTime === null) {
+      const matchingSlotIndex = timeSlots.findIndex(
+        slot => slot.start === replacingEvent.start && slot.end === replacingEvent.end
+      );
+      if (matchingSlotIndex !== -1) {
+        setSelectedTime(matchingSlotIndex);
+        setShowPayment(true); // Go straight to payment page
+      }
+      
+      // Transfer booking information from the original event
+      if (replacingEvent.group) {
+        setGroup(replacingEvent.group);
+      }
+      if (replacingEvent.date) {
+        setSelectedDate(replacingEvent.date);
+      }
+    }
+  }, [replacingEvent, timeSlots, selectedTime]);
 
   // Calculate day number from date
   const calculateDayNumber = (dateString) => {

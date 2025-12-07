@@ -195,6 +195,30 @@ export default function Itinerary() {
 
   // Function to view alternatives - navigate to Explore with filter
   const handleViewAlternatives = (category, originalEvent) => {
+    // Extract booking information from original event description
+    let group = 1;
+    let date = null;
+    
+    if (originalEvent.description) {
+      // Parse "Guests: X" from description
+      const guestMatch = originalEvent.description.match(/Guests:\s*(\d+)/);
+      if (guestMatch) {
+        group = parseInt(guestMatch[1], 10);
+      }
+      
+      // Parse "Date: MM month DD, YYYY" from description
+      const dateMatch = originalEvent.description.match(/Date:\s*(.+?)\n/);
+      if (dateMatch) {
+        const dateStr = dateMatch[1].trim();
+        // Convert "December 22, 2025" to "2025-12-22"
+        const dateObj = new Date(dateStr);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        date = `${year}-${month}-${day}`;
+      }
+    }
+    
     navigate('../explore', { 
       state: { 
         filterCategory: category,
@@ -202,7 +226,9 @@ export default function Itinerary() {
           start: originalEvent.start,
           end: originalEvent.end,
           day: currentDay,
-          eventIndex: selectedEvent
+          eventIndex: selectedEvent,
+          group: group,
+          date: date
         }
       } 
     });
