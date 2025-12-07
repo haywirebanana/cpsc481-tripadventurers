@@ -1,11 +1,15 @@
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
+import { useTrips } from "../context/TripContext";
 import back from "../assets/backarrow.png";
 import home from "../assets/home.png";
 
 export default function TripLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { tripId } = useParams();
+  const { getTripById } = useTrips();
+  const trip = getTripById(tripId);
   
   const isWeatherPage = location.pathname.includes("/documents/weather");
   const isManageMembersPage = location.pathname.includes("/documents/members") || location.pathname.includes("/documents/trip-setup");
@@ -70,7 +74,7 @@ const buttonStyle = {
           fontSize: '25px',
           fontWeight: 700,
           margin: 0
-        }}>Holidays in YYC!</h1>
+        }}>{trip?.name || 'Trip'}</h1>
       </div>
 
       <div style={{

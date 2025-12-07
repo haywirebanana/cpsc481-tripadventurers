@@ -109,7 +109,9 @@ export default function TripList() {
           <section className="trip-section">
             <h2 className="section-title">Upcoming Trips</h2>
             
-            {upcomingTrips.map((trip) => (
+            {upcomingTrips.map((trip) => {
+              const isToronto = trip.name.toLowerCase().includes('toronto');
+              return (
               <div key={trip.id} className="trip-card trip-card-small">
                 <div className="card-content">
                   <div className="trip-image-placeholder">
@@ -133,23 +135,35 @@ export default function TripList() {
                 </div>
                 
                 <div className="trip-actions">
-                  <button 
-                    className="btn-trip btn-view"
-                    onClick={() => handleViewPastOrUpcomingTrip(trip.id)}
-                  >
-                    View
-                  </button>
-                  {trip.canEdit && (
+                  {isToronto ? (
                     <button 
-                      className="btn-trip btn-edit"
-                      onClick={() => handleEditTrip(trip.id)}
+                      className="btn-trip btn-view"
+                      onClick={() => handleViewTrip(trip.id, true)}
                     >
-                      Edit
+                      View
                     </button>
+                  ) : (
+                    <>
+                      <button 
+                        className="btn-trip btn-view"
+                        onClick={() => handleViewTrip(trip.id, false)}
+                      >
+                        Plan
+                      </button>
+                      {trip.canEdit && (
+                        <button 
+                          className="btn-trip btn-edit"
+                          onClick={() => handleEditTrip(trip.id)}
+                        >
+                          Edit
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
-            ))}
+            );
+            })}
           </section>
         )}
 

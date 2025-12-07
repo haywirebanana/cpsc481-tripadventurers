@@ -31,7 +31,7 @@ export function TripProvider({ children }) {
     },
     {
       id: 2,
-      name: "Raptors in Toronto?",
+      name: "Toronto",
       startDate: "Dec. 22, 2026",
       endDate: "Dec. 27, 2026",
       image: raptorsImg,
