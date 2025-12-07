@@ -130,12 +130,12 @@ export default function Itinerary() {
     }
     
     if (location.state?.prefilledEvent) {
-      const { eventId, title } = location.state.prefilledEvent;
+      const { eventId, title, start = "", end = "" } = location.state.prefilledEvent;
       setNewEvent({
         eventId: eventId,
         title: title,
-        start: "",
-        end: "",
+        start: start,
+        end: end,
         description: "",
         color: "#fff4e6"
       });
@@ -181,10 +181,15 @@ export default function Itinerary() {
   };
 
   // Function to view alternatives - navigate to Explore with filter
-  const handleViewAlternatives = (category) => {
+  const handleViewAlternatives = (category, originalEvent) => {
     navigate('../explore', { 
       state: { 
-        filterCategory: category 
+        filterCategory: category,
+        replacingEvent: {
+          start: originalEvent.start,
+          end: originalEvent.end,
+          day: currentDay
+        }
       } 
     });
   };
@@ -601,7 +606,7 @@ export default function Itinerary() {
                 {!events[selectedEvent].customTitle && getEventById(events[selectedEvent].eventId) && (
                   <button 
                     className="event-action-btn alternatives-btn"
-                    onClick={() => handleViewAlternatives(getEventById(events[selectedEvent].eventId).category)}
+                    onClick={() => handleViewAlternatives(getEventById(events[selectedEvent].eventId).category, events[selectedEvent])}
                   >
                     View Alternatives
                   </button>
