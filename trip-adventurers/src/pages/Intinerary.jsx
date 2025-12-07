@@ -48,6 +48,8 @@ export default function Itinerary() {
   // refs: container + per-day buttons
   const dateScrollRef = useRef(null);
   const dayButtonRefs = useRef([]);
+  const prefilledProcessedRef = useRef(false);
+  const isUpdatingRef = useRef(false);
   
   // State for modals and selected events
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -109,12 +111,19 @@ export default function Itinerary() {
 
   // Save to localStorage whenever eventsByDay changes
   useEffect(() => {
+    isUpdatingRef.current = true;
     localStorage.setItem('itineraryEvents', JSON.stringify(eventsByDay));
+    setTimeout(() => {
+      isUpdatingRef.current = false;
+    }, 100);
   }, [eventsByDay]);
 
   // Listen for updates from booking
   useEffect(() => {
     const handleItineraryUpdate = () => {
+      // Don't reload if we just updated ourselves
+      if (isUpdatingRef.current) return;
+      
       const stored = localStorage.getItem('itineraryEvents');
       if (stored) {
         setEventsByDay(JSON.parse(stored));
@@ -140,7 +149,8 @@ export default function Itinerary() {
         start: start,
         end: end,
         description: "",
-        color: "#fff4e6"
+        color: "#fff4e6",
+        replacingIndex: location.state?.replacingEvent?.eventIndex
       });
       setAddModalOpen(true);
     }
@@ -191,24 +201,23 @@ export default function Itinerary() {
         replacingEvent: {
           start: originalEvent.start,
           end: originalEvent.end,
-          day: currentDay
+          day: currentDay,
+          eventIndex: selectedEvent
         }
       } 
     });
   };
 
   // Function to remove event from itinerary
-  const handleRemoveEvent = (eventIdOrIndex) => {
+  const handleRemoveEvent = (index) => {
     setEventsByDay(prev => {
       const updated = { ...prev };
       
-      if (typeof eventIdOrIndex === 'number') {
-        updated[currentDay].splice(eventIdOrIndex, 1);
-      } else {
-        updated[currentDay] = updated[currentDay].filter(
-          event => event.eventId !== eventIdOrIndex
-        );
-      }
+      // Create a new array without the item at the specified index
+      updated[currentDay] = [
+        ...prev[currentDay].slice(0, index),
+        ...prev[currentDay].slice(index + 1)
+      ];
       
       return updated;
     });
@@ -336,19 +345,21 @@ export default function Itinerary() {
       return;
     }
 
-    // Check for overlapping events in the same time slot
-    const existingEvents = eventsByDay[currentDay] || [];
-    const hasOverlap = existingEvents.some(event => {
-      const existingStart = timeToMinutes(event.start);
-      const existingEnd = timeToMinutes(event.end);
-      
-      // Check if there's any time overlap
-      return (startMinutes < existingEnd && endMinutes > existingStart);
-    });
+    // Check for overlapping events ONLY if we're not replacing an existing event
+    if (newEvent.replacingIndex === undefined) {
+      const existingEvents = eventsByDay[currentDay] || [];
+      const hasOverlap = existingEvents.some(event => {
+        const existingStart = timeToMinutes(event.start);
+        const existingEnd = timeToMinutes(event.end);
+        
+        // Check if there's any time overlap
+        return (startMinutes < existingEnd && endMinutes > existingStart);
+      });
 
-    if (hasOverlap) {
-      alert('This time slot overlaps with an existing event. Please choose a different time.');
-      return;
+      if (hasOverlap) {
+        alert('This time slot overlaps with an existing event. Please choose a different time.');
+        return;
+      }
     }
 
     setIsAdding(true);
@@ -371,6 +382,14 @@ export default function Itinerary() {
         newEventData.customTitle = newEvent.title;
       } else {
         newEventData.eventId = newEvent.eventId;
+      }
+
+      // If we're replacing an event, remove the old one first
+      if (newEvent.replacingIndex !== undefined) {
+        updated[currentDay] = [
+          ...prev[currentDay].slice(0, newEvent.replacingIndex),
+          ...prev[currentDay].slice(newEvent.replacingIndex + 1)
+        ];
       }
 
       updated[currentDay].push(newEventData);
@@ -637,13 +656,7 @@ export default function Itinerary() {
                   )}
                   <button 
                     className="event-action-btn remove-btn"
-                    onClick={() => {
-                      if (events[selectedEvent].customTitle) {
-                        handleRemoveEvent(selectedEvent);
-                      } else {
-                        handleRemoveEvent(events[selectedEvent].eventId);
-                      }
-                    }}
+                    onClick={() => handleRemoveEvent(selectedEvent)}
                   >
                     Delete
                   </button>
