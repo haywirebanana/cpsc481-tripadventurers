@@ -146,7 +146,7 @@ export default function Explore() {
       title: event.name
     };
     
-    // If we're replacing an existing event, include its time slot
+    // If we're replacing an existing event, include its time slot and index
     if (location.state?.replacingEvent) {
       prefilledData.start = location.state.replacingEvent.start;
       prefilledData.end = location.state.replacingEvent.end;
@@ -156,6 +156,7 @@ export default function Explore() {
       state: { 
         prefilledEvent: prefilledData,
         day: location.state?.replacingEvent?.day,
+        replacingEvent: location.state?.replacingEvent,
         readOnly: isReadOnly
       } 
     });
@@ -319,6 +320,7 @@ export default function Explore() {
             eventName={bookingEvent.name}
             eventId={bookingEvent.id}
             onClose={handleCloseBooking}
+            replacingEvent={location.state?.replacingEvent}
           />
         )}
 

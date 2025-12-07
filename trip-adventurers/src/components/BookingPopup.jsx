@@ -4,7 +4,7 @@ import arrowIcon from '../assets/arrow.svg';
 import paymentsuc from '../assets/paymentsuc.png';
 import '../styles/BookingPopup.css';
 
-export default function BookingPopup({ eventName, eventId, onClose }) {
+export default function BookingPopup({ eventName, eventId, onClose, replacingEvent = null }) {
   const navigate = useNavigate();
   const [group, setGroup] = useState(1);
   const [selectedDate, setSelectedDate] = useState('2025-12-22');
@@ -125,15 +125,22 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
     
     const selectedSlot = timeSlots[selectedTime];
     
-    // Check if any event exists in this time slot
-    const timeSlotBooked = itineraryEvents[dayNumber].some(
-      event => event.start === selectedSlot.start && 
-               event.end === selectedSlot.end
-    );
-    
-    if (timeSlotBooked) {
-      alert('This time slot overlaps with an existing event. Please choose a different time.');
-      return;
+    // Only check for conflicts if NOT replacing an existing event
+    if (!replacingEvent) {
+      const timeSlotBooked = itineraryEvents[dayNumber].some(
+        event => event.start === selectedSlot.start && 
+                 event.end === selectedSlot.end
+      );
+      
+      if (timeSlotBooked) {
+        alert('This time slot overlaps with an existing event. Please choose a different time.');
+        return;
+      }
+    } else {
+      // If replacing, remove the old event at this time slot
+      itineraryEvents[dayNumber] = itineraryEvents[dayNumber].filter(
+        event => !(event.start === replacingEvent.start && event.end === replacingEvent.end)
+      );
     }
     
     const bookingDescription = `Guests: ${group}\nDate: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
