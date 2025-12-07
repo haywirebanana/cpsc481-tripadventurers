@@ -1,8 +1,12 @@
 import { useState } from 'react';
+import museumIcon from '../assets/temaki_museum.svg';
 import restaurantIcon from '../assets/utensils.svg';
-import hotelIcon from '../assets/Bed.svg';
-import transitIcon from '../assets/transit.svg';
+import gasIcon from '../assets/gasStation.svg';
+import mallIcon from '../assets/mall.svg';
+import cafeIcon from '../assets/cafe.svg';
 import '../styles/SortFilterPopup.css';
+
+
 
 export default function SortFilterPopup({ onClose, onApply, initialFilters, initialSort }) {
   const [activeCategories, setActiveCategories] = useState(initialFilters || []);
@@ -12,11 +16,11 @@ export default function SortFilterPopup({ onClose, onApply, initialFilters, init
   const [openNow, setOpenNow] = useState(false);
 
   const categories = [
-    { id: 'museum', label: 'Museums', icon: restaurantIcon },
+    { id: 'museum', label: 'Museums', icon: museumIcon },
     { id: 'restaurant', label: 'Restaurants', icon: restaurantIcon },
-    { id: 'gas', label: 'Gas Stations', icon: transitIcon },
-    { id: 'shopping', label: 'Shopping/Malls', icon: hotelIcon },
-    { id: 'cafe', label: 'Cafés', icon: restaurantIcon },
+    { id: 'gas', label: 'Gas Stations', icon: gasIcon },
+    { id: 'shopping', label: 'Shopping/Malls', icon: mallIcon },
+    { id: 'cafe', label: 'Cafés', icon: cafeIcon },
   ];
 
   const sortOptions = [
