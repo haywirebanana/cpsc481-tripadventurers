@@ -1,14 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useTrips } from "../../context/TripContext";
 import "../../styles/TripSetup.css";
 import "../../styles/ManageMembers.css";
 
 export default function TripSetup() {
   const navigate = useNavigate();
-  const { tripId } = useParams();
-  
-  const isEditMode = !!tripId;
 
   // State for members
   const [planners, setPlanners] = useState(["Person 1", "Person 2", "Person 3"]);
