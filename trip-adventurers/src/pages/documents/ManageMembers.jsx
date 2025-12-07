@@ -156,7 +156,7 @@ export default function TripSetup() {
           className="btn-next"
           onClick={handleNext}
         >
-          Return
+          Save
         </button>
       </div>
 

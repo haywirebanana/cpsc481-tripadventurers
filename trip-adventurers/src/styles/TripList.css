@@ -184,7 +184,10 @@
 }
 
 .btn-edit {
-  background: #C8D9C6;
+  background: #ff962d40;
+}
+.btn-edit:hover {
+  background: #ff962d60;
 }
 
 .btn-delete {
