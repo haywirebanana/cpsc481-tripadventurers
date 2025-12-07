@@ -474,7 +474,7 @@ export default function TripSetup() {
           className="btn-next"
           onClick={handleNext}
         >
-          NEXT
+          DONE
         </button>
 
         {/* Delete Button - Only in Edit Mode */}

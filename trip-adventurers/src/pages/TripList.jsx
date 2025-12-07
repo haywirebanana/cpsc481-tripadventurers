@@ -89,14 +89,14 @@ export default function TripList() {
                   className="btn-trip btn-view"
                   onClick={() => handleViewCurrentTrip(currentTrip.id)}
                 >
-                  View
+                  Plan
                 </button>
                 {currentTrip.canEdit && (
                   <button 
                     className="btn-trip btn-edit"
                     onClick={() => handleEditTrip(currentTrip.id)}
                   >
-                    Edit
+                    Edit Trip
                   </button>
                 )}
               </div>
@@ -192,7 +192,7 @@ export default function TripList() {
                     className="btn-trip btn-delete"
                     onClick={() => handleDeleteTrip(trip.id)}
                   >
-                    Delete
+                    Delete Trip
                   </button>
                 </div>
               </div>
