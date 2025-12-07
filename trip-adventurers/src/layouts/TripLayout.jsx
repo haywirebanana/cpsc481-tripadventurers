@@ -8,8 +8,9 @@ export default function TripLayout() {
   const navigate = useNavigate();
   
   const isWeatherPage = location.pathname.includes("/documents/weather");
+  const isManageMembersPage = location.pathname.includes("/documents/members") || location.pathname.includes("/documents/trip-setup");
 
-  const buttonStyle = {
+const buttonStyle = {
     background: 'transparent',
     border: 'none',
     cursor: 'pointer',
@@ -41,7 +42,7 @@ export default function TripLayout() {
         justifyContent: 'space-between',
         position: 'relative'
       }}>
-        {isWeatherPage ? (
+        {(isWeatherPage || isManageMembersPage) ? (
           <button 
             onClick={() => navigate(-1)}
             style={buttonStyle}

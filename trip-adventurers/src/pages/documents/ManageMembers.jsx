@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useTrips } from "../../context/TripContext";
 import "../../styles/TripSetup.css";
 import "../../styles/ManageMembers.css";
 
 export default function TripSetup() {
   const navigate = useNavigate();
-  const { tripId } = useParams();
-  
-  const isEditMode = !!tripId;
 
   // State for members
   const [planners, setPlanners] = useState(["Person 1", "Person 2", "Person 3"]);
   const [viewers, setViewers] = useState(["Person 4", "Person 5"]);
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [memberModalType, setMemberModalType] = useState(null);
+
+  // Confirmation modal states
+  const [showDeleteMemberModal, setShowDeleteMemberModal] = useState(false);
+  const [showChangeRoleModal, setShowChangeRoleModal] = useState(false);
+  const [memberToDelete, setMemberToDelete] = useState(null);
+  const [memberToChangeRole, setMemberToChangeRole] = useState(null);
 
   // Add-member form fields
   const [newMemberName, setNewMemberName] = useState("");
@@ -38,28 +40,59 @@ export default function TripSetup() {
   const closeMemberModal = () => {
     setShowMemberModal(false);
     setMemberModalType(null);
-    setEditingMember(null);
     setNewMemberName("");
     setNewMemberEmail("");
     setNewMemberRole("planner");
   };
 
+  // DELETE MEMBER HANDLERS
   const handleRemoveMember = (member, role) => {
-    if (role === 'planner') {
-      setPlanners(planners.filter(p => p !== member));
-    } else {
-      setViewers(viewers.filter(v => v !== member));
-    }
+    setMemberToDelete({ member, role });
+    setShowDeleteMemberModal(true);
   };
 
-  const handleChangeRole = (member, currentRole) => {
-    if (currentRole === 'planner') {
-      setPlanners(planners.filter(p => p !== member));
-      setViewers([...viewers, member]);
-    } else {
-      setViewers(viewers.filter(v => v !== member));
-      setPlanners([...planners, member]);
+  const confirmRemoveMember = () => {
+    if (memberToDelete) {
+      const { member, role } = memberToDelete;
+      if (role === 'planner') {
+        setPlanners(planners.filter(p => p !== member));
+      } else {
+        setViewers(viewers.filter(v => v !== member));
+      }
     }
+    setShowDeleteMemberModal(false);
+    setMemberToDelete(null);
+  };
+
+  const cancelRemoveMember = () => {
+    setShowDeleteMemberModal(false);
+    setMemberToDelete(null);
+  };
+
+  // CHANGE ROLE HANDLERS
+  const handleChangeRole = (member, currentRole) => {
+    setMemberToChangeRole({ member, currentRole });
+    setShowChangeRoleModal(true);
+  };
+
+  const confirmChangeRole = () => {
+    if (memberToChangeRole) {
+      const { member, currentRole } = memberToChangeRole;
+      if (currentRole === 'planner') {
+        setPlanners(planners.filter(p => p !== member));
+        setViewers([...viewers, member]);
+      } else {
+        setViewers(viewers.filter(v => v !== member));
+        setPlanners([...planners, member]);
+      }
+    }
+    setShowChangeRoleModal(false);
+    setMemberToChangeRole(null);
+  };
+
+  const cancelChangeRole = () => {
+    setShowChangeRoleModal(false);
+    setMemberToChangeRole(null);
   };
 
   const handleNext = () => {
@@ -216,7 +249,7 @@ export default function TripSetup() {
                         onClick={() => handleRemoveMember(planner, 'planner')}
                         title="Remove member"
                       >
-                        🗑
+                        X
                       </button>
                     </div>
                   </div>
@@ -243,7 +276,7 @@ export default function TripSetup() {
                         onClick={() => handleRemoveMember(viewer, 'viewer')}
                         title="Remove member"
                       >
-                        🗑
+                        X
                       </button>
                     </div>
                   </div>
@@ -262,6 +295,67 @@ export default function TripSetup() {
           </div>
         </div>
       )}
+
+      {/* Delete Member Confirmation Modal */}
+      {showDeleteMemberModal && (
+        <div className="modal-overlay-setup" onClick={cancelRemoveMember}>
+          <div className="modal-content-setup" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title-setup">Remove Member?</h3>
+            <p className="modal-message-setup">
+              Are you sure you want to remove <strong>"{memberToDelete?.member}"</strong> from this trip?
+            </p>
+            <p className="modal-warning-setup">They will no longer have access to this trip.</p>
+            <div className="modal-actions-setup">
+              <button 
+                className="modal-btn-setup modal-btn-cancel-setup"
+                onClick={cancelRemoveMember}
+              >
+                Cancel
+              </button>
+              <button 
+                className="modal-btn-setup modal-btn-remove-setup"
+                onClick={confirmRemoveMember}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Change Role Confirmation Modal */}
+      {showChangeRoleModal && (
+        <div className="modal-overlay-setup" onClick={cancelChangeRole}>
+          <div className="modal-content-setup" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title-setup">Change Member Role?</h3>
+            <p className="modal-message-setup">
+              Change <strong>"{memberToChangeRole?.member}"</strong> from{' '}
+              <strong>{memberToChangeRole?.currentRole === 'planner' ? 'Planner' : 'Viewer'}</strong> to{' '}
+              <strong>{memberToChangeRole?.currentRole === 'planner' ? 'Viewer' : 'Planner'}</strong>?
+            </p>
+            <p className="modal-warning-setup">
+              {memberToChangeRole?.currentRole === 'planner' 
+                ? 'They will no longer be able to edit trip details.' 
+                : 'They will be able to edit trip details.'}
+            </p>
+            <div className="modal-actions-setup">
+              <button 
+                className="modal-btn-setup modal-btn-cancel-setup"
+                onClick={cancelChangeRole}
+              >
+                Cancel
+              </button>
+              <button 
+                className="modal-btn-setup modal-btn-confirm-setup"
+                onClick={confirmChangeRole}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
     </div>
   );
 }
