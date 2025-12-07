@@ -104,6 +104,8 @@ border-bottom: #000000 2px solid;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 120px;
+  padding-bottom: 0px;
+  margin-bottom: 120px;
 }
 
 .date-scroll::-webkit-scrollbar {
