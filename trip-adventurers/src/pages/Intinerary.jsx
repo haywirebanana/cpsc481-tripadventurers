@@ -8,6 +8,9 @@ export default function Itinerary() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Check if we're in read-only mode
+  const isReadOnly = location.state?.readOnly || false;
+
   // Mock current user - you'd get this from your auth context
   const currentUser = "User1"; // Replace with actual user from context
 
@@ -225,7 +228,7 @@ export default function Itinerary() {
   };
 
   // Editable Description Component
-  const EditableDescription = ({ description, onSave }) => {
+  const EditableDescription = ({ description, onSave, readOnly = false }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedDescription, setEditedDescription] = useState(description);
 
@@ -267,9 +270,11 @@ export default function Itinerary() {
         <p className="description-text">
           {description || 'No additional details'}
         </p>
-        <button className="edit-description-btn" onClick={() => setIsEditing(true)}>
-          Edit
-        </button>
+        {!readOnly && (
+          <button className="edit-description-btn" onClick={() => setIsEditing(true)}>
+            Edit
+          </button>
+        )}
       </div>
     );
   };
@@ -395,14 +400,16 @@ export default function Itinerary() {
       </div>  
 
       {/* Add Event Button */}
-      <div className="add-event-button">
-        <button
-          className="add-event-button"
-          onClick={() => setAddModalOpen(true)}
-        >
-          +
-        </button>
-      </div>
+      {!isReadOnly && (
+        <div className="add-event-button">
+          <button
+            className="add-event-button"
+            onClick={() => setAddModalOpen(true)}
+          >
+            +
+          </button>
+        </div>
+      )}
 
       {/* Timeline Section */}
       <div className="timeline">
@@ -443,7 +450,7 @@ export default function Itinerary() {
             return (
               <div 
                 key={index} 
-                className="event-card"
+                className={`event-card ${isReadOnly ? 'read-only' : ''}`}
                 role="button"
                 tabIndex={0}
                 onClick={() => openEventDetails(itineraryEvent, index)}
@@ -594,36 +601,39 @@ export default function Itinerary() {
 
               {/* Notification/Description Section */}
               <div className="event-notification-section">
-                <p className="notification-label">Notification</p>
+                <p className="notification-label">Description</p>
                 <EditableDescription
                   description={events[selectedEvent].description || ''}
                   onSave={(newDescription) => handleEditEvent(selectedEvent, newDescription)}
+                  readOnly={isReadOnly}
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="event-card-actions">
-                {!events[selectedEvent].customTitle && getEventById(events[selectedEvent].eventId) && (
+              {!isReadOnly && (
+                <div className="event-card-actions">
+                  {!events[selectedEvent].customTitle && getEventById(events[selectedEvent].eventId) && (
+                    <button 
+                      className="event-action-btn alternatives-btn"
+                      onClick={() => handleViewAlternatives(getEventById(events[selectedEvent].eventId).category, events[selectedEvent])}
+                    >
+                      View Alternatives
+                    </button>
+                  )}
                   <button 
-                    className="event-action-btn alternatives-btn"
-                    onClick={() => handleViewAlternatives(getEventById(events[selectedEvent].eventId).category, events[selectedEvent])}
+                    className="event-action-btn remove-btn"
+                    onClick={() => {
+                      if (events[selectedEvent].customTitle) {
+                        handleRemoveEvent(selectedEvent);
+                      } else {
+                        handleRemoveEvent(events[selectedEvent].eventId);
+                      }
+                    }}
                   >
-                    View Alternatives
+                    Delete
                   </button>
-                )}
-                <button 
-                  className="event-action-btn remove-btn"
-                  onClick={() => {
-                    if (events[selectedEvent].customTitle) {
-                      handleRemoveEvent(selectedEvent);
-                    } else {
-                      handleRemoveEvent(events[selectedEvent].eventId);
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

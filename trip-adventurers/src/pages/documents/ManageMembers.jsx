@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import "../../styles/TripSetup.css";
 import "../../styles/ManageMembers.css";
 
 export default function TripSetup() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const outletContext = useOutletContext();
+  const isReadOnly = location.state?.readOnly || outletContext?.readOnly || false;
 
   // State for members
   const [planners, setPlanners] = useState(["Person 1", "Person 2", "Person 3"]);
@@ -96,7 +99,7 @@ export default function TripSetup() {
   };
 
   const handleNext = () => {
-    navigate("../../documents");
+    navigate("../../documents", { state: { readOnly: isReadOnly } });
   };
 
   return (
@@ -130,20 +133,22 @@ export default function TripSetup() {
             </div>
           </div>
 
-          <div className="members-actions">
-            <button 
-              className="btn-members"
-              onClick={handleAddMembers}
-            >
-              Add Members
-            </button>
-            <button 
-              className="btn-members"
-              onClick={handleEditMembers}
-            >
-              Edit
-            </button>
-          </div>
+          {!isReadOnly && (
+            <div className="members-actions">
+              <button 
+                className="btn-members"
+                onClick={handleAddMembers}
+              >
+                Add Members
+              </button>
+              <button 
+                className="btn-members"
+                onClick={handleEditMembers}
+              >
+                Edit
+              </button>
+            </div>
+          )}
         </section>
 
         {/* Next Button */}
