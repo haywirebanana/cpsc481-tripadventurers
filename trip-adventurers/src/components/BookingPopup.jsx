@@ -125,18 +125,6 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
     
     const selectedSlot = timeSlots[selectedTime];
     
-    // Check if event already exists on this day at this time
-    const sameEventExists = itineraryEvents[dayNumber].some(
-      event => event.eventId === eventId && 
-               event.start === selectedSlot.start && 
-               event.end === selectedSlot.end
-    );
-    
-    if (sameEventExists) {
-      alert('This event is already in your itinerary for this time slot!');
-      return;
-    }
-    
     // Check if any event exists in this time slot
     const timeSlotBooked = itineraryEvents[dayNumber].some(
       event => event.start === selectedSlot.start && 
@@ -144,7 +132,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
     );
     
     if (timeSlotBooked) {
-      alert('This time slot is already booked. Please select a different time.');
+      alert('This time slot overlaps with an existing event. Please choose a different time.');
       return;
     }
     

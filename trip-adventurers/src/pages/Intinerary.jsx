@@ -336,6 +336,21 @@ export default function Itinerary() {
       return;
     }
 
+    // Check for overlapping events in the same time slot
+    const existingEvents = eventsByDay[currentDay] || [];
+    const hasOverlap = existingEvents.some(event => {
+      const existingStart = timeToMinutes(event.start);
+      const existingEnd = timeToMinutes(event.end);
+      
+      // Check if there's any time overlap
+      return (startMinutes < existingEnd && endMinutes > existingStart);
+    });
+
+    if (hasOverlap) {
+      alert('This time slot overlaps with an existing event. Please choose a different time.');
+      return;
+    }
+
     setIsAdding(true);
 
     setEventsByDay(prev => {
