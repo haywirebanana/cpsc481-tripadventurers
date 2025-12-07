@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import arrowIcon from '../assets/arrow.svg';
+import paymentsuc from '../assets/paymentsuc.png';
 import '../styles/BookingPopup.css';
 
 export default function BookingPopup({ eventName, eventId, onClose }) {
@@ -9,6 +10,7 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
   const [selectedDate, setSelectedDate] = useState('2025-12-22');
   const [selectedTime, setSelectedTime] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   
   // Payment form state
   const [cardNumber, setCardNumber] = useState('');
@@ -113,6 +115,71 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
     }
   };
   
+  const processBooking = () => {
+    const dayNumber = calculateDayNumber(selectedDate);
+    const itineraryEvents = JSON.parse(localStorage.getItem('itineraryEvents') || '{}');
+    
+    if (!itineraryEvents[dayNumber]) {
+      itineraryEvents[dayNumber] = [];
+    }
+    
+    const selectedSlot = timeSlots[selectedTime];
+    
+    // Check if event already exists on this day at this time
+    const sameEventExists = itineraryEvents[dayNumber].some(
+      event => event.eventId === eventId && 
+               event.start === selectedSlot.start && 
+               event.end === selectedSlot.end
+    );
+    
+    if (sameEventExists) {
+      alert('This event is already in your itinerary for this time slot!');
+      return;
+    }
+    
+    // Check if any event exists in this time slot
+    const timeSlotBooked = itineraryEvents[dayNumber].some(
+      event => event.start === selectedSlot.start && 
+               event.end === selectedSlot.end
+    );
+    
+    if (timeSlotBooked) {
+      alert('This time slot is already booked. Please select a different time.');
+      return;
+    }
+    
+    const bookingDescription = `Guests: ${group}\nDate: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
+      month: 'long', 
+      day: 'numeric', 
+      year: 'numeric' 
+    })}\nTime: ${selectedSlot.time}`;
+
+    itineraryEvents[dayNumber].push({
+      eventId: eventId,
+      start: selectedSlot.start,
+      end: selectedSlot.end,
+      description: bookingDescription,
+      color: getRandomColor()
+    });
+    
+    localStorage.setItem('itineraryEvents', JSON.stringify(itineraryEvents));
+    window.dispatchEvent(new Event('itineraryUpdated'));
+    setShowSuccessModal(true);
+  };
+  
+  const handlePaymentMethodClick = (method) => {
+    const confirmed = window.confirm(`Do you want to open a new window for ${method}?`);
+    if (confirmed) {
+      processBooking();
+    }
+  };
+
+  const handleSuccessClose = () => {
+    const dayNumber = calculateDayNumber(selectedDate);
+    setShowSuccessModal(false);
+    navigate('/trip/1/intinerary', { state: { day: dayNumber } });
+  };
+  
   const handlePaymentConfirm = () => {
     const newErrors = {};
     
@@ -145,207 +212,186 @@ export default function BookingPopup({ eventName, eventId, onClose }) {
       return;
     }
     
-    // Add event to itinerary
-    const dayNumber = calculateDayNumber(selectedDate);
-    const itineraryEvents = JSON.parse(localStorage.getItem('itineraryEvents') || '{}');
-    
-    if (!itineraryEvents[dayNumber]) {
-      itineraryEvents[dayNumber] = [];
-    }
-    
-    const selectedSlot = timeSlots[selectedTime];
-    
-    // Check if event already exists on this day at this time
-    const alreadyExists = itineraryEvents[dayNumber].some(
-      event => event.eventId === eventId && 
-               event.start === selectedSlot.start && 
-               event.end === selectedSlot.end
-    );
-    
-    if (!alreadyExists) {
-      // Create booking description with number of guests, date, and time
-      const bookingDescription = `Guests: ${group}\nDate: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
-        month: 'long', 
-        day: 'numeric', 
-        year: 'numeric' 
-      })}\nTime: ${selectedSlot.time}`;
-
-      itineraryEvents[dayNumber].push({
-        eventId: eventId,
-        start: selectedSlot.start,
-        end: selectedSlot.end,
-        description: bookingDescription,
-        color: getRandomColor()
-      });
-      
-      localStorage.setItem('itineraryEvents', JSON.stringify(itineraryEvents));
-      
-      // Dispatch event to notify itinerary to refresh
-      window.dispatchEvent(new Event('itineraryUpdated'));
-      
-      // Redirect to itinerary page with the specific day
-      navigate('/trip/1/intinerary', { state: { day: dayNumber } });
-    } else {
-      alert('This event is already in your itinerary for this time slot!');
-      onClose();
-    }
+    processBooking();
   };
 
   return (
-    <div className="booking-panel-overlay expanded">
-      <button className="toggle-view-btn" onClick={showPayment ? handleBack : onClose}>
-        <img 
-          src={arrowIcon} 
-          alt="Close" 
-          style={{ 
-            transform: 'rotate(180deg)',
-          }} 
-        />
-      </button>
-      
-      <div className="booking-panel-content">
-        <h2 className="booking-panel-title">{eventName}</h2>
+    <>
+      <div className="booking-panel-overlay expanded">
+        <button className="toggle-view-btn" onClick={showPayment ? handleBack : onClose}>
+          <img 
+            src={arrowIcon} 
+            alt="Close" 
+            style={{ 
+              transform: 'rotate(180deg)',
+            }} 
+          />
+        </button>
         
-        {!showPayment ? (
-          <>
-            <div className="booking-panel-section">
-              <h3 className="booking-section-title">Booking:</h3>
-              <p className="booking-cost-info">Costs Per Person: $20</p>
-              
-              <div className="booking-panel-inputs">
-                <div className="booking-input-group">
-                  <label>Party Size:</label>
-                  <input 
-                    type="number" 
-                    value={group} 
-                    onChange={(e) => setGroup(Math.max(1, parseInt(e.target.value) || 1))}
-                    min="1"
-                    className="booking-number-input"
-                  />
-                </div>
-                <div className="booking-input-group">
-                  <label>Day:</label>
-                  <input 
-                    type="date" 
-                    value={selectedDate} 
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    min="2025-12-22"
-                    max="2025-12-27"
-                    className="booking-number-input"
-                  />
+        <div className="booking-panel-content">
+          <h2 className="booking-panel-title">{eventName}</h2>
+          
+          {!showPayment ? (
+            <>
+              <div className="booking-panel-section">
+                <h3 className="booking-section-title">Booking:</h3>
+                <p className="booking-cost-info">Costs Per Person: $20</p>
+                
+                <div className="booking-panel-inputs">
+                  <div className="booking-input-group">
+                    <label>Party Size:</label>
+                    <input 
+                      type="number" 
+                      value={group} 
+                      onChange={(e) => setGroup(Math.max(1, parseInt(e.target.value) || 1))}
+                      min="1"
+                      className="booking-number-input"
+                    />
+                  </div>
+                  <div className="booking-input-group">
+                    <label>Day:</label>
+                    <input 
+                      type="date" 
+                      value={selectedDate} 
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      min="2025-12-22"
+                      max="2025-12-27"
+                      className="booking-number-input"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="booking-panel-section">
-              <h3 className="booking-section-title">Availability:</h3>
               
-              <div className="booking-time-slots">
-                {timeSlots.map((slot, index) => (
-                  <button
-                    key={index}
-                    className={`booking-time-slot ${!slot.available ? 'unavailable' : ''} ${selectedTime === index ? 'selected' : ''}`}
-                    onClick={() => slot.available && setSelectedTime(index)}
-                    disabled={!slot.available}
-                  >
-                    {slot.time}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <button 
-              className="booking-confirm-btn" 
-              onClick={handleConfirm}
-              disabled={selectedTime === null}
-            >
-              Confirm
-            </button>
-          </>
-        ) : (
-          <>
-            <div className="booking-panel-section">
-              <h3 className="booking-section-title">Booking Information:</h3>
-              <p className="booking-info-text">Number Of Guests: {group}</p>
-              <p className="booking-info-text">
-                Trip Day: {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
-                  month: 'long', 
-                  day: 'numeric', 
-                  year: 'numeric' 
-                })}
-              </p>
-              <p className="booking-info-text">Time: {selectedTime !== null ? timeSlots[selectedTime].time : 'Not selected'}</p>
-              <p className="booking-info-text">Total Costs: ${group * 20}</p>
-            </div>
-            
-            <div className="booking-panel-section">
-              <h3 className="booking-section-title">Payment Information:</h3>
-              
-              {Object.keys(errors).length > 0 && (
-                <div className="error-message">
-                  Please check your payment information and try again.
+              <div className="booking-panel-section">
+                <h3 className="booking-section-title">Availability:</h3>
+                
+                <div className="booking-time-slots">
+                  {timeSlots.map((slot, index) => (
+                    <button
+                      key={index}
+                      className={`booking-time-slot ${!slot.available ? 'unavailable' : ''} ${selectedTime === index ? 'selected' : ''}`}
+                      onClick={() => slot.available && setSelectedTime(index)}
+                      disabled={!slot.available}
+                    >
+                      {slot.time}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
+              
+              <button 
+                className="booking-confirm-btn" 
+                onClick={handleConfirm}
+                disabled={selectedTime === null}
+              >
+                Confirm
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="booking-panel-section">
+                <h3 className="booking-section-title">Booking Information:</h3>
+                <p className="booking-info-text">Number Of Guests: {group}</p>
+                <p className="booking-info-text">
+                  Trip Day: {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })}
+                </p>
+                <p className="booking-info-text">Time: {selectedTime !== null ? timeSlots[selectedTime].time : 'Not selected'}</p>
+                <p className="booking-info-text">Total Costs: ${group * 20}</p>
+              </div>
+              
+              <div className="booking-panel-section">
+                <h3 className="booking-section-title">Payment Information:</h3>
+                
+                {Object.keys(errors).length > 0 && (
+                  <div className="error-message">
+                    Please check your payment information and try again.
+                  </div>
+                )}
 
-              <div className="payment-buttons">
-                <button className="payment-method-btn">PayPal</button>
-                <button className="payment-method-btn">ApplePay</button>
-                <button className="payment-method-btn">GooglePay</button>
-              </div>
-              <div className={`payment-input-group ${errors.cardNumber ? 'input-error' : ''}`}>
-                <label>Credit Card #:</label>
-                <input 
-                  type="text" 
-                  className="payment-input"
-                  placeholder="1234 5678 9012 3456"
-                  value={cardNumber}
-                  onChange={handleCardNumberChange}
-                  maxLength="19"
-                />
-              </div>
-              
-              <div className={`payment-input-group ${errors.cardHolder ? 'input-error' : ''}`}>
-                <label>Card Holder Name:</label>
-                <input 
-                  type="text" 
-                  className="payment-input"
-                  placeholder="John Doe"
-                  value={cardHolder}
-                  onChange={handleCardHolderChange}
-                />
-              </div>
-              
-              <div className="payment-row">
-                <div className={`payment-input-group ${errors.expiry ? 'input-error' : ''}`}>
-                  <label>Expiry:</label>
+                <div className="payment-buttons">
+                  <button className="payment-method-btn" onClick={() => handlePaymentMethodClick('PayPal')}>PayPal</button>
+                  <button className="payment-method-btn" onClick={() => handlePaymentMethodClick('ApplePay')}>ApplePay</button>
+                  <button className="payment-method-btn" onClick={() => handlePaymentMethodClick('GooglePay')}>GooglePay</button>
+                </div>
+                <div className={`payment-input-group ${errors.cardNumber ? 'input-error' : ''}`}>
+                  <label>Credit Card #:</label>
                   <input 
                     type="text" 
-                    className="payment-input-small"
-                    placeholder="MM/YY"
-                    value={expiry}
-                    onChange={handleExpiryChange}
-                    maxLength="5"
+                    className="payment-input"
+                    placeholder="1234 5678 9012 3456"
+                    value={cardNumber}
+                    onChange={handleCardNumberChange}
+                    maxLength="19"
                   />
                 </div>
                 
-                <div className={`payment-input-group ${errors.cvv ? 'input-error' : ''}`}>
-                  <label>CVV:</label>
+                <div className={`payment-input-group ${errors.cardHolder ? 'input-error' : ''}`}>
+                  <label>Card Holder Name:</label>
                   <input 
                     type="text" 
-                    className="payment-input-small"
-                    placeholder="123"
-                    value={cvv}
-                    onChange={handleCvvChange}
-                    maxLength="3"
+                    className="payment-input"
+                    placeholder="John Doe"
+                    value={cardHolder}
+                    onChange={handleCardHolderChange}
                   />
                 </div>
+                
+                <div className="payment-row">
+                  <div className={`payment-input-group ${errors.expiry ? 'input-error' : ''}`}>
+                    <label>Expiry:</label>
+                    <input 
+                      type="text" 
+                      className="payment-input-small"
+                      placeholder="MM/YY"
+                      value={expiry}
+                      onChange={handleExpiryChange}
+                      maxLength="5"
+                    />
+                  </div>
+                  
+                  <div className={`payment-input-group ${errors.cvv ? 'input-error' : ''}`}>
+                    <label>CVV:</label>
+                    <input 
+                      type="text" 
+                      className="payment-input-small"
+                      placeholder="123"
+                      value={cvv}
+                      onChange={handleCvvChange}
+                      maxLength="3"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            <button className="booking-confirm-btn" onClick={handlePaymentConfirm}>Confirm</button>
-          </>
-        )}
+              
+              <button className="booking-confirm-btn" onClick={handlePaymentConfirm}>Confirm</button>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+
+      {showSuccessModal && (
+        <div className="modal-overlay-success" onClick={handleSuccessClose}>
+          <div className="modal-content-success" onClick={(e) => e.stopPropagation()}>
+            <div className="success-icon">
+              <img src={paymentsuc} alt="Success" />
+            </div>
+            <h3 className="modal-title-success">Payment Successful!</h3>
+            <p className="modal-message-success">
+              Your booking has been confirmed and added to your itinerary.
+            </p>
+            <button 
+              className="modal-btn-success"
+              onClick={handleSuccessClose}
+            >
+              View Itinerary
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
