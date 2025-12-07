@@ -10,7 +10,7 @@ export function TripProvider({ children }) {
       name: "Holidays in YYC!",
       startDate: "Dec. 22, 2025",
       endDate: "Dec. 27, 2025",
-      image: '../src/assets/triplist_photos/calgary.jpg',
+      image: '../src/assets/calgary.jpg',
       destinations: [
         {
           id: 1,
@@ -27,15 +27,15 @@ export function TripProvider({ children }) {
     {
       id: 2,
       name: "Raptors in Toronto?",
-      startDate: "Jan. 1, 2026",
-      endDate: "Jan. 5, 2026",
-      image: '../src/assets/triplist_photos/Raptors.jpg',
+      startDate: "Dec. 22, 2026",
+      endDate: "Dec. 27, 2026",
+      image: '../src/assets/Raptors.jpg',
       destinations: [
         {
           id: 1,
           location: "Toronto, ON, Canada",
-          arrivalDate: "2026-01-01",
-          departureDate: "2026-01-05"
+          arrivalDate: "2026-12-22",
+          departureDate: "2026-12-27"
         }
       ],
       planners: ["Person 1"],
@@ -46,15 +46,15 @@ export function TripProvider({ children }) {
     {
       id: 5,
       name: "Summer in Vancouver!",
-      startDate: "Aug. 1, 2025",
-      endDate: "Aug. 15, 2025",
-      image: '../src/assets/triplist_photos/vancouver.jpg',
+      startDate: "Dec. 22, 2024",
+      endDate: "Dec. 27, 2024",
+      image: '../src/assets/vancouver.jpg',
       destinations: [
         {
           id: 1,
           location: "Vancouver, BC, Canada",
-          arrivalDate: "2025-08-01",
-          departureDate: "2025-08-15"
+          arrivalDate: "2024-12-22",
+          departureDate: "2024-12-27"
         }
       ],
       planners: ["Person 1", "Person 2"],
@@ -65,15 +65,15 @@ export function TripProvider({ children }) {
     {
       id: 6,
       name: "Deadmonton... Again?",
-      startDate: "July 10, 2025",
-      endDate: "July 20, 2025",
-      image: '../src/assets/triplist_photos/edmonton.jpg',
+      startDate: "Dec. 22, 2023",
+      endDate: "Dec. 27, 2023",
+      image: '../src/assets/edmonton.jpg',
       destinations: [
         {
           id: 1,
           location: "Edmonton, AB, Canada",
-          arrivalDate: "2025-07-10",
-          departureDate: "2025-07-20"
+          arrivalDate: "2023-12-22",
+          departureDate: "2023-12-27"
         }
       ],
       planners: ["Person 1"],
