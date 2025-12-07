@@ -2,6 +2,11 @@ import { createContext, useContext, useState } from "react";
 
 const TripContext = createContext();
 
+import calgaryImg from '../assets/calgary.jpg';
+import raptorsImg from '../assets/Raptors.jpg';
+import vancouverImg from '../assets/vancouver.jpg';
+import edmontonImg from '../assets/edmonton.jpg';
+
 export function TripProvider({ children }) {
   // Initialize with sample data
   const [trips, setTrips] = useState([
@@ -10,7 +15,7 @@ export function TripProvider({ children }) {
       name: "Holidays in YYC!",
       startDate: "Dec. 22, 2025",
       endDate: "Dec. 27, 2025",
-      image: '../src/assets/calgary.jpg',
+      image: calgaryImg,
       destinations: [
         {
           id: 1,
@@ -29,7 +34,7 @@ export function TripProvider({ children }) {
       name: "Raptors in Toronto?",
       startDate: "Dec. 22, 2026",
       endDate: "Dec. 27, 2026",
-      image: '../src/assets/Raptors.jpg',
+      image: raptorsImg,
       destinations: [
         {
           id: 1,
@@ -48,7 +53,7 @@ export function TripProvider({ children }) {
       name: "Summer in Vancouver!",
       startDate: "Dec. 22, 2024",
       endDate: "Dec. 27, 2024",
-      image: '../src/assets/vancouver.jpg',
+      image: vancouverImg,
       destinations: [
         {
           id: 1,
@@ -67,7 +72,7 @@ export function TripProvider({ children }) {
       name: "Deadmonton... Again?",
       startDate: "Dec. 22, 2023",
       endDate: "Dec. 27, 2023",
-      image: '../src/assets/edmonton.jpg',
+      image: edmontonImg,
       destinations: [
         {
           id: 1,
