@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./weather.css";
+import ".../styles/weather.css";
 import sunny from "../../assets/sunny.svg";
 import accident from "../../assets/accidentt.jpg";
 import attention from "../../assets/attention.svg";
