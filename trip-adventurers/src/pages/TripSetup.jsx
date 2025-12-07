@@ -515,7 +515,7 @@ export default function TripSetup() {
         </div>
       )}
 
-      {/* Member Management Modal - Placeholder */}
+      {/* Member Management Modal */}
       {showMemberModal && memberModalType === "add" && (
         <div className="add-members-overlay" onClick={closeMemberModal}>
           <div
