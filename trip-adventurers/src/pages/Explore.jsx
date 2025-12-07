@@ -134,12 +134,21 @@ export default function Explore() {
 
   const handleAddToItinerary = (event) => {
     // Navigate to itinerary with prefilled event data
+    const prefilledData = {
+      eventId: event.id,
+      title: event.name
+    };
+    
+    // If we're replacing an existing event, include its time slot
+    if (location.state?.replacingEvent) {
+      prefilledData.start = location.state.replacingEvent.start;
+      prefilledData.end = location.state.replacingEvent.end;
+    }
+    
     navigate('/trip/1/intinerary', { 
       state: { 
-        prefilledEvent: {
-          eventId: event.id,
-          title: event.name
-        }
+        prefilledEvent: prefilledData,
+        day: location.state?.replacingEvent?.day
       } 
     });
   };
