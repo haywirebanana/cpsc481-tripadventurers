@@ -11,6 +11,7 @@ export default function Documents() {
   const navigate = useNavigate();
   const isSubPage = location.pathname.includes("/documents/");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const isReadOnly = location.state?.readOnly || false;
 
   const handleLogoutClick = () => {
     setShowLogoutModal(true);
@@ -27,21 +28,21 @@ export default function Documents() {
   };
 
   if (isSubPage) {
-    return <Outlet />;
+    return <Outlet context={{ readOnly: isReadOnly }} />;
   }
 
   return (
     <>
       <div className="documents-page">
         <div className="documents-menu">
-          <Link to="weather" className="doc-menu-btn">
+          <Link to="weather" state={{ readOnly: isReadOnly }} className="doc-menu-btn">
             <img src={weather} alt="Weather" className="doc-icon" />
             <span>Weather and News</span>
           </Link>
 
-          <Link to="members" className="doc-menu-btn">
+          <Link to="members" state={{ readOnly: isReadOnly }} className="doc-menu-btn">
             <img src={members} alt="Members" className="doc-icon" />
-            <span>Manage Members</span>
+            <span>{isReadOnly ? 'View Members' : 'Manage Members'}</span>
           </Link>
 
           <button onClick={handleLogoutClick} className="doc-menu-btn logout-btn">

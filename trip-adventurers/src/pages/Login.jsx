@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/loginsignup.css";
+import pageLogo from '../assets/logo.png'
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ export default function Login() {
       <h1 className="title">Trip Adventuers</h1>
 
       {/* Logo Image */}
-      <img className="logo-img" src="../src/assets/logo.png" alt="Trip Adventurers Logo"/>
+      <img className="logo-img" src={pageLogo} alt="Trip Adventurers Logo"/>
 
       {/* Login Text */}
       <h2 className="login-text">Log in</h2>

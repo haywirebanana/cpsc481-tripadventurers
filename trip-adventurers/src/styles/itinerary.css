@@ -57,6 +57,10 @@
   cursor: pointer;
 }
 
+.event-card.read-only {
+  width: 90%;
+}
+
 .event-title {
   margin: 0;
   font-size: 20px;

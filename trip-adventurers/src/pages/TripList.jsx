@@ -14,8 +14,16 @@ export default function TripList() {
   // Get trips from context
   const { currentTrip, upcomingTrips, pastTrips } = getCategorizedTrips();
 
-  const handleViewTrip = (tripId) => {
-    navigate(`/trip/${tripId}/explore`);
+  const handleViewTrip = (tripId, readOnly = false) => {
+    navigate(`/trip/${tripId}/explore`, { state: { readOnly } });
+  };
+
+  const handleViewCurrentTrip = (tripId) => {
+    handleViewTrip(tripId, false);
+  };
+
+  const handleViewPastOrUpcomingTrip = (tripId) => {
+    handleViewTrip(tripId, true);
   };
 
   const handleEditTrip = (tripId) => {
@@ -79,7 +87,7 @@ export default function TripList() {
               <div className="trip-actions">
                 <button 
                   className="btn-trip btn-view"
-                  onClick={() => handleViewTrip(currentTrip.id)}
+                  onClick={() => handleViewCurrentTrip(currentTrip.id)}
                 >
                   View
                 </button>
@@ -127,7 +135,7 @@ export default function TripList() {
                 <div className="trip-actions">
                   <button 
                     className="btn-trip btn-view"
-                    onClick={() => handleViewTrip(trip.id)}
+                    onClick={() => handleViewPastOrUpcomingTrip(trip.id)}
                   >
                     View
                   </button>
@@ -176,7 +184,7 @@ export default function TripList() {
                 <div className="trip-actions">
                   <button 
                     className="btn-trip btn-view"
-                    onClick={() => handleViewTrip(trip.id)}
+                    onClick={() => handleViewPastOrUpcomingTrip(trip.id)}
                   >
                     View
                   </button>

@@ -16,6 +16,9 @@ export default function Explore() {
   const location = useLocation();
   const navigate = useNavigate();
   
+  // Check if we're in read-only mode
+  const isReadOnly = location.state?.readOnly || false;
+  
   const [view, setView] = useState('map');
   const [activeFilters, setActiveFilters] = useState({
     categories: [],
@@ -120,6 +123,8 @@ export default function Explore() {
   };
 
   const handleBookNow = (eventName) => {
+    if (isReadOnly) return; // Don't allow booking in read-only mode
+    
     const event = allEvents.find(e => e.name === eventName);
     if (event) {
       setBookingEvent({ name: eventName, id: event.id });
@@ -133,6 +138,8 @@ export default function Explore() {
   };
 
   const handleAddToItinerary = (event) => {
+    if (isReadOnly) return; // Don't allow adding to itinerary in read-only mode
+    
     // Navigate to itinerary with prefilled event data
     const prefilledData = {
       eventId: event.id,
@@ -148,7 +155,8 @@ export default function Explore() {
     navigate('/trip/1/intinerary', { 
       state: { 
         prefilledEvent: prefilledData,
-        day: location.state?.replacingEvent?.day
+        day: location.state?.replacingEvent?.day,
+        readOnly: isReadOnly
       } 
     });
   };
@@ -294,6 +302,7 @@ export default function Explore() {
                     onBookNow={handleBookNow}
                     onDirections={handleDirectionClick}
                     onAddToItinerary={handleAddToItinerary}
+                    readOnly={isReadOnly}
                   />
                 ))
               ) : (
