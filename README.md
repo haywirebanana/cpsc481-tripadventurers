@@ -14,6 +14,7 @@ https://tripadventurers.netlify.app
 
 **Option B: Run Locally**
 ```bash
+cd trip-adventurers
 npm install
 npm run dev
 ```
